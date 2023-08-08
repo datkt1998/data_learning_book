@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>1.14. Information theory &#8212; Machine Learning book</title>
+    <title>4.1. Deploy model on GCP and call API streamlit &#8212; Machine Learning book</title>
   
   
   
@@ -61,11 +61,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '3_Mathematics/4_Information_theory';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '6_Tools_and_Projects/deploy_callAPI_model_in_GCP';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1.15. Graph theory" href="5_Graph_theory.html" />
-    <link rel="prev" title="1.12. Distribution and statistics" href="3_Distribution_and_statistic.html" />
+    <link rel="prev" title="4. Programming" href="0_toc.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -240,22 +239,22 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc.html">1. Mathematics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="1_Linear_algebra.html">1.1. Linear algebra</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
 
 
 
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
 
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.14. Information theory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="5_Graph_theory.html">1.15. Graph theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -272,8 +271,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../2_My_Modules/2_Connection.html">3.2. Connection</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../6_Tools_and_Projects/0_toc.html">4. Tools and Projects</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../6_Tools_and_Projects/deploy_callAPI_model_in_GCP.html">4.1. Deploy model on GCP and call API streamlit</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc.html">4. Tools and Projects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">4.1. Deploy model on GCP and call API streamlit</a></li>
 </ul>
 </li>
 </ul>
@@ -345,7 +344,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/3_Mathematics/4_Information_theory.ipynb" target="_blank"
+      <li><a href="../_sources/6_Tools_and_Projects/deploy_callAPI_model_in_GCP.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -425,7 +424,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Information theory</h1>
+    <h1>Deploy model on GCP and call API streamlit</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -439,8 +438,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="information-theory">
-<h1><span class="section-number">1.14. </span>Information theory<a class="headerlink" href="#information-theory" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="deploy-model-on-gcp-and-call-api-streamlit">
+<h1><span class="section-number">4.1. </span>Deploy model on GCP and call API streamlit<a class="headerlink" href="#deploy-model-on-gcp-and-call-api-streamlit" title="Permalink to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -456,7 +455,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./3_Mathematics"
+            path: "./6_Tools_and_Projects"
         },
         predefinedOutput: true
     }
@@ -475,22 +474,13 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="3_Distribution_and_statistic.html"
+       href="0_toc.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">1.12. </span>Distribution and statistics</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Programming</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="5_Graph_theory.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1.15. </span>Graph theory</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
