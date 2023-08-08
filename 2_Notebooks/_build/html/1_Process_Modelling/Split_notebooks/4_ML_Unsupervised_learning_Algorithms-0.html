@@ -1,0 +1,1116 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.1. Clustering &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-0';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.2. Decomposing components" href="4_ML_Unsupervised_learning_Algorithms-1.html" />
+    <link rel="prev" title="2. Machine Learning Unsupervised Learning" href="0_toc_ml_unsu.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-0.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Clustering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kmeans">2.1.1. Kmeans</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-clustering">2.1.2. Hierarchical Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#density-based-clustering-dbscan">2.1.3. Density-Based Clustering (DBSCAN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-mixture-clustering">2.1.4. Gaussian Mixture Clustering</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="clustering">
+<h1><span class="section-number">2.1. </span>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading">#</a></h1>
+<p><img alt="image.png" src="../../_images/cluster_comparison.png" /></p>
+<p>Non-flat geometry clustering is sẽ hữu ích cho những cụm có hình dạng cụ thể, ví dụ như hình không phẳng và khi đó công thức khoảng cách Euclidean không đúng (hàng 1 và 2)</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Tên thuật toán</p></th>
+<th class="head text-left"><p>Tham số</p></th>
+<th class="head text-left"><p>Khả năng mở rộng</p></th>
+<th class="head text-left"><p>Usecase</p></th>
+<th class="head text-left"><p>Phương pháp sử dụng</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>K-Means</p></td>
+<td class="text-left"><p>number of clusters</p></td>
+<td class="text-left"><p>Very large n_samples, medium n_clusters with MiniBatch code</p></td>
+<td class="text-left"><p>General-purpose, even cluster size, flat geometry, not too many clusters, inductive</p></td>
+<td class="text-left"><p>Distances between points</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Affinity propagation</p></td>
+<td class="text-left"><p>damping, sample preference</p></td>
+<td class="text-left"><p>Not scalable with n_samples</p></td>
+<td class="text-left"><p>Many clusters, uneven cluster size, non-flat geometry, inductive</p></td>
+<td class="text-left"><p>Graph distance (e.g. nearest-neighbor graph)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Mean-shift</p></td>
+<td class="text-left"><p>bandwidth</p></td>
+<td class="text-left"><p>Not scalable with n_samples</p></td>
+<td class="text-left"><p>Many clusters, uneven cluster size, non-flat geometry, inductive</p></td>
+<td class="text-left"><p>Distances between points</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Spectral clustering</p></td>
+<td class="text-left"><p>number of clusters</p></td>
+<td class="text-left"><p>Medium n_samples, small n_clusters</p></td>
+<td class="text-left"><p>Few clusters, even cluster size, non-flat geometry, transductive</p></td>
+<td class="text-left"><p>Graph distance (e.g. nearest-neighbor graph)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Ward hierarchical clustering</p></td>
+<td class="text-left"><p>number of clusters or distance threshold</p></td>
+<td class="text-left"><p>Large n_samples and n_clusters</p></td>
+<td class="text-left"><p>Many clusters, possibly connectivity constraints, transductive</p></td>
+<td class="text-left"><p>Distances between points</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Agglomerative clustering</p></td>
+<td class="text-left"><p>number of clusters or distance threshold, linkage type, distance</p></td>
+<td class="text-left"><p>Large n_samples and n_clusters</p></td>
+<td class="text-left"><p>Many clusters, possibly connectivity constraints, non Euclidean distances, transductive</p></td>
+<td class="text-left"><p>Any pairwise distance</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>DBSCAN</p></td>
+<td class="text-left"><p>neighborhood size</p></td>
+<td class="text-left"><p>Very large n_samples, medium n_clusters</p></td>
+<td class="text-left"><p>Non-flat geometry, uneven cluster sizes, outlier removal, transductive</p></td>
+<td class="text-left"><p>Distances between nearest points</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>OPTICS</p></td>
+<td class="text-left"><p>minimum cluster membership</p></td>
+<td class="text-left"><p>Very large n_samples, large n_clusters</p></td>
+<td class="text-left"><p>Non-flat geometry, uneven cluster sizes, variable cluster density, outlier removal, transductive</p></td>
+<td class="text-left"><p>Distances between points</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Gaussian mixtures</p></td>
+<td class="text-left"><p>many</p></td>
+<td class="text-left"><p>Not scalable</p></td>
+<td class="text-left"><p>Flat geometry, good for density estimation, inductive</p></td>
+<td class="text-left"><p>Mahalanobis distances to centers</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>BIRCH</p></td>
+<td class="text-left"><p>branching factor, threshold, optional global clusterer.</p></td>
+<td class="text-left"><p>Large n_clusters and n_samples</p></td>
+<td class="text-left"><p>Large dataset, outlier removal, data reduction, inductive</p></td>
+<td class="text-left"><p>Euclidean distance between points</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Bisecting K-Means</p></td>
+<td class="text-left"><p>number of clusters</p></td>
+<td class="text-left"><p>Very large n_samples, medium n_clusters</p></td>
+<td class="text-left"><p>General-purpose, even cluster size, flat geometry, no empty clusters, inductive, hierarchical</p></td>
+<td class="text-left"><p>Distances between points</p></td>
+</tr>
+</tbody>
+</table>
+<section id="kmeans">
+<h2><span class="section-number">2.1.1. </span>Kmeans<a class="headerlink" href="#kmeans" title="Permalink to this heading">#</a></h2>
+<p>Thuật toán phân cụm dựa vào n_clusters được define trước và khoảng cách từ các điểm tới centroid của mỗi cụm. Mục tiêu của bài toán là minimize sum of squares within all clusters:
+$<span class="math notranslate nohighlight">\(\sum_{i=0}^{n}\operatorname*{min}_{\mu_{j}\in C}(||x_{i}-\mu_{j}||^{2})\)</span>$</p>
+<p><strong>Thuật toán</strong></p>
+<p>Ban đầu thuật toán sẽ khởi tạo ngẫu nhiên một số lượng K xác định trước tâm cụm. Sau đó tiến hành xác định nhãn cho từng điểm dữ liệu và tiếp tục cập nhật lại tâm cụm. Thuật toán sẽ dừng cho tới khi toàn bộ các điểm dữ liệu được phân về đúng cụm hoặc số lượt cập nhật tâm chạm ngưỡng.</p>
+<ul class="simple">
+<li><p>labels: Nhãn của điểm dữ liệu dựa vào khoảng cách của điểm dó tới  các centroids, tính thông qua bình phương norm chuẩn bậc 2, L2</p></li>
+<li><p>updating the centroids: với mỗi 1 cluster thì tính lại các giá trị trung bình của các điểm thuộc cluster đó để xác định lại centroid mới</p></li>
+</ul>
+<p>K-mean ko phải là model tìm the best possible solution nên có sự khác biệt nhỏ khi thuật toán lựa chọn điểm bắt đầu khác nhau, cho nên cần repeated thuật toán nhiều lần để tìm ra model tốt nhất. Tham số n_init (default = 10) là number of times the k-means algorithm is run with different centroid seeds.</p>
+<p><strong>Lựa chọn số lượng k Clusters by elbow method</strong>: method thử nghiệm nếu tăng thêm 1 cluster mới thì sự dổi của variance explain. Điểm cluster phù hợp là ở các mức số cluster tăng thêm phía sau thì độ giảm của hàm variance explain không giảm nhiều.</p>
+<p>Những cluster có <strong>size mất cân bằng</strong> so với phần còn lại có thể chỉ ra là có xuất hiện outliers hoặc các điểm trong cụm cluster đó cách xa nhau so với các cụm khác</p>
+<p><strong>Hạn chế Kmean</strong>:</p>
+<ul class="simple">
+<li><p><strong>Xác định trước số cụm cho thuật toán</strong>: Vì bộ dữ liệu của chúng ta chưa được gán nhãn nên dường như chúng ta không có thông tin nào về số lượng cụm hợp lý. Chúng ta chỉ có thể thực hiện phương pháp thử và sai (try and error) và xác định số cụm thông qua một phương pháp chẳng hạn như Elbow.</p></li>
+<li><p><strong>Vị trí tâm của cụm sẽ bị phụ thuộc vào điểm khởi tạo ban đầu của chúng</strong>: Những vị trí khởi tạo khác nhau có thể dẫn tới cách phân cụm khác nhau, mặc dù thuật toán có cùng thiết lập số cụm</p></li>
+<li><p><strong>Khả năng không hội tụ với dữ liệu phân bố đặc biệt</strong>: Chẳng hạn như dữ liệu có dạng đường viền hình tròn bao ngoài một hình tròn ở bên trong nó; dữ liệu hình trôn ốc; dữ liệu có phân phối dẹt; dữ liệu bị mất cân bằng phân phối giữa các cụm.</p></li>
+<li><p><strong>Nhạy cảm với outliers</strong>: Khi xuất hiện outliers thì thường khiến cho tâm cụm bị chệch và do đó dự báo cụm không còn chuẩn xác. Chính vì thế chúng ta cần phải loại bỏ outliers trước khi huấn luyện thuật toán.</p></li>
+<li><p><strong>Nhạy cảm với độ lớn đơn vị của biến</strong>: Khi áp dụng thuật toán trên các biến có sự khác biệt về mặt đơn vị thì khoảng cách chủ yếu bị ảnh hưởng bởi các biến có đơn vị lớn hơn và khiến cho kết quả phân cụm bị chệch. Chính vì thế chúng ta cần phải chuẩn hoá biến để loại bỏ sự khác biệt đơn vị trước khi đưa vào huấn luyện mô hình.</p></li>
+<li><p><strong>Yêu cầu phải tính khoảng cách từ một điểm tới toàn bộ các tâm cụm</strong>: Thuật toán k-Means yêu cầu phải tính khoảng cách từ một điểm tới toàn bộ các tâm cụm để tìm ra tâm cụm gần nhất. Như vậy chúng ta cần phải load toàn bộ dữ liệu lên RAM, đối với những bộ dữ liệu kích thước lớn thì sẽ vượt quá khả năng lưu trữ của RAM. Khi đó chúng ta cần phải huấn luyện thuật toán theo phương pháp online learning. Kĩ thuật này sẽ được giới thiệu ở bên dưới.</p></li>
+<li><p><strong>Giả định rằng các cụm có variance giống nhau và có convex shaped</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+
+<span class="n">dataset</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">centers</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">kmean_model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kmean_model</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">)):</span>
+    <span class="n">idx_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">kmean_model</span><span class="o">.</span><span class="n">labels_</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">idx_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="n">idx_i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kmean_model</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+                <span class="n">kmean_model</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b4ed496035ab9fe6e24e30835e7afd0254bafe3dd3e343908a040694098c6ace.png" src="../../_images/b4ed496035ab9fe6e24e30835e7afd0254bafe3dd3e343908a040694098c6ace.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Elbow trong lựa chọn số cụm</span>
+
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
+    <span class="c1"># 1.  Huấn luyện với số cụm = i</span>
+    <span class="n">kmeans_i</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="c1"># 2. Tính _hàm biến dạng_</span>
+    <span class="c1"># 2.1. Khoảng cách tới toàn bộ centroids</span>
+    <span class="n">d2centroids</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">kmeans_i</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">,</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span> <span class="c1"># shape (n, k)</span>
+    <span class="c1"># 2.2. Khoảng cách tới centroid gần nhất</span>
+    <span class="n">min_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">d2centroids</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># shape (n)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">min_distance</span><span class="p">)</span>
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="n">losses</span><span class="p">,</span> <span class="s1">&#39;bx-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Values of K&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Distortion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;The Elbow Method using Distortion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3e2365b31ef522fda169a97fbd41b4004d593d6930a01991ecac6f7c81a900de.png" src="../../_images/3e2365b31ef522fda169a97fbd41b4004d593d6930a01991ecac6f7c81a900de.png" />
+</div>
+</div>
+<p><strong>–&gt; select k = 4</strong></p>
+<p><strong>Kmean online</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c}{{\mu_{j}:=\mu_{j}-\alpha\nabla_{\mu_{j}}Z({\bf x}_{i},\mu)}}\\ {{=\ \mu_{j}+\alpha({\bf x}_{i}-\mu_{j})}}\end{array}\end{split}\]</div>
+<p>chúng ta lựa chọn ra ngẫu nhiên một điểm dữ liệu và thực hiện cập nhật lại tâm cụm theo Gradient Descent. Cách huấn luyện mô hình trên một điểm dữ liệu như vậy còn được gọi là Stochastic Gradient Descent. Trường hợp khác khi chúng ta cũng cập nhật nghiệm theo Gradient Descent, nhưng đối với đầu vào là một batch gồm nhiều điểm dữ liệu thì được gọi là Mini-Batch Gradient Descent. Phương pháp online learning vừa đảm bảo được tính realtime và tiết kiệm chi phí tính toán nên thường được áp dụng trong thực tiễn cho nhiều thuật toán khác nhau trong machine learning, không chỉ riêng k-Means.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The MiniBatchKMeans is a variant of the KMeans algorithm which uses mini-batches to reduce the computation time</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">MiniBatchKMeans</span>
+
+<span class="n">kmean_model</span> <span class="o">=</span> <span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> 
+                              <span class="n">batch_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">reassignment_ratio</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kmean_model</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">)):</span>
+    <span class="n">idx_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">kmean_model</span><span class="o">.</span><span class="n">labels_</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">idx_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="n">idx_i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kmean_model</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
+                <span class="n">kmean_model</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/232c1065c880dcc290daa8bffbfef1ff2c0149feda798f35230f061b755ff6a3.png" src="../../_images/232c1065c880dcc290daa8bffbfef1ff2c0149feda798f35230f061b755ff6a3.png" />
+</div>
+</div>
+</section>
+<section id="hierarchical-clustering">
+<h2><span class="section-number">2.1.2. </span>Hierarchical Clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Một dạng phân cụm mà ko cần xác định trước số lượng cluster K, ứng với mỗi một giá trị khoảng cách thì sẽ dễ dàng xác định được có bao nhiêu cụm thông qua dendrogram</p></li>
+<li><p>Nhạy cảm trong việc phân cụm với những records ở xa</p></li>
+<li><p>Chỉ phù hợp với khoảng 10k records (small datasets) vì yêu cầu lượng tính toán lớn. Không phù phợp với bigdata và scaled</p></li>
+</ul>
+<p><strong>1. TERMS</strong></p>
+<ul class="simple">
+<li><p><strong>Dendrogram</strong>: biểu đồ thể hiện record thuộc về cluster nào</p>
+<ul>
+<li><p><strong>trục X</strong> thể hiện từng quan sát</p></li>
+<li><p><strong>trục Y</strong> thể hiện thước đo sự khác biệt giữa các cụm</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="image.png" src="../../_images/Dendrogram.png" /></p>
+<p>Trong biểu đồ <strong>dendogram</strong> mà bạn nhìn thấy ở trên, trục hoành (horizontal axis) là thứ tự index của các quan sát trong bộ dữ liệu gốc, trục tung (vertical axis) thể hiện mức độ khác biệt giữa các cụm được tính toán thông qua thước đo sự khác biệt, trong biểu đồ trên chính là khoảng cách cụm được tính theo phương pháp Ward linkage. Nhìn vào đồ thị dendrogram ta có thể dễ dàng xác định được rằng với cùng một giá trị mức độ khác biệt là 200 thì chúng ta có thể tạo thành 5 cụm phân biệt.</p>
+<ul class="simple">
+<li><p><strong>Dissimilarity</strong>: Khoảng cách giữa 2 cụm clusters</p></li>
+<li><p><strong>Distance</strong>: Khoảng cách giữa 2 records</p></li>
+<li><p><strong>tâm cluster</strong></p>
+<ul>
+<li><p><strong>centroid</strong>: Điểm đại diện cho tâm cụm, được tính bằng trung bình các điểm trọng cụm. Điểm centroid không nhất thiết phải là điểm thực tế xuất hiện trong cụm mà chỉ là điểm được tính toán TB các điểm khác thuộc cụm đó mà thôi</p></li>
+<li><p><strong>clustroids</strong>: Trong nhiều trường hợp khi dữ liệu không tồn tại trong không gian euclidean (non-euclidean) thì chúng ta không thể tính toán được tâm của từng cụm theo trung bình toàn bộ các điểm trong cụm. Khi đó tâm cụm sẽ được xác định là một điểm nằm trong cụm sao cho có trung bình khoảng cách tới những điểm khác trong cùng cụm là nhỏ nhất. Như vậy ta đã thay thế trung bình bằng một điểm dữ liệu thực tế, những điểm này còn được gọi là clustroids.</p></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<p><strong>2. THUẬT TOÁN</strong></p>
+<p>Một bộ phân cấp dữ liệu size N thì trải qua N bước phân chia. Chia tlược phân chia theo thứ tự hợp nhất bottum-up (từ dưới lên trên) hoặc phân chia top-down.</p>
+<p><strong>2.1. Chiến lược hợp nhất (agglomerative)</strong></p>
+<p><img alt="image.png" src="../../_images/agglomerative.png" /></p>
+<p>Chiến lược này sẽ đi theo chiều bottum-up (từ dưới lên trên). Quá trình phân cụm bắt đầu ở dưới cùng tại các leaf node . Ban dầu mỗi quan sát sẽ được xem là một cụm tách biệt được thể hiện bởi một node lá. Ở mỗi level chúng ta sẽ tìm cách hợp một cặp cụm thành một cụm duy nhất nhằm tạo ra một cụm mới ở level cao hơn tiếp theo. Cụm mới này tương ứng với các node quyết định (non-leaf node). Như vậy sau khi hợp cụm thì số lượng cụm ít hơn. Một cặp được chọn để hợp nhất sẽ là những cụm trung gian không giao nhau.</p>
+<p>Cách hợp nhất bằng việc tính khoảng cách giữa node-node, node-leaf, leaf-leaf và lựa chọn ra khoảng cách ngắn nhất. Điểm đại diện cho node là trung bình các quan sát (leafs) trong node đó (chứ ko phải trung bình leaf và node con khác).</p>
+<p><em><strong>Phương pháp đo khoảng cách</strong></em> gồm 4 loại:</p>
+<p><em><strong>a. Ward linkage</strong></em></p>
+<div class="math notranslate nohighlight">
+\[d({\bf m}_{1},{\bf m}_{2})=\sqrt{\sum_{i=1}^{n}(m_{i}^{(1)}-m_{i}^{(2)})^{2}}\]</div>
+<p>Phân cụm dựa vào khả năng giảm phương sai , tức so sánh phương sai của cụm tổng và tổng phương sai của 2 cụm sau phân chia.
+- Phương sai luôn giảm sau khi phân cụm
+- Độ giảm của phương sai tỷ lệ thuận với khoảng cách tâm (centroids) giữa hai cụm. Nếu hai tâm cách xa nhau thì giá trị giảm của phương sai sau khi phân cụm càng lớn. Trái lại nếu tâm giữa hai cụm càng sát nhau, các cụm có xu hướng chồng lấn và không rõ ràng thì sau khi phân chia phương sai của cụm giảm không đáng kể.
+- phương pháp này chỉ phù hợp với không gian euclidean
+- Khoảng cách giữa 2 tâm cụm tính theo khoảng cách euclidean</p>
+<p><em><strong>b. Sinlge linkage</strong></em></p>
+<div class="math notranslate nohighlight">
+\[d({\cal S}_{1},{\cal S}_{2})=\operatorname*{min}_{{\bf x}_{i}\in{\cal S}_{1},{\bf x}_{j}\in{\cal S}_{2}}d({\bf x}_{i}^{(1)},{\bf x}_{j}^{(2)})\]</div>
+<p>Phương pháp này đo lường sự khác biệt giữa hai cụm bằng cách lấy ra cặp điểm gần nhất giữa hai cụm. Độ đo sự khác biệt được tính theo công thức. Phương pháp này còn được gọi dưới một tên khác là nearest-neighbor. Tức là đo lường khoảng cách cụm thông qua 2 điểm gần nhau nhất thuộc mỗi cụm.</p>
+<p><em><strong>c. Complete linkage</strong></em>
+$<span class="math notranslate nohighlight">\(d({\cal S}_{1},{\cal S}_{2})=\operatorname*{max}_{{\bf x}_{i}\in{\cal S}_{1},{\bf x}_{j}\in{\cal S}_{2}}d({\bf x}_{i}^{(1)},{\bf x}_{j}^{(2)})\)</span>$</p>
+<p>Phương pháp này đo lường sự khác biệt giữa hai cụm bằng cách lấy ra hai cặp điểm xa nhau nhất giữa hai cụm</p>
+<p><em><strong>d. Group average</strong></em></p>
+<div class="math notranslate nohighlight">
+\[d({\cal S}_{1},{\cal S}_{2})=\frac{1}{N_{1}N_{2}}\sum_{i=1}^{N_{1}}\sum_{j=1}^{N_{2}}d({\bf x}_{i}^{(1)},{\bf x}_{j}^{(2)})\]</div>
+<p>Phương pháp này sẽ lấy trung bình toàn bộ khoảng cách giữa các cặp điểm được lấy từ hai cụm. Chúng ta sẽ có tổng cộng N1N2 cặp điểm</p>
+<p><img alt="image.png" src="../../_images/AgglomerativeClustering.png" /></p>
+<p>Cả bốn phương pháp <em><strong>ward linkage</strong></em>, <em><strong>sinlge linkage</strong></em>, <em><strong>complete linkage</strong></em>, <em><strong>group average</strong></em> đều giúp tạo ra một thước đo về sự không tương đồng hay chính là khoảng cách giữa hai cụm. Khi giữa các cụm có sự tách biệt thể hiện qua phân phối dữ liệu và đường biên phân chia rõ rệt thì kết quả trả về d(S1,S2) đều thu được lớn và trái lại. Các đặc điểm:</p>
+<ul class="simple">
+<li><p><em><strong>single linkage</strong></em> và <em><strong>complete linkage</strong></em> thường bị ảnh hưởng bởi những điểm dữ liệu <em><strong>outliers</strong></em>. Chẳng hạn hai cụm rất cách xa nhau nhưng do hai điểm <em><strong>outliers</strong></em> của chúng lại rất gần nhau có thể trả về một khoảng cách theo <em><strong>single linkage</strong></em> rất bé. Một tình huống khác, khi hai cụm rất gần nhau nhưng do hai điểm <em><strong>outliers</strong></em> của chúng rất xa nên khoảng cách được đo theo <em><strong>complete linkage</strong></em> lại rất lớn</p></li>
+<li><p><em><strong>ward linkage</strong></em> lại chỉ có thể hoạt động khi các điểm dữ liệu tồn tại trong không gian <em><strong>euclidean</strong></em>.</p></li>
+</ul>
+<p><strong>2.2. Chiến lược phân chia (divisive)</strong></p>
+<p>Chiến lược này sẽ thực hiện theo chiều  top-down. Tức là phân chia bắt đầu từ node gốc của đồ thị. Node gốc bao gồm toàn bộ các quan sát, tại mỗi level chúng ta phân chia một cách đệ qui các cụm đang tồn tại tại level đó thành hai cụm mới. Phép phân chia được tiến hành sao cho tạo thành hai cụm mới mà sự tách biệt giữa chúng là lớn nhất. Sự tách biệt này sẽ được đo lường thông qua một thước đo khoảng cách mà ta sẽ tìm hiểu kĩ hơn bên dưới.</p>
+<p><img alt="image.png" src="../../_images/divisive.png" /></p>
+<ul class="simple">
+<li><p>Bước 1 chúng ta sẽ lựa chọn ra điểm C là điểm đầu tiên thuộc cụm mới dựa trên khoảng cách so với các điểm còn lại là xa nhất. Sau bước 1 ta thu được tập S1={C} và S2={A,B,D,E,F}.</p></li>
+<li><p>Bước 2 lựa chọn trong số các điểm thuộc S2 ra điểm mà có khoảng cách xa nhất so với những điểm còn lại sao cho điểm này gần với C hơn so với các điểm thuộc tập S2, đó chính là diểm A. Di chuyển điểm này sang S1.</p></li>
+<li><p>Bước 3 chúng ta lại tiếp tục thực hiện như vậy và lựa chọn được điểm B để đưa sang S1.</p></li>
+<li><p>Bước 4 ta sẽ dừng quá trình chuyển cụm cho các điểm thuộc S2 vì thuật toán đã đạt sự hội tụ về hai cụm. Khi đó ta lại tiếp tục tiến hành đệ qui thuật toán trên từng cụm con.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>3. Điều kiện dừng thuật toán</strong></p>
+<ul class="simple">
+<li><p>Lựa chọn số K cluster tối đa</p></li>
+<li><p>Tính mật độ sau khi phân cụm: Thuật toán sẽ dừng nếu như việc gộp cụm tạo thành những cụm có độ gắn kết (cohension) thấp hơn bằng cách tính tỷ số giữa số lượng điểm nằm trong cụm chia cho luỹ thừa bậc hai hoặc bậc 3 của đường kính hoặc bán kính của cụm.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">AgglomerativeClustering</span>
+<span class="n">clustering</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">(</span>
+    <span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">affinity</span><span class="o">=</span><span class="s1">&#39;deprecated&#39;</span><span class="p">,</span>
+    <span class="n">metric</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">connectivity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">compute_full_tree</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+    <span class="n">linkage</span><span class="o">=</span><span class="s1">&#39;ward&#39;</span><span class="p">,</span> <span class="c1"># {&#39;ward&#39;, &#39;complete&#39;, &#39;average&#39;, &#39;single&#39;}</span>
+    <span class="n">distance_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">compute_distances</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot dendrogram</span>
+<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
+
+<span class="n">linkage_matrix</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">clustering</span><span class="o">.</span><span class="n">children_</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">hierarchy</span><span class="o">.</span><span class="n">set_link_color_palette</span><span class="p">([</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">])</span> <span class="c1"># set colors for the clusters</span>
+<span class="n">dn</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">linkage_matrix</span><span class="p">,</span><span class="n">truncate_mode</span><span class="o">=</span><span class="s1">&#39;level&#39;</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color_threshold</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># color_threshold=23 sets clusters below y-axis value of 23 to be of the same color</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/449a594d7b3c8bd4a6f276338622c67b74bdd847dcee8324d3b783fc0afb7737.png" src="../../_images/449a594d7b3c8bd4a6f276338622c67b74bdd847dcee8324d3b783fc0afb7737.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="n">clustering</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">opacity</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">renderer</span> <span class="o">=</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2baa30063e952c7a0491aaf0559fdca0a0de484035f033584b3e77cabc263455.jpg" src="../../_images/2baa30063e952c7a0491aaf0559fdca0a0de484035f033584b3e77cabc263455.jpg" />
+</div>
+</div>
+</section>
+<section id="density-based-clustering-dbscan">
+<h2><span class="section-number">2.1.3. </span>Density-Based Clustering (DBSCAN)<a class="headerlink" href="#density-based-clustering-dbscan" title="Permalink to this heading">#</a></h2>
+<p>DBSCAN dựa trên ý tưởng rằng một cụm trong không gian dữ liệu là một vùng có mật độ điểm cao được ngăn cách với các cụm khác bằng các vùng liền kề có mật độ điểm thấp.</p>
+<p><strong>1. Terms</strong></p>
+<ul class="simple">
+<li><p><strong>Vùng lân cận epsilon (Eps-neighborhood)</strong>: Vùng lân cận <strong>epsilon</strong> (Eps-neighborhood) của một điểm dữ liệu P được định nghĩa là tợp hợp tất cả các điểm dữ liệu nằm trong phạm vi bán kính <strong>epsilon</strong> (kí hiệu ϵ) xung quanh điểm P.</p></li>
+<li><p><strong>Khả năng tiếp cận trực tiếp mật độ (directly density-reachable)</strong> của 1 điểm: Điểm Q được coi là có Khả năng tiếp cận trực tiếp mật độ  của điểm P tương ứng với 2 tham số <strong>epsilon</strong> và <strong>minPts</strong> nếu như nó thoả mãn hai điều kiện là Q thuộc vùng lân cận <strong>epsilon</strong> của P và Số lượng điểm thuộc vùng lân cận <strong>epsilon</strong> của Q là <strong>minPts</strong>
+–&gt; Như vậy một điểm dữ liệu có thể tiếp cận được trực tiếp tới một điểm khác không chỉ dựa vào khoảng cách giữa chúng mà còn phụ thuộc vào mật độ các điểm dữ liệu trong vùng lân cận <strong>epsilon</strong> phải tối thiểu bằng <strong>minPts</strong>. Khi đó vùng lân cận được coi là có mật độ cao và sẽ được phân vào các cụm. Trái lại thì vùng lân cận sẽ có mật độ thấp. Trong trường hợp mật độ thấp thì điểm dữ liệu ở trung tâm được coi là không kết nối trực tiếp tới những điểm khác trong vùng lân cận và những điểm này có thể rơi vào biên của cụm hoặc là một điểm dữ liệu nhiễu không thuộc về cụm nào.</p></li>
+<li><p><strong>Khả năng tiếp cận mật độ (density-reachable)</strong>: Khả năng tiếp cận mật độ thể hiện sự mở rộng phạm vi của một cụm dữ liệu dựa trên liên kết theo chuỗi. Xuất phát từ một điểm dữ liệu ta có thể tìm được các điểm có khả năng kết nối mật độ tới nó theo lan truyền chuỗi để xác định cụm. Nếu trong 1 tập hợp các điểm {Pi} mà trong đó điểm nào cũng tìm dc ít nhất 1 điểm trong tập hợp {Pi} có thể tiếp cận  trực tiếp mật độ theo tham số <strong>epsilon</strong> và <strong>minPts</strong></p></li>
+<li><p><strong>Type of points</strong>:</p>
+<ul>
+<li><p><em>Core point</em>: các điểm nằm sâu bên trong cụm, một điểm core có ít nhất <strong>minPts</strong> điểm trong vùng lân cận <strong>epsilon</strong> của chính nó.</p></li>
+<li><p><em>Border point</em>: Các điểm biên nằm ở phần ngoài cùng của cụm. Đây là một điểm có ít nhất một điểm lõi nằm ở vùng lân cận <strong>epsilon</strong> nhưng mật độ không đủ <strong>minPts</strong> điểm.</p></li>
+<li><p><em>Noise point</em>: điểm nhiễu không thuộc bất kì một cụm nào. Đây là điểm không phải là điểm lõi hay điểm biên
+<img alt="image.png" src="../../_images/dbscan_type_point.png" /></p></li>
+</ul>
+</li>
+<li><p><strong>Cặp điểm P-Q</strong>: xảy ra 3 TH sau</p>
+<ul>
+<li><p><em>P và Q cùng cụm</em>: Cả 2 điểm đều có khả năng kết nối mật độ được với nhau, khi đó 2 điểm này thuộc cùng 1 cụm</p></li>
+<li><p><em>Core P, Border Q</em>: P có khả năng kết nối mật độ được với Q, nhưng ngược lại thì không</p></li>
+<li><p><em>P và Q khác cụm hoặc 1 trong 2 là noise</em>: P và Q đều ko kết nối mật độ được với nhau</p></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<p><strong>2. Thuật toán</strong></p>
+<ul class="simple">
+<li><p><strong>Bước 1</strong>: Thuật toán lựa chọn một điểm dữ liệu bất kì. Sau đó tiến hành xác định các điểm lõi và điểm biênthông qua vùng lân cận <strong>epsilon</strong> bằng cách lan truyền theo liên kết chuỗi các điểm thuộc cùng một cụm.</p></li>
+<li><p><strong>Bước 2</strong>: Cụm hoàn toàn được xác định khi không thể mở rộng được thêm. Khi đó lặp lại đệ qui toàn bộ quá trình với điểm khởi tạo trong số các điểm dữ liệu còn lại để xác định một cụm mới.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>3. Hyperparameters</strong></p>
+<ul>
+<li><p>a. <strong>epsilon</strong> (<strong>ϵ</strong>): Một giá trị khoảng cách được sử dụng để xác định vùng lân cận <strong>epsilon</strong> của bất kỳ điểm dữ liệu nào. Giá trị <strong>ϵ</strong> có thể được chọn bằng cách vẽ một biểu đồ <strong>k-distance</strong>. Đây là biểu đồ thể hiện giá trị khoảng cách trong thuật toán k-Means clustering đến <strong>k = minPts − 1</strong> điểm láng giềng gần nhất. Ứng với mỗi điểm chúng ta chỉ lựa chọn ra khoảng cách lớn nhất trong k khoảng cách. Những khoảng cách này trên đồ thị được sắp xếp theo thứ tự giảm dần. Các giá trị tốt của <strong>ϵ</strong> là vị trí mà biểu đồ này cho thấy xuất hiện một điểm khuỷ tay (<strong>elbow point</strong>): Nếu <strong>ϵ</strong> được chọn quá nhỏ, một phần lớn dữ liệu sẽ không được phân cụm và được xem là nhiễu; trong khi đối với giá trị <strong>ϵ</strong> quá cao, các cụm sẽ hợp nhất và phần lớn các điểm sẽ nằm trong cùng một cụm. Nói chung, các giá trị nhỏ của <strong>ϵ</strong> được ưu tiên hơn và theo quy tắc chung, chỉ một phần nhỏ các điểm nên nằm trong vùng lân cận epsilon.</p>
+<ul class="simple">
+<li><p>Lựa chọn epsilon theo k-distance: Từ biểu đồ k-distance chúng ta có thể thấy điểm elbow tương ứng với <strong>ϵ</strong> ∈ [0.12,0.16].</p></li>
+</ul>
+<p><img alt="image.png" src="../../_images/dbscan_k_dis.png" /></p>
+</li>
+<li><p>b. <strong>minPts</strong>: (= <code class="docutils literal notranslate"><span class="pre">min_samples</span></code>) Là một ngưỡng số điểm dữ liệu tối thiểu được nhóm lại với nhau nhằm xác định một vùng lân cận epsilon có mật độ cao. Số lượng <strong>minPts</strong> không bao gồm điểm ở tâm.</p>
+<ul class="simple">
+<li><p>Theo quy tắc chung, <strong>minPts</strong> tối thiểu có thể được tính theo số chiều D trong tập dữ liệu, đó là <strong>minPts</strong> &gt;= D+1 và <strong>minPts</strong> &gt;= 3</p></li>
+<li><p>Các giá trị lớn hơn của <strong>minPts</strong> sẽ tốt hơn cho dữ liệu có nhiều noise</p></li>
+<li><p>Nên chọn <strong>minPts</strong> = 2*D hoặc giao động xung quanh gtri này phụ thuộc vào tỷ lệ noise</p></li>
+</ul>
+</li>
+<li><p>c. <strong>Distance function</strong>:</p>
+<ul class="simple">
+<li><p>Hamming distance:</p></li>
+<li><p>Gower Distance: Useful for mix-datatype numeric and category. Gower Similarity tính trung bình partial similarities (ps) thông qua m features của 2 quan sát (khác với xét tính tương đồng thông qua 1 feature)</p>
+<ul>
+<li><p>ps cho categorical feature: bằng 1 nếu 2 value khác nhau, 0 nếu giống nhau</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<p><strong>4. Ứng dụng</strong></p>
+<ul class="simple">
+<li><p>DBSCAN là một thuật toán đơn giản và hiệu quả.</p></li>
+<li><p>Ưu điểm của thuật toán đó là có thể tự động loại bỏ được các điểm dữ liệu nhiễu, hoạt động tốt đối với những dữ liệu có hình dạng phân phối đặc thù và có tốc độ tính toán nhanh. Đối với thuật toán DBSCAN thì các điểm dữ liệu outliers sẽ tự động được tách khỏi cụm nên thuật toán không chịu ảnh hưởng nhiều bởi outliers như k-Means Clustering. Chúng ta có thể bỏ qua bước loại bỏ outliers cho bộ dữ liệu.</p></li>
+<li><p>Tuy nhiên DBSCAN thường không hiệu quả đối với những dữ liệu có phân phối đều khắp nơi.</p></li>
+<li><p>Khi huấn luyện DBSCAN thì các tham số của mô hình như khoảng cách <code class="docutils literal notranslate"><span class="pre">epsilon</span></code>, số lượng điểm lân cận tối thiểu <code class="docutils literal notranslate"><span class="pre">minPts</span></code> và hàm khoảng cách là những tham số có ảnh hưởng rất lớn đối với kết quả phân cụm. Thực tế cho thấy thuật toán khá nhạy với tham số <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> và <code class="docutils literal notranslate"><span class="pre">minPts</span></code> nên chúng ta cần phải lựa chọn tham số cho mô hình trước khi tiến hành xây dựng mô hình.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">labels_true</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(750, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Chúng ta nhận thấy rằng các trường dữ liệu có sự khác biệt về độ lớn đơn vị giữa các biến nên tiếp theo cần chuẩn khoá dữ liệu để đồng nhất đơn vị giữa chúng. Chúng ta chuẩn hoá MinMaxScaler(). Đối với thuật toán DBSCAN thì các điểm dữ liệu outliers sẽ tự động được tách khỏi cụm nên thuật toán không chịu ảnh hưởng nhiều bởi outliers như k-Means Clustering. Chúng ta có thể bỏ qua bước loại bỏ outliers cho bộ dữ liệu.</p>
+<p>Tiếp theo chúng ta sẽ sử dụng biểu đồ k-distance như đã trình bày ở mục xác định tham số để lựa chọn khoảng cách ϵ phù hợp cho mô hình DBSCAN. Không mất đi tính chất của khoảng cách của dữ liệu thì chúng ta giả định hàm khoảng cách được lựa chọn là euclidean distance. Cuối cùng chúng ta lựa chọn số lượng điểm dữ liệu tối thiểu nằm trong vùng lân cận là minPts=11 (theo nguyên tắc chung thì minPts cần tối thiểu bằng 2×dim của bộ dữ liệu). Điều này tương ứng với trong thuật toán k-Means mà chúng ta áp dụng để vẽ biểu đồ k-distance thì cần lựa chọn số láng giềng k=3. ( = minPts - 1 = 2×dim - 1)</p>
+<p>Khi xây dựng mô hình với những tham số này sẽ tạo ra được những cụm phân chia có tính chất tổng quát nhất. Tránh được các trường hợp có quá nhiều cụm nhỏ lẻ được phân chia và nhiễu được tạo thành khi ϵ nhỏ và trường hợp khác là toàn bộ các điểm bị phân về một cụm nếu lựa chọn ϵ lớn.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># lua chon tham so thong qua biểu đồ k-distance</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+
+<span class="n">std</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_std</span> <span class="o">=</span> <span class="n">std</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Xây dựng mô hình k-Means với k=3</span>
+<span class="n">neighbors</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">nbrs</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">neighbors</span> <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_std</span><span class="p">)</span>
+
+<span class="c1"># Ma trận khoảng cách distances: (N, k)</span>
+<span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">X_std</span><span class="p">)</span>
+
+<span class="c1"># Lấy ra khoảng cách xa nhất từ phạm vi láng giềng của mỗi điểm và sắp xếp theo thứ tự giảm dần.</span>
+<span class="n">distance_desc</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">distances</span><span class="p">[:,</span> <span class="n">neighbors</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Vẽ biểu đồ khoảng cách xa nhất ở trên theo thứ tự giảm dần</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">distance_desc</span> <span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span> <span class="n">distance_desc</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;indice&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sorting Maximum Distance in k Nearest Neighbor of kNN&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Sorting Maximum Distance in k Nearest Neighbor of kNN&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/aa30471a0a788fe6ab9a643ee57a093c9c5de89a4006a88fa6e2741ba87dc232.png" src="../../_images/aa30471a0a788fe6ab9a643ee57a093c9c5de89a4006a88fa6e2741ba87dc232.png" />
+</div>
+</div>
+<p>lựa chọn epsilon  = 0.3</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dbscan</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X_std</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_std</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X_std</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="n">labels</span><span class="p">,</span> <span class="n">opacity</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">renderer</span> <span class="o">=</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/957d1a327077af5b47ef09bec8c1d7d403aabbbe45028afeeb4731ddbabbde5c.jpg" src="../../_images/957d1a327077af5b47ef09bec8c1d7d403aabbbe45028afeeb4731ddbabbde5c.jpg" />
+</div>
+</div>
+</section>
+<section id="gaussian-mixture-clustering">
+<h2><span class="section-number">2.1.4. </span>Gaussian Mixture Clustering<a class="headerlink" href="#gaussian-mixture-clustering" title="Permalink to this heading">#</a></h2>
+<p>Mixture of normal model là một mô hình phân cụm thuộc lớp bài toán học không giám sát mà phân phối xác suất của mỗi một cụm được giả định là phân phối Gassian đa chiều. Sở dĩ mô hình được gọi là Mixture là vì xác suất của mỗi điểm dữ liệu không chỉ phụ thuộc vào một phân phối Gaussian duy nhất mà là kết hợp từ nhiều phân phối Gaussian khác nhau từ mỗi cụm.</p>
+<p>–&gt; mục tiêu của model là ước lượng tham số của từng cụm Normal phù hợp nhất trong số k cụm, kèm theo giả định của model</p>
+<p><strong>Assumption</strong>: mỗi cụm đều theo phân phối multivariate Gaussian và có tham số đặc trưng riêng theo rừng cụm</p>
+<p><strong>Phương pháp cập nhật nghiệm</strong>
+Phương pháp cập nhật nghiệm theo từng quan sát để tìm ra tham số cho các phân phối của các multivariate normal</p>
+<ul class="simple">
+<li><p>E-step: Mục tiêu của bước E-Step là tính xác suất của mỗi điểm dữ liệu dựa vào phân phối Gaussian đa chiều dựa trên tham số θt của vòng lặp gần nhất</p></li>
+<li><p>M-step: chúng ta cần cập nhật lại tham số phân phối theo hàm auxiliary Q(θ,θt). Cực trị đạt được khi đạo hàm bậc nhất bằng 0</p></li>
+</ul>
+<p><strong>Đánh giá model</strong></p>
+<p>chỉ số <strong>BIC</strong> (Bayesian Information Criteria) là chỉ số đo lường mức độ hợp lý của mô hình đối với một bộ tham số được tính dựa trên giá trị tối đa của hàm hợp lý.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{BIC}=k\ln(n)-2\ln(\hat{L})\]</div>
+<p>Với</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code> là số lượng tham số được ước lượng từ mô hình</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code> là số lượng quan sát của bộ dữ liệu</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">L^</span></code> là giá trị ước lượng tối đa của hàm hợp lý.</p></li>
+</ul>
+<p>Chỉ số BIC là một trong những giá trị quan trọng thường được sử dụng để đánh giá và lựa chọn các mô hình khác nhau. Mô hình có BIC càng nhỏ thì mức độ hợp lý của mô hình đối với bộ dữ liệu càng cao. Chúng ta sẽ huấn luyện mô hình GMM với nhiều tham số n_components và tìm ra giá trị có BIC là nhỏ nhất. Đó chính là số lượng thành phần phù hợp nhất của bộ dữ liệu được tính theo mô hình GMM.</p>
+<p><strong>Hyperparameters</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n_components</span></code>: Là số lượng cụm mà chúng ta cần phân chia</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covariance_type</span></code>: Định dạng covariance được sử dụng trong thuật toán GMM. Trong đó bao gồm: {‘full’, ‘tied’, ‘diag’, ‘spherical’}</p>
+<ul>
+<li><p>‘full’ mặc định có nghĩa rằng mỗi một thành phần cụm có một ma trận hiệp phương sai riêng.</p></li>
+<li><p>‘tied’ được lựa chọn khi chúng ta muốn đồng nhất ma trận hiệp phương sai giữa các cụm.</p></li>
+<li><p>‘diag’ tương ứng với ma trận hiệp phương sai là ma trận đường chéo</p></li>
+<li><p>‘spherical’ là mỗi một thành phần cụm sẽ có một phương sai riêng.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Ngưỡng hội tụ của thuật toán EM. Nếu mức độ cải thiện của hàm mục tiếu thấp hơn ngưỡng này thì mô hình sẽ dừng.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_iter</span></code>: Số lượng vòng lặp tối đa của thuật toán EM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_params</span></code>: Lựa chọn khởi tạo tham số cho mô hình lúc ban đầu. Mặc định mô hình sẽ sử dụng khởi tạo từ thuật toán k-Means clustering. Như vậy sau mỗi vòng lặp thì thuật toán sẽ sửa lỗi của k-Means và tạo ra một kết quả với mức độ hợp lý cao hơn so với k-Means.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">centers</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">labels_true</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">750</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">renderer</span> <span class="o">=</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d11a1548c533a15987e9baf718557af5029d8a2df3626392a69d685060874fa1.jpg" src="../../_images/d11a1548c533a15987e9baf718557af5029d8a2df3626392a69d685060874fa1.jpg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="kn">import</span> <span class="n">GaussianMixture</span>
+
+<span class="n">gmm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">covariance_type</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+<span class="n">gmm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;BIC = &quot;</span><span class="p">,</span> <span class="n">gmm</span><span class="o">.</span><span class="n">bic</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+
+<span class="c1"># plot</span>
+<span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">gmm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">renderer</span> <span class="o">=</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BIC =  4191.17605781309
+</pre></div>
+</div>
+<img alt="../../_images/8d963aa9f8dbe92957387817000cca88c931b7b5bfe84f1e5fcc7ce59557bb62.jpg" src="../../_images/8d963aa9f8dbe92957387817000cca88c931b7b5bfe84f1e5fcc7ce59557bb62.jpg" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling\Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="0_toc_ml_unsu.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Machine Learning Unsupervised Learning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="4_ML_Unsupervised_learning_Algorithms-1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>Decomposing components</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kmeans">2.1.1. Kmeans</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-clustering">2.1.2. Hierarchical Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#density-based-clustering-dbscan">2.1.3. Density-Based Clustering (DBSCAN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-mixture-clustering">2.1.4. Gaussian Mixture Clustering</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

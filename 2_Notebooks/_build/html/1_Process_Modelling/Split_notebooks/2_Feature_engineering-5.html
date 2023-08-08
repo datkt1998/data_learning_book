@@ -1,0 +1,1851 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.5. Categorical Encoding &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/2_Feature_engineering-5';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.6. Feature transformation" href="2_Feature_engineering-6.html" />
+    <link rel="prev" title="2.4. Missing Imputation" href="2_Feature_engineering-4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/2_Feature_engineering-5.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Categorical Encoding</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">2.5.1. One-hot encoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding-with-scikit-learn">2.5.1.1. One hot encoding with Scikit-learn</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engine">2.5.1.2. Feature-engine</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding-with-category-encoders">2.5.1.3. One hot encoding with Category encoders</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding-of-frequent-categories-rare-label-handle">2.5.2. One Hot Encoding of Frequent Categories (Rare label handle)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-encoding-ordinal-encoding">2.5.3. Label encoding / Ordinal encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#count-frequency-encoding">2.5.4. Count frequency encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-rare-label-encoding-rare-label-handle">2.5.5. Group rare label encoding (Rare label handle)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-encoding">2.5.6. Binary encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-hashing">2.5.7. Feature hashing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-target-guided-encoding">2.5.8. Monotonic target guided encoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ordered-ordinal-encoding">2.5.8.1. Ordered ordinal encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-encoding">2.5.8.2. Mean encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-of-evidence-encoding">2.5.8.3. Weight of evidence encoding</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="categorical-encoding">
+<h1><span class="section-number">2.5. </span>Categorical Encoding<a class="headerlink" href="#categorical-encoding" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>How to transform/replace the category strings by a numerical representation, for the goal:</p>
+<ul>
+<li><p>Produce variables that can be used to train model</p></li>
+<li><p>To build predictive features form categories</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>1. Categorical Encoding Techniques</strong></p>
+<ul class="simple">
+<li><p>Traditional technniques:</p>
+<ul>
+<li><p>One-hot encoding</p></li>
+<li><p>Count/frequency encoding</p></li>
+<li><p>Ordinal/Label encoding</p></li>
+</ul>
+</li>
+<li><p>Monotonic relationship (categorical variable and target are monotonic relationship - dong bien):</p>
+<ul>
+<li><p>Ordered label encoding</p></li>
+<li><p>Mean encoding</p></li>
+<li><p>Weight of evidence</p></li>
+</ul>
+</li>
+</ul>
+<p><em>(Using monotonic can be improve the performance of linear models, or tree-base model, or if want to monotonic relationship between variable and target in model)</em></p>
+<ul class="simple">
+<li><p>Rare labels:</p>
+<ul>
+<li><p>One-hot encoding of frequent categories</p></li>
+<li><p>Group rare label encoding</p></li>
+</ul>
+</li>
+<li><p>Alternative techniques:</p>
+<ul>
+<li><p>Binary encoding</p></li>
+<li><p>Feature hasing</p></li>
+<li><p>Others</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Techniques comparation</strong></p>
+<ul class="simple">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">tree-base</span></code>, <code class="docutils literal notranslate"><span class="pre">one-hot</span></code> encoding has a bad performance because it has a big feature space</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">logistic</span></code>, the <code class="docutils literal notranslate"><span class="pre">woe</span></code> encoding get the best performance.</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Encoding Method</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Advantages</p></th>
+<th class="head"><p>Disadvantages</p></th>
+<th class="head"><p>Observations</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>One Hot Encoding</p></td>
+<td><p>One hot encoding, consists in encoding each categorical variable with different boolean variables (also called dummy variables) which take values 0 or 1, indicating if a category is present in an observation.<br>Encoding into K or K-1 binary variable</p></td>
+<td><p>• Straightforward to implement<br>• Makes no assumption about the distribution or categories of the categorical variable<br>• Keeps all the information of the categorical variable<br>• Suitable for linear models<br></p></td>
+<td><p>• Expands the feature space<br>• Does not add extra information while encoding<br>• Many dummy variables may be identical, introducing redundant information<br></p></td>
+<td><p>Most machine learning algorithms, consider the entire data set while being fit. Therefore, encoding categorical variables into k - 1 binary variables, is better, as it avoids introducing redundant information.<br><br>Exception: One hot encoding into k dummy variables<br><br>• when building tree based algorithms<br>• when doing feature selection by recursive algorithms<br>• when interested in determine the importance of each single category</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>One Hot Encoding of Frequent/Top Categories</p></td>
+<td><p>Performing one hot encoding, only considering the most frequent categories</p></td>
+<td><p>• Straightforward to implement<br>• Does not require hrs of variable exploration<br>• Does not expand massively the feature space<br>• Suitable for linear models</p></td>
+<td><p>• Does not add any information that may make the variable more predictive<br>• Does not keep the information of the ignored labels</p></td>
+<td><p>The number of top variables is set arbitrarily. It could be 15, 10 or 5 as well. This number can be chosen arbitrarily or derived from data exploration.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Integer Encoding</p></td>
+<td><p>Integer encoding consist in replacing the categories by digits from 1 to n (or 0 to n-1, depending the implementation), where n is the number of distinct categories of the variable.</p></td>
+<td><p>• Straightforward to implement<br>• Does not expand the feature space<br></p></td>
+<td><p>• Does not capture any information about the categories labels<br>• Not suitable for linear models.</p></td>
+<td><p>• The numbers are assigned arbitrarily.<br>• This encoding method allows for quick benchmarking of machine learning models.<br></p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Count or frequency encoding</p></td>
+<td><p>• Categories are replaced by the count or percentage of observations that show that category in the dataset.<br>• Captures the representation of each label in a dataset<br>• Very popular encoding method in Kaggle competitions<br>• Assumption: the number observations shown by each category is predictive of the target.</p></td>
+<td><p>• Straightforward to implement<br>• Does not expand the feature space<br>• Can work well enough with tree based algorithms</p></td>
+<td><p>• Not suitable for linear models<br>• Does not handle new categories in test set automatically<br>• If 2 different categories appear the same amount of times in the dataset, that is, they appear in the same number of observations, they will be replaced by the same number: may lose valuable information.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Target guided encodings - Ordered ordinal encoding</p></td>
+<td><p>Categories are replaced by integers from 1 to k, where k is the number of distinct categories in the variable, but this numbering is informed by the mean of the target for each category.</p></td>
+<td><p>• Straightforward to implement<br>• Does not expand the feature space<br>• Capture information within the category, therefore creating more predictive features<br>• Creates monotonic relationship between categories and target<br>Note: Monotonic does not mean strictly linear. Monotonic means that it increases constantly, or it decreases constantly.<br>Specific to WOE:<br>• It orders the categories on a “logistic” scale which is natural for logistic regression<br>• The transformed variables can then be compared because they are on the same scale. Therefore, it is   possible to determine which one is more predictive.</p></td>
+<td><p>• May lead to over-fitting<br>• Difficult to implement together with cross-validation with current libraries</p></td>
+<td><p>• the encoding is guided by the target, and<br>• they create a monotonic relationship between the variable and the target.<br>Monotonicity<br>A monotonic relationship is a relationship that does one of the following:<br>• (1) as the value of one variable increases, so does the value of the other variable; or<br>• (2) as the value of one variable increases, the value of the other variable decreases<br>• These methods can be also used on numerical variables, after discretisation. This creates a monotonic relationship between the numerical variable and the target, and therefore improves the performance of linear models<br>• Replacing categorical labels with Pandas code and this method will generate missing values for categories present in the test set that were not seen in the training set. Therefore it is extremely important to handle rare labels before-hand.</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Target guided encodings - Mean encoding</p></td>
+<td><p>Mean encoding implies replacing the category by the average target value for that category.</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Target guided encodings - Probability Ratio Encoding</p></td>
+<td><p>For each category, we calculate the mean of target=1, that is the probability of the target being 1 ( P(1) ), and the probability of the target=0 ( P(0) ). And then, we calculate the ratio P(1)/P(0), and replace the categories by that ratio.<br>Note: These encoding is suitable for classification problems only, where the target is binary</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Target guided encodings - Weight of evidence</p></td>
+<td><p>WoE = ln ( Distribution of Goods / Distribution of bads )<br>WoE = ln ( p(1) / p(0) )<br>Note: WoE is well suited for Logistic Regression</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+<td><p>Same as Ordered Ordinal Encoding</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Rare Label Encoding</p></td>
+<td><p>Rare labels are those that appear only in a tiny proportion of the observations in a dataset<br>Scenario for re-grouping:<br>  • One predominant category<br>  • A small number of categories<br>  • High cardinality<br></p></td>
+<td><p>• Grouping categories into rare for variables that show low cardinality may or may not improve model performance, however, we tend to re-group them into a new category to smooth model deployment.<br>• Grouping categories into rare for variables with high cardinality, tends to improve model performance as well.</p></td>
+<td><p></p></td>
+<td><p>• Grouping infrequent labels or categories under a new category called ‘Rare’ or ‘Other’ is the common practice in machine learning for business<br>• Rare labels should be identified in the training set only.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load data</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">usecols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pclass&quot;</span><span class="p">,</span> <span class="s2">&quot;sibsp&quot;</span><span class="p">,</span> <span class="s2">&quot;parch&quot;</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="s2">&quot;embarked&quot;</span><span class="p">,</span> <span class="s2">&quot;cabin&quot;</span><span class="p">,</span> <span class="s2">&quot;survived&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;Datasets/titanic.csv&quot;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="n">usecols</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;cabin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cabin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;Missing&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># let&#39;s separate into training and testing set</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;survived&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;survived&quot;</span><span class="p">],</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pclass</th>
+      <th>sex</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>cabin</th>
+      <th>embarked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>501</th>
+      <td>2</td>
+      <td>female</td>
+      <td>0</td>
+      <td>1</td>
+      <td>Missing</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>588</th>
+      <td>2</td>
+      <td>female</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Missing</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>402</th>
+      <td>2</td>
+      <td>female</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Missing</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>1193</th>
+      <td>3</td>
+      <td>male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>Missing</td>
+      <td>Q</td>
+    </tr>
+    <tr>
+      <th>686</th>
+      <td>3</td>
+      <td>female</td>
+      <td>0</td>
+      <td>0</td>
+      <td>Missing</td>
+      <td>Q</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="one-hot-encoding">
+<h2><span class="section-number">2.5.1. </span>One-hot encoding<a class="headerlink" href="#one-hot-encoding" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>One hot encoding, consists in encoding each categorical variable with different boolean variables (also called dummy variables) which take values <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>, indicating if a category is present in an observation. Encoding into <code class="docutils literal notranslate"><span class="pre">K</span></code> or <code class="docutils literal notranslate"><span class="pre">K-1</span></code> binary variable.</p></li>
+<li><p>Most ML algorithms, encoding into <code class="docutils literal notranslate"><span class="pre">k-1</span></code> binary variables is better, as avoids introducing redundant information</p></li>
+<li><p>Exception, encoding into <code class="docutils literal notranslate"><span class="pre">k</span></code> dummy variables in case:</p>
+<ul>
+<li><p>Build tree-base model (because tree is not consider all features at the same time, instead make decision by only a random selection of features)</p></li>
+<li><p>Doing feature selection by recursive algorithms</p></li>
+<li><p>Want to determine the importance of each single category</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>Straightforward to implement</p></li>
+<li><p>Makes no assumption about the distribution or categories of the categorical variable</p></li>
+<li><p>Keeps all the information of the categorical variable</p></li>
+<li><p>Suitable for linear models</p></li>
+</ul>
+<p><strong>2. Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Expands the feature space, specially with highly cardinal categorical variables</p></li>
+<li><p>Does not add extra information while encoding</p></li>
+<li><p>May be introducing redundant information, create multi-collinearity even if we encode into k-1 because original categorical variable have rare labels</p></li>
+</ul>
+<section id="one-hot-encoding-with-scikit-learn">
+<h3><span class="section-number">2.5.1.1. </span>One hot encoding with Scikit-learn<a class="headerlink" href="#one-hot-encoding-with-scikit-learn" title="Permalink to this heading">#</a></h3>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li><p>quick</p></li>
+<li><p>Creates the same number of features in train and test set</p></li>
+<li><p>works within a pipeline</p></li>
+</ul>
+<p><strong>Limitations</strong></p>
+<ul class="simple">
+<li><p>need to set specific output to return pandas</p></li>
+<li><p>need additional transformer to encode variable subset</p></li>
+<li><p>changes variable names after transformation</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+
+<span class="c1"># set up encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span>
+    <span class="n">categories</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">drop</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span>  <span class="c1"># to return k-1, use drop=false to return k dummies</span>
+    <span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">,</span>  <span class="c1"># helps deal with rare labels to raise error when transform new dataset</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+
+<span class="c1"># setup encoder for subset of variable by ColumnTransformer</span>
+<span class="n">ct</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="p">[(</span><span class="s2">&quot;encoder&quot;</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="s2">&quot;embarked&quot;</span><span class="p">,</span> <span class="s2">&quot;cabin&quot;</span><span class="p">])],</span> 
+    <span class="n">remainder</span><span class="o">=</span><span class="s2">&quot;passthrough&quot;</span> <span class="c1"># keep remain the variables are not encoded</span>
+<span class="p">)</span>
+
+<span class="c1"># fit the encoder (finds categories)</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-2 {color: black;background-color: white;}#sk-container-id-2 pre{padding: 0;}#sk-container-id-2 div.sk-toggleable {background-color: white;}#sk-container-id-2 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-2 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-2 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-2 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-2 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-2 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-2 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-2 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-2 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-2 div.sk-item {position: relative;z-index: 1;}#sk-container-id-2 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-2 div.sk-item::before, #sk-container-id-2 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-2 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-2 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-2 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-2 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-2 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-2 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-2 div.sk-label-container {text-align: center;}#sk-container-id-2 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-2 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>OneHotEncoder(drop=&#x27;first&#x27;, sparse_output=False)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-10" type="checkbox" checked><label for="sk-estimator-id-10" class="sk-toggleable__label sk-toggleable__label-arrow">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(drop=&#x27;first&#x27;, sparse_output=False)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we observe the learned categories</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">categories_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[array([1, 2, 3]),
+ array([&#39;female&#39;, &#39;male&#39;], dtype=object),
+ array([0, 1, 2, 3, 4, 5, 8]),
+ array([0, 1, 2, 3, 4, 5, 6, 9]),
+ array([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;Missing&#39;, &#39;T&#39;], dtype=object),
+ array([&#39;C&#39;, &#39;Missing&#39;, &#39;Q&#39;, &#39;S&#39;], dtype=object)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># transform the data sets</span>
+<span class="n">X_train_enc</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_enc</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">X_train_enc</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pclass_2</th>
+      <th>pclass_3</th>
+      <th>sex_male</th>
+      <th>sibsp_1</th>
+      <th>sibsp_2</th>
+      <th>sibsp_3</th>
+      <th>sibsp_4</th>
+      <th>sibsp_5</th>
+      <th>sibsp_8</th>
+      <th>parch_1</th>
+      <th>...</th>
+      <th>cabin_C</th>
+      <th>cabin_D</th>
+      <th>cabin_E</th>
+      <th>cabin_F</th>
+      <th>cabin_G</th>
+      <th>cabin_Missing</th>
+      <th>cabin_T</th>
+      <th>embarked_Missing</th>
+      <th>embarked_Q</th>
+      <th>embarked_S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>501</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>588</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>402</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1193</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>686</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 27 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we can retrieve the feature names as follows:</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;pclass_2&#39;, &#39;pclass_3&#39;, &#39;sex_male&#39;, &#39;sibsp_1&#39;, &#39;sibsp_2&#39;,
+       &#39;sibsp_3&#39;, &#39;sibsp_4&#39;, &#39;sibsp_5&#39;, &#39;sibsp_8&#39;, &#39;parch_1&#39;, &#39;parch_2&#39;,
+       &#39;parch_3&#39;, &#39;parch_4&#39;, &#39;parch_5&#39;, &#39;parch_6&#39;, &#39;parch_9&#39;, &#39;cabin_B&#39;,
+       &#39;cabin_C&#39;, &#39;cabin_D&#39;, &#39;cabin_E&#39;, &#39;cabin_F&#39;, &#39;cabin_G&#39;,
+       &#39;cabin_Missing&#39;, &#39;cabin_T&#39;, &#39;embarked_Missing&#39;, &#39;embarked_Q&#39;,
+       &#39;embarked_S&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pipeline imputation and encoder</span>
+<span class="n">cat_pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;missing&quot;</span><span class="p">)),</span>
+        <span class="p">((</span><span class="s2">&quot;ohe&quot;</span><span class="p">,</span> <span class="n">encoder</span><span class="p">)),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">ct</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="p">[(</span><span class="s2">&quot;encoder&quot;</span><span class="p">,</span> <span class="n">cat_pipe</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="s2">&quot;embarked&quot;</span><span class="p">,</span> <span class="s2">&quot;cabin&quot;</span><span class="p">])],</span> <span class="n">remainder</span><span class="o">=</span><span class="s2">&quot;passthrough&quot;</span>
+<span class="p">)</span>
+<span class="n">ct</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-3 {color: black;background-color: white;}#sk-container-id-3 pre{padding: 0;}#sk-container-id-3 div.sk-toggleable {background-color: white;}#sk-container-id-3 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-3 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-3 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-3 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-3 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-3 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-3 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-3 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-3 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-3 div.sk-item {position: relative;z-index: 1;}#sk-container-id-3 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-3 div.sk-item::before, #sk-container-id-3 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-3 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-3 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-3 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-3 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-3 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-3 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-3 div.sk-label-container {text-align: center;}#sk-container-id-3 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-3 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>ColumnTransformer(remainder=&#x27;passthrough&#x27;,
+                  transformers=[(&#x27;encoder&#x27;,
+                                 Pipeline(steps=[(&#x27;imputer&#x27;,
+                                                  SimpleImputer(fill_value=&#x27;missing&#x27;,
+                                                                strategy=&#x27;constant&#x27;)),
+                                                 (&#x27;ohe&#x27;,
+                                                  OneHotEncoder(drop=&#x27;first&#x27;,
+                                                                sparse_output=False))]),
+                                 [&#x27;sex&#x27;, &#x27;embarked&#x27;, &#x27;cabin&#x27;])])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-11" type="checkbox" ><label for="sk-estimator-id-11" class="sk-toggleable__label sk-toggleable__label-arrow">ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(remainder=&#x27;passthrough&#x27;,
+                  transformers=[(&#x27;encoder&#x27;,
+                                 Pipeline(steps=[(&#x27;imputer&#x27;,
+                                                  SimpleImputer(fill_value=&#x27;missing&#x27;,
+                                                                strategy=&#x27;constant&#x27;)),
+                                                 (&#x27;ohe&#x27;,
+                                                  OneHotEncoder(drop=&#x27;first&#x27;,
+                                                                sparse_output=False))]),
+                                 [&#x27;sex&#x27;, &#x27;embarked&#x27;, &#x27;cabin&#x27;])])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-12" type="checkbox" ><label for="sk-estimator-id-12" class="sk-toggleable__label sk-toggleable__label-arrow">encoder</label><div class="sk-toggleable__content"><pre>[&#x27;sex&#x27;, &#x27;embarked&#x27;, &#x27;cabin&#x27;]</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-13" type="checkbox" ><label for="sk-estimator-id-13" class="sk-toggleable__label sk-toggleable__label-arrow">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(fill_value=&#x27;missing&#x27;, strategy=&#x27;constant&#x27;)</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-14" type="checkbox" ><label for="sk-estimator-id-14" class="sk-toggleable__label sk-toggleable__label-arrow">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(drop=&#x27;first&#x27;, sparse_output=False)</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-15" type="checkbox" ><label for="sk-estimator-id-15" class="sk-toggleable__label sk-toggleable__label-arrow">remainder</label><div class="sk-toggleable__content"><pre></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-16" type="checkbox" ><label for="sk-estimator-id-16" class="sk-toggleable__label sk-toggleable__label-arrow">passthrough</label><div class="sk-toggleable__content"><pre>passthrough</pre></div></div></div></div></div></div></div></div></div></div></div></div>
+</div>
+</section>
+<section id="feature-engine">
+<h3><span class="section-number">2.5.1.2. </span>Feature-engine<a class="headerlink" href="#feature-engine" title="Permalink to this heading">#</a></h3>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li><p>quick</p></li>
+<li><p>returns dataframe</p></li>
+<li><p>returns feature names</p></li>
+<li><p>allows to select features to encode</p></li>
+<li><p>appends dummies to original dataset</p></li>
+</ul>
+<p><strong>Limitations</strong></p>
+<ul class="simple">
+<li><p>Not sure yet.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">feature_engine.imputation</span> <span class="kn">import</span> <span class="n">CategoricalImputer</span>
+
+<span class="c1"># set up encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># alternatively pass a list of variables</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># to return k-1, use drop=false to return k dummies</span>
+<span class="p">)</span>
+
+<span class="c1"># fit the encoder (finds categories)</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-4 {color: black;background-color: white;}#sk-container-id-4 pre{padding: 0;}#sk-container-id-4 div.sk-toggleable {background-color: white;}#sk-container-id-4 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-4 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-4 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-4 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-4 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-4 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-4 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-4 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-4 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-4 div.sk-item {position: relative;z-index: 1;}#sk-container-id-4 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-4 div.sk-item::before, #sk-container-id-4 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-4 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-4 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-4 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-4 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-4 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-4 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-4 div.sk-label-container {text-align: center;}#sk-container-id-4 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-4 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>OneHotEncoder(drop_last=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-17" type="checkbox" checked><label for="sk-estimator-id-17" class="sk-toggleable__label sk-toggleable__label-arrow">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(drop_last=True)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pclass       int64
+sex         object
+sibsp        int64
+parch        int64
+cabin       object
+embarked    object
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># automatically found numerical variables</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">variables_</span>
+
+<span class="c1"># we observe the learned categories</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">encoder_dict_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;sex&#39;: [&#39;female&#39;],
+ &#39;cabin&#39;: [&#39;Missing&#39;, &#39;E&#39;, &#39;C&#39;, &#39;D&#39;, &#39;B&#39;, &#39;A&#39;, &#39;F&#39;, &#39;T&#39;],
+ &#39;embarked&#39;: [&#39;S&#39;, &#39;C&#39;, &#39;Q&#39;]}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="one-hot-encoding-with-category-encoders">
+<h3><span class="section-number">2.5.1.3. </span>One hot encoding with Category encoders<a class="headerlink" href="#one-hot-encoding-with-category-encoders" title="Permalink to this heading">#</a></h3>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li><p>quick</p></li>
+<li><p>returns dataframe</p></li>
+<li><p>returns feature names</p></li>
+<li><p>allows to select features to encode</p></li>
+<li><p>appends dummies to original dataset</p></li>
+</ul>
+<p><strong>Limitations</strong></p>
+<ul class="simple">
+<li><p>No option for k-1 dummies</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">category_encoders.one_hot</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+
+<span class="c1"># set up encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span>
+    <span class="n">cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># alternatively pass a list of variables</span>
+    <span class="n">use_cat_names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="one-hot-encoding-of-frequent-categories-rare-label-handle">
+<h2><span class="section-number">2.5.2. </span>One Hot Encoding of Frequent Categories (Rare label handle)<a class="headerlink" href="#one-hot-encoding-of-frequent-categories-rare-label-handle" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>One hot encoding for the top most frequent labels only, and grouping all the remaining categories under a new category</p></li>
+<li><p>Often, categorical variables show a few dominating categories while the remaining labels add little information. Therefore, OHE of top categories is a simple and useful technique.</p></li>
+<li><p>This number of top frequent label can be chosen arbitrarily or derived from data exploration.</p></li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>Straightforward to implement</p></li>
+<li><p>Does not require hrs of variable exploration</p></li>
+<li><p>Does not expand massively the feature space</p></li>
+<li><p>Suitable for linear models</p></li>
+</ul>
+<p><strong>2. Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Does not add any information that may make the variable more predictive.</p></li>
+<li><p>Does not keep the information of the ignored labels.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+
+<span class="n">ohe_enc</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span>
+    <span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;infrequent_if_exist&quot;</span><span class="p">,</span>  <span class="c1"># unseen categories will be treated like the less frequent ones</span>
+    <span class="n">max_categories</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># the number of top categories</span>
+    <span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># necessary for set output pandas</span>
+<span class="p">)</span>
+
+<span class="n">ohe_enc</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+
+<span class="n">ohe_enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-5 {color: black;background-color: white;}#sk-container-id-5 pre{padding: 0;}#sk-container-id-5 div.sk-toggleable {background-color: white;}#sk-container-id-5 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-5 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-5 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-5 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-5 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-5 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-5 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-5 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-5 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-5 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-5 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-5 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-5 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-5 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-5 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-5 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-5 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-5 div.sk-item {position: relative;z-index: 1;}#sk-container-id-5 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-5 div.sk-item::before, #sk-container-id-5 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-5 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-5 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-5 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-5 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-5 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-5 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-5 div.sk-label-container {text-align: center;}#sk-container-id-5 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-5 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-5" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>OneHotEncoder(handle_unknown=&#x27;infrequent_if_exist&#x27;, max_categories=5,
+              sparse_output=False)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-18" type="checkbox" checked><label for="sk-estimator-id-18" class="sk-toggleable__label sk-toggleable__label-arrow">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown=&#x27;infrequent_if_exist&#x27;, max_categories=5,
+              sparse_output=False)</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ohe_enc</span><span class="o">.</span><span class="n">infrequent_categories_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[None,
+ None,
+ array([3, 5, 8]),
+ array([4, 5, 6, 9]),
+ array([&#39;A&#39;, &#39;D&#39;, &#39;F&#39;, &#39;G&#39;, &#39;T&#39;], dtype=object),
+ None]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the categories found in each variable</span>
+<span class="n">ohe_enc</span><span class="o">.</span><span class="n">categories_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[array([1, 2, 3]),
+ array([&#39;female&#39;, &#39;male&#39;], dtype=object),
+ array([0, 1, 2, 3, 4, 5, 8]),
+ array([0, 1, 2, 3, 4, 5, 6, 9]),
+ array([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;Missing&#39;, &#39;T&#39;], dtype=object),
+ array([&#39;C&#39;, &#39;Missing&#39;, &#39;Q&#39;, &#39;S&#39;], dtype=object)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ohe_enc</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;pclass_1&#39;, &#39;pclass_2&#39;, &#39;pclass_3&#39;, &#39;sex_female&#39;, &#39;sex_male&#39;,
+       &#39;sibsp_0&#39;, &#39;sibsp_1&#39;, &#39;sibsp_2&#39;, &#39;sibsp_4&#39;,
+       &#39;sibsp_infrequent_sklearn&#39;, &#39;parch_0&#39;, &#39;parch_1&#39;, &#39;parch_2&#39;,
+       &#39;parch_3&#39;, &#39;parch_infrequent_sklearn&#39;, &#39;cabin_B&#39;, &#39;cabin_C&#39;,
+       &#39;cabin_E&#39;, &#39;cabin_Missing&#39;, &#39;cabin_infrequent_sklearn&#39;,
+       &#39;embarked_C&#39;, &#39;embarked_Missing&#39;, &#39;embarked_Q&#39;, &#39;embarked_S&#39;],
+      dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># feature_engine</span>
+<span class="c1"># for one hot encoding with feature-engine</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+
+<span class="n">ohe_enc</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span>
+    <span class="n">top_categories</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># you can change this value to select more or less variables</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span> <span class="s2">&quot;Exterior1st&quot;</span><span class="p">,</span> <span class="s2">&quot;Exterior2nd&quot;</span><span class="p">],</span> <span class="c1"># we can select which variables to encode</span>
+    <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="label-encoding-ordinal-encoding">
+<h2><span class="section-number">2.5.3. </span>Label encoding / Ordinal encoding<a class="headerlink" href="#label-encoding-ordinal-encoding" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Replacing the categories by digits from 1 to n (or 0 to n-1) where n is the number of distinct categories of the variables</p></li>
+<li><p>Should use for the ordinal categorical variables</p></li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>Straightforward to implement</p></li>
+<li><p>Does not expand the feature space</p></li>
+<li><p>Work well for tree-base model</p></li>
+</ul>
+<p><strong>2. Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Does not capture any information about the categories labels</p></li>
+<li><p>Not suitable for linear models.</p></li>
+<li><p>Do not handle new categories in testset or production</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span><span class="p">,</span> <span class="n">LabelEncoder</span> <span class="c1"># LabelEncoder use for target variables</span>
+
+<span class="c1"># cat features</span>
+<span class="n">cat_vars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s2">&quot;O&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="c1"># let&#39;s set up the encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">()</span>
+
+<span class="c1"># let&#39;s set up the column transformer</span>
+<span class="n">ct</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="p">[(</span><span class="s2">&quot;oe&quot;</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">cat_vars</span><span class="p">)],</span>
+    <span class="n">remainder</span><span class="o">=</span><span class="s2">&quot;passthrough&quot;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="count-frequency-encoding">
+<h2><span class="section-number">2.5.4. </span>Count frequency encoding<a class="headerlink" href="#count-frequency-encoding" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Categories are replaced by the <code class="docutils literal notranslate"><span class="pre">count</span></code> or <code class="docutils literal notranslate"><span class="pre">percentage</span></code> of observations that show that category in the dataset. Therefore, Captures the representation of each label in a dataset.</p></li>
+<li><p>Very popular encoding method in Kaggle competitions</p></li>
+<li><p><strong>Assumption</strong>: the number observations shown by each category is predictive of the target. (Mức độ phổ biến của label có khả năng dự đoán cho target)</p></li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>Straightforward to implement</p></li>
+<li><p>Does not expand the feature space</p></li>
+<li><p>Can work well enough with tree based algorithms</p></li>
+</ul>
+<p><strong>2. Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Not suitable for linear models</p></li>
+<li><p>Does not handle new categories in test set automatically</p></li>
+<li><p>If 2 different categories appear the same amount of times in the dataset, that is, they appear in the same number of observations, they will be replaced by the same number: may lose valuable information.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># to encode with feature-engine</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">CountFrequencyEncoder</span>
+
+<span class="n">count_enc</span> <span class="o">=</span> <span class="n">CountFrequencyEncoder</span><span class="p">(</span>
+    <span class="n">encoding_method</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>  <span class="c1"># to do frequency ==&gt; encoding_method=&#39;frequency&#39;</span>
+    <span class="n">variables</span><span class="o">=</span><span class="n">cat_vars</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">count_enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-6 {color: black;background-color: white;}#sk-container-id-6 pre{padding: 0;}#sk-container-id-6 div.sk-toggleable {background-color: white;}#sk-container-id-6 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-6 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-6 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-6 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-6 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-6 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-6 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-6 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-6 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-6 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-6 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-6 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-6 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-6 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-6 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-6 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-6 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-6 div.sk-item {position: relative;z-index: 1;}#sk-container-id-6 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-6 div.sk-item::before, #sk-container-id-6 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-6 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-6 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-6 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-6 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-6 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-6 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-6 div.sk-label-container {text-align: center;}#sk-container-id-6 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-6 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-6" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>CountFrequencyEncoder(variables=[&#x27;sex&#x27;, &#x27;cabin&#x27;, &#x27;embarked&#x27;])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-19" type="checkbox" checked><label for="sk-estimator-id-19" class="sk-toggleable__label sk-toggleable__label-arrow">CountFrequencyEncoder</label><div class="sk-toggleable__content"><pre>CountFrequencyEncoder(variables=[&#x27;sex&#x27;, &#x27;cabin&#x27;, &#x27;embarked&#x27;])</pre></div></div></div></div></div></div></div>
+</div>
+</section>
+<section id="group-rare-label-encoding-rare-label-handle">
+<h2><span class="section-number">2.5.5. </span>Group rare label encoding (Rare label handle)<a class="headerlink" href="#group-rare-label-encoding-rare-label-handle" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Grouping rare labels are those that appear only in a tiny proportion of the obs in a dataset into one ‘<code class="docutils literal notranslate"><span class="pre">Rare</span></code>’ label.</p></li>
+<li><p>Replacing the labels that are present only in a small percentage of the observations below a <code class="docutils literal notranslate"><span class="pre">threshold</span></code> or have a big difference in weight compared to common labels. Scenario for re-grouping:</p>
+<ul>
+<li><p>One predominant category</p></li>
+<li><p>A small number of categories with the differently dominant</p></li>
+<li><p>Highly cardinal categorical</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>Improve performance model with grouping categories into rare for variables that show low or high cardinality, avoid overfitting</p></li>
+<li><p>Handle the unseen labels in testset or production into rare label</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">RareLabelEncoder</span>
+
+<span class="c1"># let&#39;s load the house price dataset</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;Datasets/houseprice_train.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;Missing&quot;</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;SalePrice&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                                                <span class="n">data</span><span class="o">.</span><span class="n">SalePrice</span><span class="p">,</span>     <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Rare value encoder</span>
+<span class="n">rare_encoder</span> <span class="o">=</span> <span class="n">RareLabelEncoder</span><span class="p">(</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>  <span class="c1"># minimal percentage to be considered non-rare</span>
+    <span class="n">n_categories</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="c1"># minimal number of categories the variable should have to re-group rare categories</span>
+    <span class="c1"># số lượng label tối thiểu sau khi regroup, nếu ban đầu có số lượng label ít hơn thì ko regroup nữa</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span><span class="s2">&quot;Exterior1st&quot;</span><span class="p">,</span><span class="s2">&quot;Exterior2nd&quot;</span><span class="p">,</span><span class="s2">&quot;MasVnrType&quot;</span><span class="p">,</span><span class="s2">&quot;ExterQual&quot;</span><span class="p">,</span><span class="s2">&quot;BsmtCond&quot;</span><span class="p">],</span>  <span class="c1"># variables to re-group</span>
+<span class="p">)</span>
+<span class="n">rare_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khongdat/miniforge3/lib/python3.10/site-packages/feature_engine/encoding/rare_label.py:199: UserWarning:
+
+The number of unique categories for variable ExterQual is less than that indicated in n_categories. Thus, all categories will be considered frequent
+</pre></div>
+</div>
+<div class="output text_html"><style>#sk-container-id-7 {color: black;background-color: white;}#sk-container-id-7 pre{padding: 0;}#sk-container-id-7 div.sk-toggleable {background-color: white;}#sk-container-id-7 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-7 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-7 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-7 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-7 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-7 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-7 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-7 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-7 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-7 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-7 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-7 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-7 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-7 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-7 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-7 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-7 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-7 div.sk-item {position: relative;z-index: 1;}#sk-container-id-7 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-7 div.sk-item::before, #sk-container-id-7 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-7 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-7 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-7 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-7 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-7 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-7 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-7 div.sk-label-container {text-align: center;}#sk-container-id-7 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-7 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-7" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>RareLabelEncoder(n_categories=4,
+                 variables=[&#x27;Neighborhood&#x27;, &#x27;Exterior1st&#x27;, &#x27;Exterior2nd&#x27;,
+                            &#x27;MasVnrType&#x27;, &#x27;ExterQual&#x27;, &#x27;BsmtCond&#x27;])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-20" type="checkbox" checked><label for="sk-estimator-id-20" class="sk-toggleable__label sk-toggleable__label-arrow">RareLabelEncoder</label><div class="sk-toggleable__content"><pre>RareLabelEncoder(n_categories=4,
+                 variables=[&#x27;Neighborhood&#x27;, &#x27;Exterior1st&#x27;, &#x27;Exterior2nd&#x27;,
+                            &#x27;MasVnrType&#x27;, &#x27;ExterQual&#x27;, &#x27;BsmtCond&#x27;])</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_enc</span> <span class="o">=</span> <span class="n">rare_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">Neighborhood</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>25
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_enc</span><span class="o">.</span><span class="n">Neighborhood</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">/</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rare       0.440313
+NAmes      0.147750
+CollgCr    0.102740
+OldTown    0.071429
+Edwards    0.069472
+Sawyer     0.059687
+Somerst    0.054795
+Gilbert    0.053816
+Name: Neighborhood, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="binary-encoding">
+<h2><span class="section-number">2.5.6. </span>Binary encoding<a class="headerlink" href="#binary-encoding" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Similar One-hot encoding but minimize the increase of feature space
+<img alt="image.png" src="../../_images/binary_enc.png" /></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">category_encoders.binary</span> <span class="kn">import</span> <span class="n">BinaryEncoder</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">be</span> <span class="o">=</span> <span class="n">BinaryEncoder</span><span class="p">(</span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span><span class="s2">&quot;Exterior1st&quot;</span><span class="p">,</span><span class="s2">&quot;Exterior2nd&quot;</span><span class="p">])</span>
+<span class="n">be</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-8 {color: black;background-color: white;}#sk-container-id-8 pre{padding: 0;}#sk-container-id-8 div.sk-toggleable {background-color: white;}#sk-container-id-8 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-8 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-8 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-8 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-8 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-8 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-8 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-8 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-8 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-8 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-8 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-8 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-8 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-8 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-8 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-8 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-8 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-8 div.sk-item {position: relative;z-index: 1;}#sk-container-id-8 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-8 div.sk-item::before, #sk-container-id-8 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-8 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-8 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-8 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-8 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-8 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-8 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-8 div.sk-label-container {text-align: center;}#sk-container-id-8 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-8 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-8" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>BinaryEncoder(cols=[&#x27;Neighborhood&#x27;, &#x27;Exterior1st&#x27;, &#x27;Exterior2nd&#x27;],
+              mapping=[{&#x27;col&#x27;: &#x27;Neighborhood&#x27;,
+                        &#x27;mapping&#x27;:      Neighborhood_0  Neighborhood_1  Neighborhood_2  Neighborhood_3  \
+ 1                0               0               0               0   
+ 2                0               0               0               1   
+ 3                0               0               0               1   
+ 4                0               0               1               0   
+ 5                0               0               1               0   
+ 6                0               0               1               1   
+ 7                0               0               1               1   
+ 8                0               1               0               0   
+ 9                0               1               0               0   
+ 10               0               1               0               1   
+ 11               0               1               0               1   
+ 12               0               1               1               0   
+ 13               0               1               1               0   
+ 14               0               1               1               1   
+ 15               0               1               1               1   
+ 16               1               0               0               0   
+ 17               1               0               0               0   
+ 18               1               0               0               1   
+ 19               1               0               0               1   
+ 20               1               0               1               0   
+ 21               1               0               1               0   
+ 22               1               0               1               1   
+ 23               1               0               1               1   
+ 24               1               1               0               0   
+ 25               1               1               0               0   
+-1                0               0               0               0   
+-2                0               0               0               0   
+
+     Neighborhood_4  
+ 1                1  
+ 2                0  
+ 3                1  
+ 4                0  
+ 5                1  
+ 6                0  
+ 7                1  
+ 8                0  
+ 9                1  
+ 10               0...
+                        &#x27;mapping&#x27;:      Exterior1st_0  Exterior1st_1  Exterior1st_2  Exterior1st_3
+ 1               0              0              0              1
+ 2               0              0              1              0
+ 3               0              0              1              1
+ 4               0              1              0              0
+ 5               0              1              0              1
+ 6               0              1              1              0
+ 7               0              1              1              1
+ 8               1              0              0              0
+ 9               1              0              0              1
+ 10              1              0              1              0
+ 11              1              0              1              1
+ 12              1              1              0              0
+ 13              1              1              0              1
+ 14              1              1              1              0
+ 15              1              1              1              1
+-1               0              0              0              0
+-2               0              0              0              0},
+                       {&#x27;col&#x27;: &#x27;Exterior2nd&#x27;,
+                        &#x27;mapping&#x27;:      Exterior2nd_0  Exterior2nd_1  Exterior2nd_2  Exterior2nd_3  Exterior2nd_4
+ 1               0              0              0              0              1
+ 2               0              0              0              1              0
+ 3               0              0              0              1              1
+ 4               0              0              1              0              0
+ 5               0              0              1              0              1
+ 6               0              0              1              1              0
+ 7               0              0              1              1              1
+ 8               0              1              0              0              0
+ 9               0              1              0              0              1
+ 10              0              1              0              1              0
+ 11              0              1              0              1              1
+ 12              0              1              1              0              0
+ 13              0              1              1              0              1
+ 14              0              1              1              1              0
+ 15              0              1              1              1              1
+ 16              1              0              0              0              0
+-1               0              0              0              0              0
+-2               0              0              0              0              0}])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-21" type="checkbox" checked><label for="sk-estimator-id-21" class="sk-toggleable__label sk-toggleable__label-arrow">BinaryEncoder</label><div class="sk-toggleable__content"><pre>BinaryEncoder(cols=[&#x27;Neighborhood&#x27;, &#x27;Exterior1st&#x27;, &#x27;Exterior2nd&#x27;],
+              mapping=[{&#x27;col&#x27;: &#x27;Neighborhood&#x27;,
+                        &#x27;mapping&#x27;:      Neighborhood_0  Neighborhood_1  Neighborhood_2  Neighborhood_3  \
+ 1                0               0               0               0   
+ 2                0               0               0               1   
+ 3                0               0               0               1   
+ 4                0               0               1               0   
+ 5                0               0               1               0   
+ 6                0               0               1               1   
+ 7                0               0               1               1   
+ 8                0               1               0               0   
+ 9                0               1               0               0   
+ 10               0               1               0               1   
+ 11               0               1               0               1   
+ 12               0               1               1               0   
+ 13               0               1               1               0   
+ 14               0               1               1               1   
+ 15               0               1               1               1   
+ 16               1               0               0               0   
+ 17               1               0               0               0   
+ 18               1               0               0               1   
+ 19               1               0               0               1   
+ 20               1               0               1               0   
+ 21               1               0               1               0   
+ 22               1               0               1               1   
+ 23               1               0               1               1   
+ 24               1               1               0               0   
+ 25               1               1               0               0   
+-1                0               0               0               0   
+-2                0               0               0               0   
+
+     Neighborhood_4  
+ 1                1  
+ 2                0  
+ 3                1  
+ 4                0  
+ 5                1  
+ 6                0  
+ 7                1  
+ 8                0  
+ 9                1  
+ 10               0...
+                        &#x27;mapping&#x27;:      Exterior1st_0  Exterior1st_1  Exterior1st_2  Exterior1st_3
+ 1               0              0              0              1
+ 2               0              0              1              0
+ 3               0              0              1              1
+ 4               0              1              0              0
+ 5               0              1              0              1
+ 6               0              1              1              0
+ 7               0              1              1              1
+ 8               1              0              0              0
+ 9               1              0              0              1
+ 10              1              0              1              0
+ 11              1              0              1              1
+ 12              1              1              0              0
+ 13              1              1              0              1
+ 14              1              1              1              0
+ 15              1              1              1              1
+-1               0              0              0              0
+-2               0              0              0              0},
+                       {&#x27;col&#x27;: &#x27;Exterior2nd&#x27;,
+                        &#x27;mapping&#x27;:      Exterior2nd_0  Exterior2nd_1  Exterior2nd_2  Exterior2nd_3  Exterior2nd_4
+ 1               0              0              0              0              1
+ 2               0              0              0              1              0
+ 3               0              0              0              1              1
+ 4               0              0              1              0              0
+ 5               0              0              1              0              1
+ 6               0              0              1              1              0
+ 7               0              0              1              1              1
+ 8               0              1              0              0              0
+ 9               0              1              0              0              1
+ 10              0              1              0              1              0
+ 11              0              1              0              1              1
+ 12              0              1              1              0              0
+ 13              0              1              1              0              1
+ 14              0              1              1              1              0
+ 15              0              1              1              1              1
+ 16              1              0              0              0              0
+-1               0              0              0              0              0
+-2               0              0              0              0              0}])</pre></div></div></div></div></div></div></div>
+</div>
+</section>
+<section id="feature-hashing">
+<h2><span class="section-number">2.5.7. </span>Feature hashing<a class="headerlink" href="#feature-hashing" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">category_encoders.hashing</span> <span class="kn">import</span> <span class="n">HashingEncoder</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="monotonic-target-guided-encoding">
+<h2><span class="section-number">2.5.8. </span>Monotonic target guided encoding<a class="headerlink" href="#monotonic-target-guided-encoding" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The encoding is guided by the target, and create <code class="docutils literal notranslate"><span class="pre">monotonic</span></code> relationship between the variables and the target. (<strong>Đồng biến</strong>)</p></li>
+<li><p>Can be used on numerical variables after discretisation (convert to discrete)</p></li>
+<li><p>Need to attention for handling rare labels</p></li>
+<li><p><strong>Note</strong>: Monotonic does not mean strictly linear. Monotonic means that it increases constantly, or it decreases constantly.</p></li>
+<li><p><strong>Need to explore original relationship between categorical variables and target by the mean value of target in each label via trainset and testset</strong></p></li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>Straightforward to implement</p></li>
+<li><p>Does not expand the feature space</p></li>
+<li><p>Capture information within the category, therefore creating more predictive features</p></li>
+<li><p>Creates monotonic relationship between categories and target, Create features suitable for linear models</p></li>
+</ul>
+<p><strong>1. Disadvantages</strong></p>
+<ul class="simple">
+<li><p>May lead to over-fitting</p></li>
+<li><p>Difficult to implement together with cross-validation with current libraries</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># function to explore monotonic relationship between target and categorical variable by train and testset</span>
+<span class="c1"># With ordered label in trainset, we test the monotonic relationship in testset. If it was remained, that show there is a monotonic relationship</span>
+<span class="k">def</span> <span class="nf">check_monotonic</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">var</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;mean_target in train&#39;</span><span class="p">)</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">var</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;mean_target in test&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;mean_target in train&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    
+<span class="n">check_monotonic</span><span class="p">(</span><span class="s1">&#39;ExterQual&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: xlabel=&#39;ExterQual&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/a71ff906987de1dd63055e4083a3dc21cd48f71429dbae99ec9ffe87daa31394.png" src="../../_images/a71ff906987de1dd63055e4083a3dc21cd48f71429dbae99ec9ffe87daa31394.png" />
+</div>
+</div>
+<section id="ordered-ordinal-encoding">
+<h3><span class="section-number">2.5.8.1. </span>Ordered ordinal encoding<a class="headerlink" href="#ordered-ordinal-encoding" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Calculate the mean of target values for each label of variable, then assign numbers following the mean of target value from 0 (for highest mean) to k-1 (for smallest mean), with k is the number of distinct values of variable</p></li>
+<li><p>Useful for <code class="docutils literal notranslate"><span class="pre">linear</span></code> or <code class="docutils literal notranslate"><span class="pre">non-linear</span></code> model</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for encoding with feature-engine</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span>
+
+<span class="n">ordinal_enc</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">(</span>
+    <span class="c1"># NOTE that we indicate ordered in the encoding_method, otherwise it assings numbers arbitrarily</span>
+    <span class="n">encoding_method</span><span class="o">=</span><span class="s2">&quot;ordered&quot;</span><span class="p">,</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span> <span class="s2">&quot;ExterQual&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">ordinal_enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># in the encoder dict we can observe each of the top categories selected for each of the variables</span>
+<span class="n">ordinal_enc</span><span class="o">.</span><span class="n">encoder_dict_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Neighborhood&#39;: {&#39;IDOTRR&#39;: 0,
+  &#39;BrDale&#39;: 1,
+  &#39;MeadowV&#39;: 2,
+  &#39;Edwards&#39;: 3,
+  &#39;BrkSide&#39;: 4,
+  &#39;OldTown&#39;: 5,
+  &#39;Sawyer&#39;: 6,
+  &#39;Blueste&#39;: 7,
+  &#39;SWISU&#39;: 8,
+  &#39;NPkVill&#39;: 9,
+  &#39;NAmes&#39;: 10,
+  &#39;Mitchel&#39;: 11,
+  &#39;SawyerW&#39;: 12,
+  &#39;Gilbert&#39;: 13,
+  &#39;NWAmes&#39;: 14,
+  &#39;Blmngtn&#39;: 15,
+  &#39;CollgCr&#39;: 16,
+  &#39;ClearCr&#39;: 17,
+  &#39;Crawfor&#39;: 18,
+  &#39;Somerst&#39;: 19,
+  &#39;Veenker&#39;: 20,
+  &#39;Timber&#39;: 21,
+  &#39;NridgHt&#39;: 22,
+  &#39;StoneBr&#39;: 23,
+  &#39;NoRidge&#39;: 24},
+ &#39;ExterQual&#39;: {&#39;Fa&#39;: 0, &#39;TA&#39;: 1, &#39;Gd&#39;: 2, &#39;Ex&#39;: 3}}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mean-encoding">
+<h3><span class="section-number">2.5.8.2. </span>Mean encoding<a class="headerlink" href="#mean-encoding" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Replacing the category by the average target value for that category.</p></li>
+<li><p>IF 2 categories show the same mean of target, they will have replace by the same number, lead to loss of value between them</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">MeanEncoder</span>
+
+<span class="n">mean_enc</span> <span class="o">=</span> <span class="n">MeanEncoder</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span> <span class="s2">&quot;ExterQual&quot;</span><span class="p">],</span> <span class="n">smoothing</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">WoEEncoder</span>
+
+<span class="n">pr_enc</span> <span class="o">=</span> <span class="n">WoEEncoder</span><span class="p">(</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span> <span class="s2">&quot;ExterQual&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="weight-of-evidence-encoding">
+<h3><span class="section-number">2.5.8.3. </span>Weight of evidence encoding<a class="headerlink" href="#weight-of-evidence-encoding" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>For each category <code class="docutils literal notranslate"><span class="pre">i</span></code> of <code class="docutils literal notranslate"><span class="pre">X</span></code>, replace <code class="docutils literal notranslate"><span class="pre">i</span></code> by <code class="docutils literal notranslate"><span class="pre">Woe</span> <span class="pre">=</span> <span class="pre">Ln(</span> <span class="pre">P(X=i|Y=1)</span> <span class="pre">/</span> <span class="pre">P(X=i|Y=0)</span> <span class="pre">)</span></code></p></li>
+<li><p>These encoding is suitable for <code class="docutils literal notranslate"><span class="pre">logistic</span> <span class="pre">Regression</span></code>, where the <code class="docutils literal notranslate"><span class="pre">target</span></code> is <code class="docutils literal notranslate"><span class="pre">binary</span></code></p></li>
+<li><p><strong>Specific Advantages to <code class="docutils literal notranslate"><span class="pre">Weight</span> <span class="pre">of</span> <span class="pre">evidence</span></code></strong>:</p>
+<ul>
+<li><p>It orders the categories on a “logistic” scale which is natural for logistic regression</p></li>
+<li><p>The transformed variables can then be compared because they are on the same scale. Therefore, it is possible to determine which one is more predictive.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">WoEEncoder</span>
+
+<span class="n">pr_enc</span> <span class="o">=</span> <span class="n">WoEEncoder</span><span class="p">(</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Neighborhood&quot;</span><span class="p">,</span> <span class="s2">&quot;ExterQual&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling\Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_Feature_engineering-4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Missing Imputation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_Feature_engineering-6.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.6. </span>Feature transformation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">2.5.1. One-hot encoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding-with-scikit-learn">2.5.1.1. One hot encoding with Scikit-learn</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engine">2.5.1.2. Feature-engine</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding-with-category-encoders">2.5.1.3. One hot encoding with Category encoders</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding-of-frequent-categories-rare-label-handle">2.5.2. One Hot Encoding of Frequent Categories (Rare label handle)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-encoding-ordinal-encoding">2.5.3. Label encoding / Ordinal encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#count-frequency-encoding">2.5.4. Count frequency encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-rare-label-encoding-rare-label-handle">2.5.5. Group rare label encoding (Rare label handle)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-encoding">2.5.6. Binary encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-hashing">2.5.7. Feature hashing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-target-guided-encoding">2.5.8. Monotonic target guided encoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ordered-ordinal-encoding">2.5.8.1. Ordered ordinal encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-encoding">2.5.8.2. Mean encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-of-evidence-encoding">2.5.8.3. Weight of evidence encoding</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

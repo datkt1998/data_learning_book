@@ -1,0 +1,7 @@
+Datasets/**
+**/Datasets
+*.csv
+*.xlsx
+*.xls
+.ipynb_checkpoints/**
+**/.ipynb_checkpoints

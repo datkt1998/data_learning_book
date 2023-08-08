@@ -1,0 +1,2124 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>3.1. Data-level approaches &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-1';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.2. Cost sensitive approaches" href="3_Imbalance_data_handling-2.html" />
+    <link rel="prev" title="3. Imbalance Datasets Handling" href="0_toc_imb.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data-level approaches</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#undersampling">3.1.1. Undersampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-undersampling">3.1.1.1. Random undersampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#condensed-nearest-neighbourhood-cnn">3.1.1.2. Condensed Nearest Neighbourhood (CNN)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tomek-links">3.1.1.3. Tomek Links</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-sided-selection">3.1.1.4. One Sided Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#edited-nearest-neighbours">3.1.1.5. Edited Nearest Neighbours</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-edited-nearest-neighbours">3.1.1.6. Repeated Edited Nearest Neighbours</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-knn">3.1.1.7. All KNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neighbourhood-cleaning-rule">3.1.1.8. Neighbourhood Cleaning Rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#near-miss">3.1.1.9. Near Miss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-hardness">3.1.1.10. Instance Hardness</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oversampling">3.1.2. Oversampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-oversampling">3.1.2.1. Random oversampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smote">3.1.2.2. SMOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smote-nc">3.1.2.3. SMOTE-NC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adasyn">3.1.2.4. ADASYN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#borderline-smote">3.1.2.5. Borderline SMOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#svm-smote">3.1.2.6. SVM SMOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kmean-smote">3.1.2.7. Kmean SMOTE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-under-and-oversampling">3.1.3. Combine Under and Oversampling</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-level-approaches">
+<h1><span class="section-number">3.1. </span>Data-level approaches<a class="headerlink" href="#data-level-approaches" title="Permalink to this heading">#</a></h1>
+<p><strong>Methods will change the data distribution by remove or adding more obs in raw dataset to balancing the class</strong></p>
+<section id="undersampling">
+<h2><span class="section-number">3.1.1. </span>Undersampling<a class="headerlink" href="#undersampling" title="Permalink to this heading">#</a></h2>
+<p>Process of reducing the number of sample from the majority Class</p>
+<ul class="simple">
+<li><p>Balancing ratio: $<span class="math notranslate nohighlight">\(R(x) = \frac{X_{minority}}{X_{majority}}\)</span>$</p></li>
+</ul>
+<p><strong>Type of undersampling</strong></p>
+<ul class="simple">
+<li><p>Fixed (reduce majority class to the same number of obs than minority): <span class="math notranslate nohighlight">\(R(x) = 1\)</span></p></li>
+<li><p>Cleaning (clean the majority class bases on same criteria)</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>STT</p></th>
+<th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p><strong>Random</strong></p></td>
+<td><p>Fixed</p></td>
+<td><p>Random</p></td>
+<td><p>Random</p></td>
+<td><p>2 x minority class</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p><strong>NearMiss</strong></p></td>
+<td><p>Fixed</p></td>
+<td><p>Keep boundary obs</p></td>
+<td><p></p></td>
+<td><p>2 x minority class</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p><strong>Instance Hardness</strong></p></td>
+<td><p>Fixed</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Remove low probability class obs</p></td>
+<td><p>2 x minority class</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p><strong>Condensed Nearest Neighbourhood (CNN)</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Keep boundary obs</p></td>
+<td><p>Samples outside the boundary between the classes</p></td>
+<td><p>Varies</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p><strong>Tomek Links</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Samples are Tomek Links</p></td>
+<td><p>Varies</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p><strong>One Sided</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Keep boundary + remove noise</p></td>
+<td><p>CNN + Tomek Links</p></td>
+<td><p>Varies</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p><strong>Edited Nearest Neighbourhood (ENN)</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Observation’s class is different from that of its nearest neighbours</p></td>
+<td><p>Varies</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p><strong>Repeated ENN</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Repeats ENN multiple times</p></td>
+<td><p>Varies</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p><strong>Neighbourhood Clearning Rule (NCR)</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p></p></td>
+<td><p>Varies</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p><strong>All KNN</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Repeats ENN, plus 1 neighbour in each KNN iteration</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<section id="random-undersampling">
+<h3><span class="section-number">3.1.1.1. </span>Random undersampling<a class="headerlink" href="#random-undersampling" title="Permalink to this heading">#</a></h3>
+<p>Remove random majority class obs until <span class="math notranslate nohighlight">\(R(x)\)</span> =1</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Random</strong></p></td>
+<td><p>Fixed</p></td>
+<td><p>Random</p></td>
+<td><p>Random</p></td>
+<td><p>2 x minority class</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>Criteria for data exclusion</strong>: Random</p></li>
+<li><p><strong>Final Dataset size</strong>: 2 x minority class</p></li>
+<li><p><strong>Assumption</strong>: None</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make good balance of each class, so model do not just learning focus only majority class.</p></li>
+<li><p>Remove importance Information and obs, so model is harder to learn patterns to differentiate the classes</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p>
+<ul>
+<li><p>Large and  not highly imbalance dataset</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">RandomUnderSampler</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>With balanced ratio</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># R(x) = 1</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span>
+                    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> 
+                    <span class="n">replacement</span><span class="o">=</span><span class="kc">False</span> <span class="p">,</span> <span class="c1"># replacement resample or not</span>
+                        <span class="p">)</span>
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f72ea8a20d63012ad7d03b3a53da1b7192a9ae32e43f493110de95a5c3413831.png" src="../../_images/f72ea8a20d63012ad7d03b3a53da1b7192a9ae32e43f493110de95a5c3413831.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>With specific balance ratio</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Changing the balancing ratio</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span>
+                    <span class="n">sampling_strategy</span><span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="c1"># remember balancing ratio = x min / x maj</span>
+                    <span class="n">replacement</span><span class="o">=</span><span class="kc">False</span> <span class="p">,</span> <span class="c1"># replacement resample or not</span>
+                        <span class="p">)</span>
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7b778f727f7e7c85024ce5dc252a18005b561973adcbccae6e8ffe686deb2b75.png" src="../../_images/7b778f727f7e7c85024ce5dc252a18005b561973adcbccae6e8ffe686deb2b75.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Specify number of observations in each class</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specify number of observations in each class</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span>
+                    <span class="n">sampling_strategy</span><span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">15</span><span class="p">},</span>
+                    <span class="n">replacement</span><span class="o">=</span><span class="kc">False</span> <span class="p">,</span> <span class="c1"># replacement resample or not</span>
+                        <span class="p">)</span>
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/892a9958eebdc846bb2655c96b08d51519271ffb063238526264df85833f521b.png" src="../../_images/892a9958eebdc846bb2655c96b08d51519271ffb063238526264df85833f521b.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>In multi class</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multi class</span>
+<span class="c1"># R(x) = 1</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>  <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span>
+                    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> 
+                    <span class="n">replacement</span><span class="o">=</span><span class="kc">False</span> <span class="p">,</span> <span class="c1"># replacement resample or not</span>
+                        <span class="p">)</span>
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d2eae3a287bdaeae3b6b953b160c2f2881a41a238378f1f800f2099955a66fbb.png" src="../../_images/d2eae3a287bdaeae3b6b953b160c2f2881a41a238378f1f800f2099955a66fbb.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="condensed-nearest-neighbourhood-cnn">
+<h3><span class="section-number">3.1.1.2. </span>Condensed Nearest Neighbourhood (CNN)<a class="headerlink" href="#condensed-nearest-neighbourhood-cnn" title="Permalink to this heading">#</a></h3>
+<p>Select obs are near the boundary between the classes by <code class="docutils literal notranslate"><span class="pre">KNN</span></code>:</p>
+<ul class="simple">
+<li><p>If the classes are similar, the final selection sample would contain a pair amount for each class</p></li>
+<li><p>If the classes are seem different, the final selection sample would contain mostly 1 class (the minority class)</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Condensed Nearest Neighbourhood (CNN)</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Keep boundary obs</p></td>
+<td><p>Samples outside the boundary between the classes</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>The algorithms works as follows:</strong></p>
+<ol class="arabic simple">
+<li><p>Put all minority class observations in a group, typically group O</p></li>
+<li><p>Add 1 observation (at random) from the majority class to group O</p></li>
+<li><p>Train a KNN with group O</p></li>
+<li><p>Take 1 observation of the majority class that is not in group O yet</p></li>
+<li><p>Predict its class with the KNN from point 3</p>
+<ul class="simple">
+<li><p>If the prediction was correct, then ignore this observation and go to 4 and repeat</p></li>
+<li><p>If the prediction was incorrect, add this observation to group O, go to 3 and repeat</p></li>
+</ul>
+</li>
+<li><p>Continue until all samples of the majority class were either assigned to O or left out</p></li>
+<li><p>Final version of Group O is our undersampled dataset</p></li>
+</ol>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Criteria for data exclusion</strong>: Keep boundary obs</p></li>
+<li><p><strong>Assumption</strong>: None</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution and tends to add noise (uncertain class) to undersampled data (select points that are near other classes)</p></li>
+<li><p>But because learning from this hardest datapoint so model successfull to learn patterns class, so better to classify.</p></li>
+<li><p>Computationally expensive, because it trains 1 KNN every time an observation is added to the minority class group.</p></li>
+<li><p>Randomness because select random first observation from majority class and put it to O</p></li>
+<li><p>Support OnevsRest approach for multiclass (splitting to multiple binary-class)</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">CondensedNearestNeighbour</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.05</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">cnn</span> <span class="o">=</span> <span class="n">CondensedNearestNeighbour</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="c1"># default</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">cnn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8b368107cc9d44247ac1fc8460b79f9228563208e28b9c361aa0c88333e315c2.png" src="../../_images/8b368107cc9d44247ac1fc8460b79f9228563208e28b9c361aa0c88333e315c2.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tomek-links">
+<h3><span class="section-number">3.1.1.3. </span>Tomek Links<a class="headerlink" href="#tomek-links" title="Permalink to this heading">#</a></h3>
+<p>Remove the obs that are <strong>tomek links</strong>, 2 obs are nearest neighbours and from different class. This procedures will remove 1 of 2 tomek links, which is in majority class or both of them.
+<strong>–&gt; Remove những obs thuộc majority class và near với minority class</strong></p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Tomek Links</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Samples are Tomek Links</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Assumption</strong>: Boundary is noise</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution</p></li>
+<li><p>May be remove noise and improves performance</p></li>
+<li><p>Poor to classify the hard-case obs</p></li>
+<li><p>Support OnevsRest approach for multiclass (splitting to multiple binary-class)</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">TomekLinks</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">tl1</span> <span class="o">=</span> <span class="n">TomekLinks</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>  <span class="c1"># undersamples only the majority class</span>
+<span class="n">tl2</span> <span class="o">=</span> <span class="n">TomekLinks</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>  <span class="c1"># remove both majority and minority obs in tomek links</span>
+ 
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">tl1</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7d3c9c4e98462efa36d28a92dc70d8fe837647d8a38f40c9737de3cda23eb9f3.png" src="../../_images/7d3c9c4e98462efa36d28a92dc70d8fe837647d8a38f40c9737de3cda23eb9f3.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="one-sided-selection">
+<h3><span class="section-number">3.1.1.4. </span>One Sided Selection<a class="headerlink" href="#one-sided-selection" title="Permalink to this heading">#</a></h3>
+<p>Combine 2 methods CNN and Tomek links by select first samples at the boundary of the classes using CNN then removes the tomek links.
+<strong>–&gt; Focus only on harder cases by selecting those at the boundary, while removing noise (maybe) with tomek links</strong></p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>One Sided Selection</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Keep boundary + remove noise</p></td>
+<td><p>CNN + Tomek Links</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Assumption</strong>:</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution</p></li>
+<li><p>May be remove noise and focus to clearn classify hardest case data, then improves performance</p></li>
+<li><p>Support OnevsRest approach for multiclass (splitting to multiple binary-class)</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">OneSidedSelection</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.03</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+
+<span class="n">oss</span> <span class="o">=</span> <span class="n">OneSidedSelection</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="c1"># default</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+ 
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">oss</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5e193752ab4d5228369f07939be0c958f570fee888023d9068d9a249aa69bc30.png" src="../../_images/5e193752ab4d5228369f07939be0c958f570fee888023d9068d9a249aa69bc30.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="edited-nearest-neighbours">
+<h3><span class="section-number">3.1.1.5. </span>Edited Nearest Neighbours<a class="headerlink" href="#edited-nearest-neighbours" title="Permalink to this heading">#</a></h3>
+<p>Removes observations which class are different from that of their neighbours. These are generally the observations difficult to classify and / or that introduce noise. ENN is the opposite of Condensed NN</p>
+<p><strong>–&gt; In practice, samples of the majority class that are too similar to an observation of the minority class will be removed</strong></p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Edited Nearest Neighbourhood (ENN)</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Observation’s class is different from that of its nearest neighbours</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p><strong>The algorithms works as follows:</strong></p>
+<ol class="arabic simple">
+<li><p>For each observation in dataset, find the k nearest neighbour to each observation (typically k=3)</p></li>
+</ol>
+<ul class="simple">
+<li><p>If the majority class of k (<code class="docutils literal notranslate"><span class="pre">mode</span></code> strategy) or all class of k (<code class="docutils literal notranslate"><span class="pre">all</span></code> strategy) is the same class of that datapoint, then keep datapoint, else set mark <strong>‘remove datapoint’</strong></p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Do step1 for all observations dataset, then remove all datapoint which mark <strong>‘remove datapoint’</strong></p></li>
+</ol>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Assumption</strong>:</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution</p></li>
+<li><p>Remove hard-case obs (data point is uncasual)</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">EditedNearestNeighbours</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">enn</span> <span class="o">=</span> <span class="n">EditedNearestNeighbours</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># the number of neighbours to examine</span>
+    <span class="n">kind_sel</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>  <span class="c1"># all neighbours need to have the same label as the observation examined</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">enn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/037e26a3c791c4fa25a63ad263770b59075b7e48fc3957897d82d58a9e112e5b.png" src="../../_images/037e26a3c791c4fa25a63ad263770b59075b7e48fc3957897d82d58a9e112e5b.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="repeated-edited-nearest-neighbours">
+<h3><span class="section-number">3.1.1.6. </span>Repeated Edited Nearest Neighbours<a class="headerlink" href="#repeated-edited-nearest-neighbours" title="Permalink to this heading">#</a></h3>
+<p>Extends Edited Nearest neighbours in that it repeats the procedure over an over <strong>with the same K</strong>, until no further observation is removed from the dataset, or alternatively until a maximum number of iterations is reached.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Repeated ENN</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Repeats ENN multiple times</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Assumption</strong>:</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution</p></li>
+<li><p>Remove hard-case obs (data point is uncasual)</p></li>
+<li><p>Remove more obs than ENN</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">RepeatedEditedNearestNeighbours</span>
+
+
+<span class="n">renn</span> <span class="o">=</span> <span class="n">RepeatedEditedNearestNeighbours</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span><span class="c1"># removes only the majority class</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># the number of neighbours to examine</span>
+    <span class="n">kind_sel</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="c1"># all neighbouring observations should show the same class</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="c1"># 4 processors in my laptop</span>
+    <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># maximum number of iterations</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">renn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2ca491e0beb1128943e7207fb145c33eed8ce151d7253786586d7b554d024efe.png" src="../../_images/2ca491e0beb1128943e7207fb145c33eed8ce151d7253786586d7b554d024efe.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="all-knn">
+<h3><span class="section-number">3.1.1.7. </span>All KNN<a class="headerlink" href="#all-knn" title="Permalink to this heading">#</a></h3>
+<p>Similar RENN but at each round, <code class="docutils literal notranslate"><span class="pre">K</span></code> increases 1 neighbours:</p>
+<ul class="simple">
+<li><p>Start <code class="docutils literal notranslate"><span class="pre">K</span></code> = 1</p></li>
+<li><p>End <code class="docutils literal notranslate"><span class="pre">K</span></code> = <code class="docutils literal notranslate"><span class="pre">max</span> <span class="pre">K</span></code> (defined by user) or if the <strong>majority</strong> class becomes the <strong>minority</strong></p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>All KNN</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Repeats ENN, plus 1 neighbour in each KNN iteration</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Assumption</strong>:</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution</p></li>
+<li><p>Remove hard-case obs (data point is uncasual)</p></li>
+<li><p>Remove more obs than ENN</p></li>
+<li><p>The criteria of obs to be retain harder and harder after each round, therefore removing more observations that are closer to the boundary to the minority class.</p></li>
+</ul>
+</li>
+<li><p><strong>Application</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ENN</span></code>, <code class="docutils literal notranslate"><span class="pre">RENN</span></code> and <code class="docutils literal notranslate"><span class="pre">AllKNN</span></code> tend to produce similar results, so we may as well just choose one of the 3</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span>  <span class="n">AllKNN</span>
+
+<span class="n">allknn</span> <span class="o">=</span> <span class="n">AllKNN</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># the maximum size of the neighbourhood to examine</span>
+    <span class="n">kind_sel</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>  <span class="c1"># all neighbours need to have the same label as the observation examined</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># I have 4 cores in my laptop</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">allknn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/98b17c35ba49df6586bf114df23bbc07f5d8b3f6a6c3a9d89d5879b229b057d1.png" src="../../_images/98b17c35ba49df6586bf114df23bbc07f5d8b3f6a6c3a9d89d5879b229b057d1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="neighbourhood-cleaning-rule">
+<h3><span class="section-number">3.1.1.8. </span>Neighbourhood Cleaning Rule<a class="headerlink" href="#neighbourhood-cleaning-rule" title="Permalink to this heading">#</a></h3>
+<p>Combine ENN + KNN rule for each 3 neighbours of each obs minority class</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Neighbourhood Clearning Rule (NCR)</strong></p></td>
+<td><p>Cleaning</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>ENN <code class="docutils literal notranslate"><span class="pre">mode</span></code> strategy + rule for 3 neighbours of minority obs</p></td>
+<td><p>Varies</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<p>The Neighbourhood Cleaning Rule works as follows:</p>
+<ol class="arabic simple">
+<li><p>For each majority class obs, use ENN with <code class="docutils literal notranslate"><span class="pre">mode</span></code> strategy to remove or not.</p></li>
+<li><p>For minority class, check 3 its neighbours and remove a neighbours if it satisfies all three conditions at the same time:</p></li>
+</ol>
+<ul class="simple">
+<li><p>This datapoint belong to majoity class:</p></li>
+<li><p>The other neighbours are not the same class with this neighbour</p></li>
+<li><p>The majority class has at least half as many observations as those in the minority (this can be regulated)</p></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Assumption</strong>:</p></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li><p>Make distort the data distribution</p></li>
+<li><p>Remove hard-case majority obs (data point is uncasual)</p></li>
+<li><p>Remove more obs than ENN</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">NeighbourhoodCleaningRule</span>
+
+<span class="n">ncr</span> <span class="o">=</span> <span class="n">NeighbourhoodCleaningRule</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span><span class="c1"># undersamples from all classes except minority</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># explores 3 neighbours per observation</span>
+    <span class="n">kind_sel</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="c1"># all neighbouring need to disagree, only applies to cleaning step</span>
+                    <span class="c1"># set &#39;mode&#39; then most neighbours need to disagree to be removed.</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="c1"># 4 processors in my laptop</span>
+    <span class="n">threshold_cleaning</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="c1"># the threshold to evaluate a class for cleaning (used only for clearning step)</span>
+<span class="p">)</span> 
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">ncr</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c5a1ef37e1618bca417abfb51f2848e5baafb91934fcf80ad4f2c9f9a71047fc.png" src="../../_images/c5a1ef37e1618bca417abfb51f2848e5baafb91934fcf80ad4f2c9f9a71047fc.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="near-miss">
+<h3><span class="section-number">3.1.1.9. </span>Near Miss<a class="headerlink" href="#near-miss" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Select (retains) obs that are somewhat similar to the <strong>minority</strong> class, using 1 of three alternative procedures:</p>
+<ol class="arabic simple">
+<li><p>Select majority ob that has <strong>the average distance to k-closest minority obs</strong> is smallest</p></li>
+<li><p>Select majority ob that has <strong>the average distance to k-farthest minority obs</strong> is smallest</p></li>
+<li><p>From these majority obs in which is the 1 of K closest datapoint of at least 1 minority class, select majority ob that has <strong>the average distance to k-farthest minority obs</strong> is smallest</p></li>
+</ol>
+</li>
+<li><p><strong>Design to work with text, where each work is a complex representation of works and tags</strong></p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>NearMiss</strong></p></td>
+<td><p>Fixed</p></td>
+<td><p>Keep boundary obs</p></td>
+<td><p></p></td>
+<td><p>2 x minority class</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">NearMiss</span>
+
+
+<span class="n">nm1</span> <span class="o">=</span> <span class="n">NearMiss</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># I have 4 cores in my laptop</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">nm1</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4aaa59b78989eeab582d2737bc415417e9cff4f8b902549630e5d1ed368d5964.png" src="../../_images/4aaa59b78989eeab582d2737bc415417e9cff4f8b902549630e5d1ed368d5964.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nm2</span> <span class="o">=</span> <span class="n">NearMiss</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">version</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># I have 4 cores in my laptop</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">nm2</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8f41d6b07bcf0192538826d88ee7b69db9fe3e2d011be8537038cdb542ce42da.png" src="../../_images/8f41d6b07bcf0192538826d88ee7b69db9fe3e2d011be8537038cdb542ce42da.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nm3</span> <span class="o">=</span> <span class="n">NearMiss</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">version</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># I have 4 cores in my laptop</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">nm3</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ca95bfebfa915ec8590e60094be9a449c807f776b7f2c5e088658c7dfa1f9d0c.png" src="../../_images/ca95bfebfa915ec8590e60094be9a449c807f776b7f2c5e088658c7dfa1f9d0c.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="instance-hardness">
+<h3><span class="section-number">3.1.1.10. </span>Instance Hardness<a class="headerlink" href="#instance-hardness" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Instance Hardness Threshold</strong>: the probability of an observation being miss-classified. So in other words, the instance hardness is 1 minus the probability of the class.</p>
+<ul>
+<li><p>For <strong>class 1</strong>: <code class="docutils literal notranslate"><span class="pre">instance</span> <span class="pre">hardness</span></code> = 1 - P(X = 1)</p></li>
+</ul>
+</li>
+<li><p><strong>Instance Hardness Filtering</strong>: Removing the observations with <code class="docutils literal notranslate"><span class="pre">high</span> <span class="pre">instance</span> <span class="pre">hardness</span></code> (above <code class="docutils literal notranslate"><span class="pre">threshold</span></code>) or in other word that is <code class="docutils literal notranslate"><span class="pre">low</span> <span class="pre">class</span> <span class="pre">probability</span></code>. The probability are given by any classifier method and the threshold is calculated by:
+$<span class="math notranslate nohighlight">\(threshold = 1 - \frac{\text{number of minority obs}}{\text{number of majority obs}}\)</span>$</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Methods</p></th>
+<th class="head"><p>Fixed vs Cleaning</p></th>
+<th class="head"><p>Under-sampling criteria</p></th>
+<th class="head"><p>Method of data Exclusion</p></th>
+<th class="head"><p>Final Dataset Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Instance Hardness</strong></p></td>
+<td><p>Fixed</p></td>
+<td><p>Remove noise obs</p></td>
+<td><p>Remove low probability class obs</p></td>
+<td><p>2 x minority class</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">InstanceHardnessThreshold</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># binary</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">iht</span> <span class="o">=</span> <span class="n">InstanceHardnessThreshold</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">rf</span><span class="p">,</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples only the majority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="c1"># have 4 processors in my laptop</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># cross validation fold</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.15</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">iht</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/792cc7718da67af86acb1437c60212d105b3b090e0ade39787fbba49ce4b6171.png" src="../../_images/792cc7718da67af86acb1437c60212d105b3b090e0ade39787fbba49ce4b6171.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiclass</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OneVsRestClassifier</span>
+
+<span class="n">rf</span> <span class="o">=</span> <span class="n">OneVsRestClassifier</span><span class="p">(</span>
+    <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">iht</span> <span class="o">=</span> <span class="n">InstanceHardnessThreshold</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">rf</span><span class="p">,</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># undersamples all majority classes</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="c1"># have 4 processors in my laptop</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># cross validation fold</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.1</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">iht</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/878497217a1074de2238899b591c5ae8569576597b5d08fece7532db381e759a.png" src="../../_images/878497217a1074de2238899b591c5ae8569576597b5d08fece7532db381e759a.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="oversampling">
+<h2><span class="section-number">3.1.2. </span>Oversampling<a class="headerlink" href="#oversampling" title="Permalink to this heading">#</a></h2>
+<p>Process of increasing the number of obs from the minority Class</p>
+<ul class="simple">
+<li><p>Balancing ratio: $<span class="math notranslate nohighlight">\(R(x) = \frac{X_{minority}}{X_{majority}}\)</span>$</p></li>
+</ul>
+<p><strong>Type of oversampling</strong></p>
+<ul class="simple">
+<li><p><strong>Extraction</strong> (extracts random obs fromo minority class): <strong>Random</strong></p></li>
+<li><p><strong>Generation</strong> (Creates new obs that slightly different from existing ones ): <strong>SMOTE</strong>, <strong>ADASYN</strong>,…:</p>
+<ul>
+<li><p>All obs as templates: <strong>SMOTE</strong>, <strong>SMOTE-NC</strong></p></li>
+<li><p>Focus to generate from obs closer to the boundary with the majority class: <strong>SMOTE</strong> variants, <strong>ADASYN</strong>,…</p></li>
+</ul>
+</li>
+</ul>
+<section id="random-oversampling">
+<h3><span class="section-number">3.1.2.1. </span>Random oversampling<a class="headerlink" href="#random-oversampling" title="Permalink to this heading">#</a></h3>
+<p>Extracts obs at random from the minority with replacement class until a certain <span class="math notranslate nohighlight">\(R(x)\)</span> is reached</p>
+<ul class="simple">
+<li><p>Duplicates obs from the minority class –&gt; Increase likelihood overfitting</p></li>
+<li><p>In order not to DUPLICATE the data, after extracting the samples at random, we multiply the value of the sample by a number that contemplates the dispersion of the data, to obtain artificial examples. (<strong>ROS with Smoothing</strong>)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">RandomOverSampler</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">ros</span> <span class="o">=</span> <span class="n">RandomOverSampler</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+<span class="p">)</span>  
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">ros</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4bbc70d3648ad62a04fb9e1aa87e5986e31e7070807cc370acfe9b5cd88d07de.png" src="../../_images/4bbc70d3648ad62a04fb9e1aa87e5986e31e7070807cc370acfe9b5cd88d07de.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Random overresampling with smoothing</span>
+<span class="n">ros_sm</span> <span class="o">=</span> <span class="n">RandomOverSampler</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">shrinkage</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span>  
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">ros_sm</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/feda7d95837b6d28af9b0add623980f95fa1001fcdf9f3ce52846047736c5ee4.png" src="../../_images/feda7d95837b6d28af9b0add623980f95fa1001fcdf9f3ce52846047736c5ee4.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="smote">
+<h3><span class="section-number">3.1.2.2. </span>SMOTE<a class="headerlink" href="#smote" title="Permalink to this heading">#</a></h3>
+<p><strong>Synthetic minority Over-sampling Technique</strong></p>
+<p>For each minority observation X, find k nearest minority neighbours (typically 5), choose a random neighbour from 5 and interpolate a new obs among X and this nearest neighbours by multiplies that distance to each neighbour with random number, then add a new obs to dataset
+<img alt="image.png" src="../../_images/smote.png" /></p>
+<ul class="simple">
+<li><p>New obs from minority class will not be identical to original ones (prevent duplication)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SMOTE</span></code> suitable for numeric continuous, use <code class="docutils literal notranslate"><span class="pre">SMOTE-NC</span></code> for categorical</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+
+<span class="n">sm</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/758ba27fb1af7c18d93ee06c27653653793c6b09d1c240f4d5335edc08d05b6e.png" src="../../_images/758ba27fb1af7c18d93ee06c27653653793c6b09d1c240f4d5335edc08d05b6e.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="smote-nc">
+<h3><span class="section-number">3.1.2.3. </span>SMOTE-NC<a class="headerlink" href="#smote-nc" title="Permalink to this heading">#</a></h3>
+<p>Extends the funcitonality of SMOTE to categorical variables:
+<img alt="image.png" src="../../_images/smote_nc.png" /></p>
+<ul class="simple">
+<li><p><strong>The distance function is L2 Euclidean distances</strong>:</p>
+<ul>
+<li><p>for numberic variables, calculate in casual</p></li>
+<li><p>for categorical:</p>
+<ul>
+<li><p>if the same value, replace by <strong>0</strong></p></li>
+<li><p>if differ value, replace by <strong>the median value of list standard deviation of all numeric variables</strong></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>How to mark category label in new minority obs?</strong></p>
+<ul>
+<li><p>mark by the majority label of k nearest neighbor of new obs.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTENC</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">foo</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">]</span>
+<span class="n">smnc</span> <span class="o">=</span> <span class="n">SMOTENC</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># indeces of the columns of categorical variables</span>
+<span class="p">)</span>  
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;cat1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;cat2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">smnc</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/44931da216bac9c09219f2dcf3395de02685bcb086408abcccb252d2175eedfd.png" src="../../_images/44931da216bac9c09219f2dcf3395de02685bcb086408abcccb252d2175eedfd.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="adasyn">
+<h3><span class="section-number">3.1.2.4. </span>ADASYN<a class="headerlink" href="#adasyn" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Like <code class="docutils literal notranslate"><span class="pre">SMOTE</span></code>, but use more hard-case to classify observation to generate new data and use <code class="docutils literal notranslate"><span class="pre">KNN</span></code> for all observation dataset (instead <code class="docutils literal notranslate"><span class="pre">KNN</span></code> for only minority obs like <code class="docutils literal notranslate"><span class="pre">SMOTE</span></code>)</p></li>
+<li><p>Because the weight is high if the minority obs has more majority neighbours in K nearest neighbours, so this method would <strong>create more new obs at boundary</strong> between minority class and majority class –&gt; <strong>Model learn more pattern to classify</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ADASYN</span></code> make distort the class shape</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Procedure</strong></p>
+<ol class="arabic simple">
+<li><p>Determine the <strong>Initial balance ratio</strong> <span class="math notranslate nohighlight">\(R(x) = \frac{X_{minority}}{X_{majority}}\)</span> and the <strong>amount of gerneration</strong> <span class="math notranslate nohighlight">\(G = factor * (X_{maj} - X_{min}) \)</span></p></li>
+<li><p>Train KNN for all obs dataset, find k nearest neighbour of each minority obs, and calculate the weight of majority class neighbours <span class="math notranslate nohighlight">\(r = \frac{\text{number of majority neighbour}}{K}\)</span></p></li>
+<li><p>Norm these weight <span class="math notranslate nohighlight">\(r\)</span> of all minority obs : <span class="math notranslate nohighlight">\(r_{norm} = \frac{r}{sum(rs)}\)</span></p></li>
+<li><p>Calculate the <strong>number of generation obs</strong> for each minority obs: <span class="math notranslate nohighlight">\(g_i = r_i * G\)</span></p></li>
+<li><p>For each minority obs i, create <span class="math notranslate nohighlight">\(g_i\)</span> new obs like SMOTE, but the neighbour would be either from majority class or minority class (unlike SMOTE: neighbours are only minority)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">ADASYN</span>
+
+<span class="n">ada</span> <span class="o">=</span> <span class="n">ADASYN</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">ada</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2e789ad6bd919952de10c911fafc1be6bf54a006c1dc0274bb5307966e9e312e.png" src="../../_images/2e789ad6bd919952de10c911fafc1be6bf54a006c1dc0274bb5307966e9e312e.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="borderline-smote">
+<h3><span class="section-number">3.1.2.5. </span>Borderline SMOTE<a class="headerlink" href="#borderline-smote" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Creates new obs by interpolation between obs of the minority class and their closest neighbours.</p></li>
+<li><p>It does not use all observations from the minority class as templates, unllike SMOTE.</p></li>
+</ul>
+<p><strong>Following step</strong>:</p>
+<ol class="arabic simple">
+<li><p>It selects those observations (from the minority) for which, most of their neighbours belong to a different class (<code class="docutils literal notranslate"><span class="pre">DANGER</span></code> group)</p>
+<ul class="simple">
+<li><p>Note that: the minority which has all of k nearest neighbours belong to majority class, may be noise datapoint. Or the minority which has most of k nearest neighbours belong to minority class, is too safety and easy to classify –&gt; <strong>not select this kind of minority obs</strong></p></li>
+</ul>
+</li>
+<li><p>Generate new obs:</p></li>
+</ol>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Variant</span> <span class="pre">1</span></code>: creates new examples, as SMOTE, between samples in the <code class="docutils literal notranslate"><span class="pre">Danger</span></code> group and their closest neighbours from the <strong>minority</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Variant</span> <span class="pre">2</span></code>: creates new examples, similar SMOTE, but between samples in the <code class="docutils literal notranslate"><span class="pre">Danger</span></code> group and their closest neighbours from the <strong>majority</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># variant 1</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">BorderlineSMOTE</span>
+
+<span class="n">sm_b1</span> <span class="o">=</span> <span class="n">BorderlineSMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># the neighbours to crete the new examples (step2)</span>
+    <span class="n">m_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># the neiighbours to find the DANGER group (step1)</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;borderline-1&#39;</span><span class="p">,</span> <span class="c1"># variant 1</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">sm_b1</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a29f98e6de56d6b377a2f97b98d447fd67d74296ff2e96bdb9e661a2d8be7952.png" src="../../_images/a29f98e6de56d6b377a2f97b98d447fd67d74296ff2e96bdb9e661a2d8be7952.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># variant 2</span>
+<span class="n">sm_b2</span> <span class="o">=</span> <span class="n">BorderlineSMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># the neighbours to crete the new examples (step2)</span>
+    <span class="n">m_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># the neiighbours to find the DANGER group (step1)</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;borderline-2&#39;</span><span class="p">,</span> 
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">sm_b2</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5c90fcb9019caa5ce5c81c52888c4a77add26b1ee05ee2f3ecbd037b7b389d32.png" src="../../_images/5c90fcb9019caa5ce5c81c52888c4a77add26b1ee05ee2f3ecbd037b7b389d32.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="svm-smote">
+<h3><span class="section-number">3.1.2.6. </span>SVM SMOTE<a class="headerlink" href="#svm-smote" title="Permalink to this heading">#</a></h3>
+<p>Extension of SMOTE : generate new obs for minority obs, that close to the boundary given by SVM</p>
+<ul class="simple">
+<li><p>if most neighbours are belong to <strong>minority</strong> class, use <strong>extrapolation</strong> to expand the boundary</p></li>
+<li><p>if most neighbours are belong to <strong>majority</strong> class, use <strong>interpolation</strong> to narrow the boundary</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SVMSMOTE</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">sm</span> <span class="o">=</span> <span class="n">SVMSMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># neighbours to create the synthetic examples</span>
+    <span class="n">m_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># neighbours to determine if minority class is in &quot;danger&quot;</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">svm_estimator</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.01</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c00618f4382d791ee1e577f19813dae8a51445041be00e600eb4df84b5e7b2a3.png" src="../../_images/c00618f4382d791ee1e577f19813dae8a51445041be00e600eb4df84b5e7b2a3.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="kmean-smote">
+<h3><span class="section-number">3.1.2.7. </span>Kmean SMOTE<a class="headerlink" href="#kmean-smote" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Oversampling for clusters which have enough minority obs, avoid create new minority in cluster in that almost non-exist that minority.</p></li>
+<li><p>Suitable for data have more than 1 cluster</p></li>
+</ul>
+<p><strong>Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p>Find clusters by Kmeans with entire dataset (need to an idea of number of clusters there are in our data)</p></li>
+<li><p>Select cluster with those which <code class="docutils literal notranslate"><span class="pre">%minority</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">threshold</span></code></p></li>
+<li><p>For each selected cluster:</p>
+<ul class="simple">
+<li><p>Calculate <code class="docutils literal notranslate"><span class="pre">L2mean</span></code> = Mean Euclidean distance betwwen minority obs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Density</span></code> = (<code class="docutils literal notranslate"><span class="pre">number</span> <span class="pre">of</span> <span class="pre">minority</span> <span class="pre">obs</span></code>) / <code class="docutils literal notranslate"><span class="pre">L2mean</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sparsity</span></code> = 1/<code class="docutils literal notranslate"><span class="pre">density</span></code> = mức độ rời rạc của các quan sát minority in cluster</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cluster</span> <span class="pre">sparsity</span> <span class="pre">weight</span></code> = <code class="docutils literal notranslate"><span class="pre">Sparsity</span></code> / <code class="docutils literal notranslate"><span class="pre">sum(Sparsity</span> <span class="pre">all</span> <span class="pre">clusters)</span></code></p></li>
+<li><p>Number need to generate for this cluster: <code class="docutils literal notranslate"><span class="pre">gi</span></code> = <code class="docutils literal notranslate"><span class="pre">Cluster</span> <span class="pre">sparsity</span> <span class="pre">weight</span></code> * <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">number</span> <span class="pre">need</span> <span class="pre">to</span> <span class="pre">generate</span></code></p></li>
+</ul>
+</li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">make_data2</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># Configuration options</span>
+    <span class="n">blobs_random_seed</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)]</span>
+    <span class="n">cluster_std</span> <span class="o">=</span> <span class="mf">1.5</span>
+    <span class="n">num_features_for_samples</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">num_samples_total</span> <span class="o">=</span> <span class="mi">2100</span>
+
+    <span class="c1"># Generate X</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span>
+        <span class="n">n_samples</span><span class="o">=</span><span class="n">num_samples_total</span><span class="p">,</span>
+        <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span>
+        <span class="n">n_features</span><span class="o">=</span><span class="n">num_features_for_samples</span><span class="p">,</span>
+        <span class="n">cluster_std</span><span class="o">=</span><span class="n">cluster_std</span><span class="p">)</span>
+
+    <span class="c1"># transform arrays to pandas formats</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;varA&#39;</span><span class="p">,</span> <span class="s1">&#39;varB&#39;</span><span class="p">])</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># different number of samples per blob</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="c1"># reset indexes</span>
+    <span class="n">X</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+    <span class="c1"># create imbalanced target</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">700</span><span class="p">)),</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">400</span><span class="p">)),</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+    <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">scat_plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">KMeansSMOTE</span>
+
+<span class="n">sm</span> <span class="o">=</span> <span class="n">KMeansSMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">kmeans_estimator</span><span class="o">=</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">cluster_balance_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="c1"># min of % minority in selected clusters</span>
+    <span class="n">density_exponent</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data2</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e281be1999492da060d5ef378e9a86f7ae24d36d6d0dd05e2f788ef03ef60908.png" src="../../_images/e281be1999492da060d5ef378e9a86f7ae24d36d6d0dd05e2f788ef03ef60908.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="combine-under-and-oversampling">
+<h2><span class="section-number">3.1.3. </span>Combine Under and Oversampling<a class="headerlink" href="#combine-under-and-oversampling" title="Permalink to this heading">#</a></h2>
+<p>Combined used of <code class="docutils literal notranslate"><span class="pre">SMOTE</span></code> and <code class="docutils literal notranslate"><span class="pre">ENN</span></code> or <code class="docutils literal notranslate"><span class="pre">Tomek</span> <span class="pre">Links</span></code> to amplify the minority class and remove noisy observations that might be created.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">EditedNearestNeighbours</span><span class="p">,</span> <span class="n">TomekLinks</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+<span class="kn">from</span> <span class="nn">imblearn.combine</span> <span class="kn">import</span> <span class="n">SMOTEENN</span><span class="p">,</span> <span class="n">SMOTETomek</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMOTE + ENN</span>
+
+<span class="n">sm</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+
+<span class="n">enn</span> <span class="o">=</span> <span class="n">EditedNearestNeighbours</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">kind_sel</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">smenn</span> <span class="o">=</span> <span class="n">SMOTEENN</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">smote</span><span class="o">=</span><span class="n">sm</span><span class="p">,</span>
+    <span class="n">enn</span><span class="o">=</span><span class="n">enn</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.01</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">smenn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/96ec8d1a7bbfb510224eaa186827e3de80204c1fe40cc861dcde329e79a5f1f9.png" src="../../_images/96ec8d1a7bbfb510224eaa186827e3de80204c1fe40cc861dcde329e79a5f1f9.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMOTE + Tomek link</span>
+
+<span class="n">sm</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+
+<span class="n">tl</span> <span class="o">=</span> <span class="n">TomekLinks</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">smtomek</span> <span class="o">=</span> <span class="n">SMOTETomek</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">smote</span><span class="o">=</span><span class="n">sm</span><span class="p">,</span>
+    <span class="n">tomek</span><span class="o">=</span><span class="n">tl</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.05</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span> <span class="o">=</span> <span class="n">smtomek</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">scat_plot</span><span class="p">(</span><span class="n">X_re</span><span class="p">,</span> <span class="n">y_re</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9b85d0b3ca85d0a6fb7628454ad99513eedfb24dca7d053c92bc006062bdb9fe.png" src="../../_images/9b85d0b3ca85d0a6fb7628454ad99513eedfb24dca7d053c92bc006062bdb9fe.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 500x500 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling\Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="0_toc_imb.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Imbalance Datasets Handling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_Imbalance_data_handling-2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.2. </span>Cost sensitive approaches</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#undersampling">3.1.1. Undersampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-undersampling">3.1.1.1. Random undersampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#condensed-nearest-neighbourhood-cnn">3.1.1.2. Condensed Nearest Neighbourhood (CNN)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tomek-links">3.1.1.3. Tomek Links</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-sided-selection">3.1.1.4. One Sided Selection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#edited-nearest-neighbours">3.1.1.5. Edited Nearest Neighbours</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repeated-edited-nearest-neighbours">3.1.1.6. Repeated Edited Nearest Neighbours</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-knn">3.1.1.7. All KNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neighbourhood-cleaning-rule">3.1.1.8. Neighbourhood Cleaning Rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#near-miss">3.1.1.9. Near Miss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-hardness">3.1.1.10. Instance Hardness</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oversampling">3.1.2. Oversampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-oversampling">3.1.2.1. Random oversampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smote">3.1.2.2. SMOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smote-nc">3.1.2.3. SMOTE-NC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adasyn">3.1.2.4. ADASYN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#borderline-smote">3.1.2.5. Borderline SMOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#svm-smote">3.1.2.6. SVM SMOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kmean-smote">3.1.2.7. Kmean SMOTE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-under-and-oversampling">3.1.3. Combine Under and Oversampling</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

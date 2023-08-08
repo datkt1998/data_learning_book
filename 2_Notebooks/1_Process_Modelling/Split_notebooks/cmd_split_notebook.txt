@@ -1,0 +1,10 @@
+pip install nbmanips
+nb select has_html_tag h1 | nb split -s nb.ipynb
+nb select has_html_tag h1,h2 | nb split -s nb.ipynb
+https://towardsdatascience.com/split-your-jupyter-notebooks-in-2-lines-of-code-de345d647454
+
+# build jupyter book
+jb build .
+
+# public to online
+ghp-import -n -p -f _build/html

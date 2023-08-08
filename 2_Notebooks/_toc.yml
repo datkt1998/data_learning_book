@@ -1,0 +1,134 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: _jupyter_book_files/intro
+options:
+  numbered: true
+
+parts:
+
+- caption: Process Modeling
+  maxdepth: 4
+  numbered: true
+  chapters:
+
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_eda
+    title: 'Statistic and EDA'
+    sections:
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-0
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-1
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-2
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-3
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-4
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-5
+    - file: 1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-6
+
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_fe
+    title: 'Feature Engineering'
+    sections:
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-1
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-2
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-3
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-4
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-5
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-6
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-7
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-8
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-9
+    - file: 1_Process_Modelling/Split_notebooks/2_Feature_engineering-10
+
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_imb
+    title: 'Imbalance Dataset Handling'
+    sections:
+    - file: 1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-1
+    - file: 1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-2
+    - file: 1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-3
+    - file: 1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-4
+    
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_fs
+    title: 'Feature Selection'
+    sections:
+    - file: 1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-1
+    - file: 1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-2
+    - file: 1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-3
+    - file: 1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-4
+    - file: 1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-5
+
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_eva
+    title: 'Evaluation Metrics'
+    sections:
+    - file: 1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-0
+    - file: 1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-1
+    - file: 1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-2
+    - file: 1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-3
+    - file: 1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-4
+
+  - file: 1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-0
+    title: 'Model Monitoring'
+    sections:
+      - file: 1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-1
+      - file: 1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-2
+
+- caption: ML/DL Algorithms
+  maxdepth: 4
+  numbered: true
+  chapters:
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_ml_su
+    title: 'ML Supervised Learning'
+    sections:
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-0
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-1
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-2
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-3
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-4
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-5
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-6
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-7
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-8
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-9
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_ml_unsu
+    title: 'ML Unsupervised Learning'
+    sections:
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-0
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-1
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-2
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-3
+      - file: 1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-4
+  - file: 1_Process_Modelling/Split_notebooks/0_toc_dl
+    title: 'Deep Learning'
+    sections:
+      - file: 1_Process_Modelling/Split_notebooks/4_DL_Algorithms-0
+
+- caption: My Modules
+  maxdepth: 4
+  numbered: true
+  chapters:
+
+  - file: 3_Mathematics/0_toc
+    title: 'Mathematics'
+    sections:
+      - file: '3_Mathematics/1_Linear_algebra'
+      - file: '3_Mathematics/2_Calculus_and_optimization'
+      - file: '3_Mathematics/3_Distribution_and_statistic'
+      - file: '3_Mathematics/4_Information_theory'
+      - file: '3_Mathematics/5_Graph_theory'
+
+  - file: 4_Programming/0_toc
+    title: 'Programming'
+    sections:
+      - file: '4_Programming/1_SQL'
+      - file: '4_Programming/2_noSQL'
+      - file: '4_Programming/3_pySpark'
+      - file: '4_Programming/4_Python'
+      - file: '4_Programming/6_Git'
+      - file: '4_Programming/7_Docker'
+
+  - file: 2_My_Modules/1_Data_Cleaning
+    title: 'Data cleaning'
+
+  - file: 2_My_Modules/2_Connection
+    title: 'Data connection'
+
+
+# - caption: frameworks

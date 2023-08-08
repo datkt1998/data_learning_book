@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>6. Overview &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-0';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.7. Functional level monitoring" href="6_Models_monitoring_production-1.html" />
+    <link rel="prev" title="5.5. Pairwise metrics" href="5_Evaluation_metrics-4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">6. Model Monitoring</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-0.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Overview</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goal-of-monitoring-step">6.1. Goal of monitoring step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#criteria-of-metrics-selection">6.2. Criteria of metrics selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-of-monitoring">6.3. Type of monitoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-of-monitoring-model">6.4. Stage of monitoring model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#level-0-training-and-deploying-models-manually">6.4.1. Level 0: training and deploying models manually</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#level-1-continuous-training-of-models">6.4.2. Level 1: continuous training of models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#level-2-completely-mature-in-your-mlops">6.4.3. Level 2: completely mature in your MLOps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-for-monitoring">6.5. Best practices for monitoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-contents">6.6. Bonus contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-vs-observability">6.6.1. Monitoring vs Observability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-alerts-the-right-way">6.6.2. Setting alerts the right way</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-log-everything">6.6.3. Write log everything</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="overview">
+<h1><span class="section-number">6. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://neptune.ai/blog/how-to-monitor-your-models-in-production-guide">How to Monitor Your Models in Production</a></p>
+<section id="goal-of-monitoring-step">
+<h2><span class="section-number">6.1. </span>Goal of monitoring step<a class="headerlink" href="#goal-of-monitoring-step" title="Permalink to this heading">#</a></h2>
+<p><img alt="image.png" src="../../_images/model_degrade.png" /></p>
+<p><strong>Cause:</strong></p>
+<ul class="simple">
+<li><p>Machine learning models degrade over time. They’re dynamic and sensitive to real changes in the real world</p></li>
+<li><p>Validation result during development will seldom fully show the model’s performance in production</p></li>
+<li><p>The difference of evironment between development and production, may be caused of the difference of performance</p></li>
+</ul>
+<p><strong>So, the Goal of monitoring model:</strong></p>
+<ul class="simple">
+<li><p>To detect problems with your model and the system serving your model in production before they start to generate negative business value,</p></li>
+<li><p>To take action by triaging and troubleshooting models in production or the inputs and systems that enable them,</p></li>
+<li><p>To ensure their predictions and results can be explained and reported,</p></li>
+<li><p>To ensure the model’s prediction process is transparent to relevant stakeholders for proper governance,</p></li>
+<li><p>Finally, to provide a path for maintaining and improving the model in production.</p></li>
+</ul>
+</section>
+<section id="criteria-of-metrics-selection">
+<h2><span class="section-number">6.2. </span>Criteria of metrics selection<a class="headerlink" href="#criteria-of-metrics-selection" title="Permalink to this heading">#</a></h2>
+<p>It’s very unique for each business case, depend on:</p>
+<ul class="simple">
+<li><p>What does your business define as success and the KPIs that were set in business analysis phase ?</p></li>
+<li><p>What were the performance expectation or result’s distribution expectation before deploying to production ?</p></li>
+</ul>
+<p><strong>Criteria of metrics selection to make sense and be comfortable</strong></p>
+<ul class="simple">
+<li><p>Availabel to compare across models</p></li>
+<li><p>Simple and easy to understand</p></li>
+<li><p>Can be collected/computed in real-time</p></li>
+<li><p>Allows to set threshold for actionable alerting on problems.</p></li>
+</ul>
+<p>For example of metrics that use for building a loan approval system:</p>
+<ol class="arabic simple">
+<li><p>What is the accuracy of model prediction that pay back at stipulated time ? <strong>(Functional level monitoring)</strong></p></li>
+<li><p>How fast does model score is returned after get the request from client ? <strong>(Operational level monitoring)</strong></p></li>
+</ol>
+</section>
+<section id="type-of-monitoring">
+<h2><span class="section-number">6.3. </span>Type of monitoring<a class="headerlink" href="#type-of-monitoring" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Functional level monitoring</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>Data (input data level)</p>
+<ul>
+<li><p>Data quality issues</p></li>
+<li><p>Data/feature drift</p></li>
+<li><p>Outliers</p></li>
+</ul>
+</li>
+<li><p>Model</p>
+<ul>
+<li><p>Monitoring model drift</p></li>
+<li><p>Model configuration and artifacts</p></li>
+<li><p>Model versions</p></li>
+<li><p>Concerted adversaries</p></li>
+</ul>
+</li>
+<li><p>Predictions (Output)</p>
+<ul>
+<li><p>Model evaluation metrics</p>
+<ul>
+<li><p>When availabel have Y true (the ground truth) ?</p></li>
+<li><p>When not availabel have Y true ?</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>Operational level monitoring</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>System performance monitoring for ML models in production</p>
+<ul>
+<li><p>System performance metrics</p>
+<ul>
+<li><p>CPU/GPU utilization</p></li>
+<li><p>Memory utilization</p></li>
+<li><p>Total number of <code class="docutils literal notranslate"><span class="pre">failed</span> <span class="pre">request</span></code></p></li>
+<li><p>Total number of <code class="docutils literal notranslate"><span class="pre">API</span> <span class="pre">calls</span></code></p></li>
+<li><p>Responce time</p></li>
+</ul>
+</li>
+<li><p>System reliability</p></li>
+</ul>
+</li>
+<li><p>Pipelines</p>
+<ul>
+<li><p>Data pipelines</p></li>
+<li><p>Model pipeline</p></li>
+</ul>
+</li>
+<li><p>Cost</p></li>
+</ul>
+<p><strong>Challenges might be met when monitoring</strong></p>
+<ul class="simple">
+<li><p>At input level:</p>
+<ul>
+<li><p>Data sources in production may be scattered and unreliable</p></li>
+<li><p>Do not have clear data requirements</p></li>
+<li><p>Data sources don’t have defined ownership</p></li>
+<li><p>Metadata for your production data workflow is not discoverable</p></li>
+</ul>
+</li>
+<li><p>Teamwork</p></li>
+<li><p>Model quality</p>
+<ul>
+<li><p>Ground truth (y_true) are not availability</p></li>
+<li><p>Model bias</p></li>
+<li><p>Blackbox model</p></li>
+<li><p>Tracking hyper-parameter</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="stage-of-monitoring-model">
+<h2><span class="section-number">6.4. </span>Stage of monitoring model<a class="headerlink" href="#stage-of-monitoring-model" title="Permalink to this heading">#</a></h2>
+<p><img alt="image.jpg" src="../../_images/Essential-Signals-to-Monitor.jpg" /></p>
+<section id="level-0-training-and-deploying-models-manually">
+<h3><span class="section-number">6.4.1. </span>Level 0: training and deploying models manually<a class="headerlink" href="#level-0-training-and-deploying-models-manually" title="Permalink to this heading">#</a></h3>
+<p><img alt="image.jpg" src="../../_images/lv0.png" /></p>
+<p>At this stage, you probably aren’t even thinking of monitoring your model yet, perhaps just finding a way to validate your model on the test set and hand it off to your IT Ops or software developers to deploy.</p>
+<p>I know because I was there. I celebrated when I handed it off, as mentioned at the beginning of this article, but as you know—a couple of months later—it has indeed ended in tears and on the hospital bed.</p>
+<p>For you to avoid this scenario, I propose you prioritize the lowest hanging fruit. Although less informative, and won’t help you monitor model performance, it can still serve as a reasonable performance proxy to tell you if your general application is working as intended.</p>
+<p>You don’t want to spend long hours focusing on monitoring your model’s metrics or try to justify its performance in line with a business KPI when your workflow is still in its manual deployment stage; such metrics will get easier to measure and analyze when your MLOps system gets mature, and you can collect ground truth labels or integrate other performance proxies in the absence of ground truth.</p>
+</section>
+<section id="level-1-continuous-training-of-models">
+<h3><span class="section-number">6.4.2. </span>Level 1: continuous training of models<a class="headerlink" href="#level-1-continuous-training-of-models" title="Permalink to this heading">#</a></h3>
+<p><img alt="image.jpg" src="../../_images/lv1.png" /></p>
+<p>Being at this level means that you have automated the machine learning pipeline to enable continuous training of your machine learning models based on triggers that have been set by criteria or a defined threshold.</p>
+<p>At this stage, I reckon you focus more on monitoring:</p>
+<ul class="simple">
+<li><p>The business metric used to gauge your model’s performance (see “What Could Go Right” section)—if it doesn’t turn out to be pretty difficult to measure, especially if you can’t spend them on getting ground truth for monitoring model metrics.</p></li>
+<li><p>The properties of your production data and your model’s performance in production to detect model staleness and degradation; can help with continuous training through triggers that automate the ML production pipelines to retrain models with new production data.</p></li>
+<li><p>Your model’s retraining process needs to log pipeline metadata, model configuration, and model metadata because you’re most likely going to manually deploy a retrained model, and you want to make sure you can monitor the properties of that model before redeploying it to production.</p></li>
+<li><p>You also need to monitor your production pipeline health as retraining steps are automated, and your data pipeline validates and preprocesses data from one or more sources.</p></li>
+<li><p>You should also start monitoring how much your continuous training process is incurring so you don’t wake up with a gigantic AWS bill one day that you or your company did not plan for.</p></li>
+</ul>
+</section>
+<section id="level-2-completely-mature-in-your-mlops">
+<h3><span class="section-number">6.4.3. </span>Level 2: completely mature in your MLOps<a class="headerlink" href="#level-2-completely-mature-in-your-mlops" title="Permalink to this heading">#</a></h3>
+<p><img alt="image.jpg" src="../../_images/lv2.png" /></p>
+<p>Being at this level indicates that you’re completely mature in your MLOps implementation and pretty much the entire pipeline is a robust, automated CI/CD system. Your training, validation, and deployment phases are all automated in a complimentary feedback loop.</p>
+<p>At this stage, you should pretty much monitor everything but your team’s focus should be on the more informative metrics, making sure that all the relevant stakeholders are empowered with the more informative metrics before spending more time on the least informative metrics.</p>
+</section>
+</section>
+<section id="best-practices-for-monitoring">
+<h2><span class="section-number">6.5. </span>Best practices for monitoring<a class="headerlink" href="#best-practices-for-monitoring" title="Permalink to this heading">#</a></h2>
+<p><strong>General monitoring best practices</strong></p>
+<ul class="simple">
+<li><p><em><strong>Focus on people first</strong></em>. If you build a culture where data is also treated as the product in your organization, people will most likely be inclined to take ownership of the product to ensure it serves its intended purpose end-to-end. You can learn a lot from DevOps cultural change.</p></li>
+<li><p>If it’s possible, don’t give the application’s “monitoring power” to one person. If you have a cross-functional team of data professionals and Ops engineers, let everyone handle their service and communicate effectively. This will help decentralize knowledge and know-how and when the use cases scale, no one will be overwhelmed.</p></li>
+<li><p>Take a lean approach; using too many tools can be very tasking. Centralize your tools but decentralize the team; everyone staying on top of a task.</p></li>
+<li><p>Monitoring doesn’t start after deployment, it starts when you begin experimentation. Build a culture of monitoring right from the model development stage (monitoring model experimentation metrics, logs, and so on).</p></li>
+<li><p>Always consider what’s optimal for the productivity of your team when you encounter any crucial decision-making point.</p></li>
+<li><p>Encourage your team to properly document their troubleshooting framework and create a framework for going from alerting to action to troubleshooting for effective model maintenance.</p></li>
+</ul>
+<p><strong>Best practices for data monitoring</strong></p>
+<ul class="simple">
+<li><p>Batch and streaming data should be processed in the same manner, using the same pipeline so that issues with the data pipeline are a lot more intuitive to troubleshoot.</p></li>
+<li><p>Ensure you go beyond checking for the drift for an entire dataset and look gradually at the feature drift as that can provide more insights.</p></li>
+<li><p>Invest in a global data catalog that can help log high-quality metadata for your data that every user (your data and ML team) can rely on; it will help you tackle - challenges with streaming and maintaining reliable data quality. It will also make lineage tracking easier.</p></li>
+<li><p>Perform a pre-launch validation on your evaluation set before moving your model to production to establish a baseline performance.</p></li>
+</ul>
+<p><strong>Best practices for model monitoring</strong></p>
+<ul class="simple">
+<li><p>Model performance will inevitably degrade over time, but beware of a big dip in performance which is often indicative of something wrong—you can select tools that detect this automatically.</p></li>
+<li><p>Perform shadow deployment and testing with the challenger model vs the champion model and log the predictions so that performance on the new model can be tracked alongside the current model in production; before you decide to deploy the newly trained (challenger) model.</p></li>
+<li><p>You can use a metadata store (like <a class="reference external" href="http://Neptune.ai">Neptune.ai</a>) to store hyperparameters for models that have been versioned and retrained in production; this improves auditing, compliance, lineage traceability, and troubleshooting.</p></li>
+</ul>
+<p><strong>Best practices for monitoring predictions/output</strong></p>
+<ul class="simple">
+<li><p>Prediction drift can be a good performance proxy for model metrics, especially when ground truth isn’t available to collect, but it shouldn’t be used as the sole metric.</p></li>
+<li><p>Track unreasonable outputs from your model. For example, your classification model predicting the wrong class for a set of inputs with a high confidence score, or your regression model predicting a negative score (when the base metric score should be 0) for a given set of features.</p></li>
+</ul>
+</section>
+<section id="bonus-contents">
+<h2><span class="section-number">6.6. </span>Bonus contents<a class="headerlink" href="#bonus-contents" title="Permalink to this heading">#</a></h2>
+<section id="monitoring-vs-observability">
+<h3><span class="section-number">6.6.1. </span>Monitoring vs Observability<a class="headerlink" href="#monitoring-vs-observability" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://christophergs.com/machine%20learning/2020/03/14/how-to-monitor-machine-learning-models/#monitoring-vs-observability">Comparation of two</a></p>
+<p><strong>Observability</strong> is your ability to look at the metrics you’ve been monitoring and perform root-cause analysis on them to understand why they are a certain way, and what threat they pose to the overall performance of your system—all to improve system quality.</p>
+<p><strong>Monitoring</strong> is pretty much everything that happens before observability:</p>
+<ul class="simple">
+<li><p>Collecting performance metrics,</p></li>
+<li><p>tracking them,</p></li>
+<li><p>detecting potential problems,</p></li>
+<li><p>alerting the right user.</p></li>
+</ul>
+<p><strong>To put it simply, you can monitor without observing, but can’t observe your system’s overall performance without monitoring it. Monitoring is about collecting the dots, observability is about connecting them!</strong></p>
+</section>
+<section id="setting-alerts-the-right-way">
+<h3><span class="section-number">6.6.2. </span>Setting alerts the right way<a class="headerlink" href="#setting-alerts-the-right-way" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Test your alerts before they go into production</p></li>
+<li><p>Monitor the primary metrics as concluded in your needs analysis.</p></li>
+<li><p>Agree on the media for the alert, so every service owner is comfortable with their medium (email, stack,…)</p></li>
+<li><p>Send context to the alert by including descriptive information and action by the primary service owner.</p></li>
+<li><p>Make sure to set up a feedback loop that makes your monitoring better.</p></li>
+</ul>
+</section>
+<section id="write-log-everything">
+<h3><span class="section-number">6.6.3. </span>Write log everything<a class="headerlink" href="#write-log-everything" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://neptune.ai/blog/how-to-monitor-your-models-in-production-guide">Read more</a></p>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling\Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="5_Evaluation_metrics-4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.5. </span>Pairwise metrics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="6_Models_monitoring_production-1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.7. </span>Functional level monitoring</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goal-of-monitoring-step">6.1. Goal of monitoring step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#criteria-of-metrics-selection">6.2. Criteria of metrics selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-of-monitoring">6.3. Type of monitoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-of-monitoring-model">6.4. Stage of monitoring model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#level-0-training-and-deploying-models-manually">6.4.1. Level 0: training and deploying models manually</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#level-1-continuous-training-of-models">6.4.2. Level 1: continuous training of models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#level-2-completely-mature-in-your-mlops">6.4.3. Level 2: completely mature in your MLOps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-for-monitoring">6.5. Best practices for monitoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-contents">6.6. Bonus contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-vs-observability">6.6.1. Monitoring vs Observability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-alerts-the-right-way">6.6.2. Setting alerts the right way</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-log-everything">6.6.3. Write log everything</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

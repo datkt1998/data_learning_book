@@ -1,0 +1,1560 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.6. Docker &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '4_Programming/7_Docker';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Data Cleaning" href="../2_My_Modules/1_Data_Cleaning.html" />
+    <link rel="prev" title="2.5. Git" href="6_Git.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc.html">2. Programming</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/4_Programming/7_Docker.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Docker</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#khai-niem-co-ban">2.6.1. Khái niệm cơ bản</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cac-cau-lenh-co-ban">2.6.2. Các câu lệnh cơ bản</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-search">2.6.2.1. docker search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-pull">2.6.2.2. docker pull</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-build">2.6.2.3. docker build</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-images">2.6.2.4. docker images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-run">2.6.2.5. docker run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-ps">2.6.2.6. docker ps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-stop">2.6.2.7. docker stop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-start">2.6.2.8. docker start</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-rm">2.6.2.9. docker rm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-rmi">2.6.2.10. docker rmi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-exec">2.6.2.11. docker exec</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-logs">2.6.2.12. docker logs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-volume-ls">2.6.2.13. docker volume ls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-network-ls">2.6.2.14. docker network ls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-network">2.6.2.15. docker network</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-save">2.6.2.16. docker save</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-load">2.6.2.17. docker load</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dockerfile">2.6.3. Dockerfile</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="docker">
+<h1><span class="section-number">2.6. </span>Docker<a class="headerlink" href="#docker" title="Permalink to this heading">#</a></h1>
+<section id="khai-niem-co-ban">
+<h2><span class="section-number">2.6.1. </span>Khái niệm cơ bản<a class="headerlink" href="#khai-niem-co-ban" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://viblo.asia/p/tim-hieu-ve-docker-va-mot-so-khai-niem-co-ban-GrLZD3OOKk0">Tìm hiểu về docker và các khái niệm</a></p>
+</section>
+<section id="cac-cau-lenh-co-ban">
+<h2><span class="section-number">2.6.2. </span>Các câu lệnh cơ bản<a class="headerlink" href="#cac-cau-lenh-co-ban" title="Permalink to this heading">#</a></h2>
+<section id="docker-search">
+<h3><span class="section-number">2.6.2.1. </span>docker search<a class="headerlink" href="#docker-search" title="Permalink to this heading">#</a></h3>
+<p>search thông tin các image theo keyword có trên docker hub</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>search<span class="w"> </span>mysql
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+mysql                           MySQL is a widely used, open-source relation…   13970     [OK]       
+mariadb                         MariaDB Server is a high performing open sou…   5325      [OK]       
+phpmyadmin                      phpMyAdmin - A web interface for MySQL and M…   766       [OK]       
+percona                         Percona Server is a fork of the MySQL relati…   602       [OK]       
+databack/mysql-backup           Back up mysql databases to... anywhere!         82                   
+bitnami/mysql                   Bitnami MySQL Docker Image                      80                   [OK]
+linuxserver/mysql-workbench                                                     48                   
+ubuntu/mysql                    MySQL open source fast, stable, multi-thread…   43                   
+linuxserver/mysql               A Mysql container, brought to you by LinuxSe…   38                   
+circleci/mysql                  MySQL is a widely used, open-source relation…   29                   
+google/mysql                    MySQL server for Google Compute Engine          23                   [OK]
+rapidfort/mysql                 RapidFort optimized, hardened image for MySQL   14                   
+bitnami/mysqld-exporter                                                         4                    
+ibmcom/mysql-s390x              Docker image for mysql-s390x                    2                    
+vitess/mysqlctld                vitess/mysqlctld                                1                    [OK]
+newrelic/mysql-plugin           New Relic Plugin for monitoring MySQL databa…   1                    [OK]
+rapidfort/mysql8-ib             RapidFort optimized, hardened image for MySQ…   0                    
+rapidfort/mysql-official        RapidFort optimized, hardened image for MySQ…   0                    
+mirantis/mysql                                                                  0                    
+docksal/mysql                   MySQL service images for Docksal - https://d…   0                    
+hashicorp/mysql-portworx-demo                                                   0                    
+cimg/mysql                                                                      0                    
+bitnamicharts/mysql                                                             0                    
+eclipse/mysql                   Mysql 5.7, curl, rsync                          0                    [OK]
+drud/mysql                                                                      0                    
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-pull">
+<h3><span class="section-number">2.6.2.2. </span>docker pull<a class="headerlink" href="#docker-pull" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để tải các image trên docker hub về.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>pull<span class="w"> </span>python:3
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3: Pulling from library/python
+
+b074731d: Pulling fs layer 
+239fe1d6: Pulling fs layer 
+61b53509: Pulling fs layer 
+880ecc1c: Pulling fs layer 
+945a1f9b: Pulling fs layer 
+fe9e3053: Pulling fs layer 
+4c97de70: Pulling fs layer 
+09cadfd3: Pulling fs layer 
+Digest: sha256:5329e75033c4446dc92d702cf8ebbeb63e549d9b83076a776f6753e10817fc3c[8ADownloading  9.427MB/10.87MBDownloading  13.99MB/54.68MBDownloading  33.32MB/53.7MBDownloading  6.134MB/19.93MBDownloading  13.33MB/19.93MBDownloading  64.96MB/189.7MBDownloading  75.18MB/189.7MBDownloading  81.64MB/189.7MBDownloading  143.6MB/189.7MB
+Status: Downloaded newer image for python:3
+docker.io/library/python:3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-build">
+<h3><span class="section-number">2.6.2.3. </span>docker build<a class="headerlink" href="#docker-build" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để build một image từ Dockerfile và context. Context ở đây là một tập file được xác đinh bởi đường dẫn hoặc url cụ thể. Ta có thể sử dụng thêm tham số <code class="docutils literal notranslate"><span class="pre">-t</span></code> để gắn nhãn cho image.</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-t</span> <span class="pre">your_name_container</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>datkt98/exam02<span class="w"> </span>.
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25l[+] Building 0.0s (0/1)                                                         
+?25h?25l[+] Building 0.1s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+?25h?25l[+] Building 0.3s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            0.2s
+?25h?25l[+] Building 0.4s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            0.3s
+?25h?25l[+] Building 0.6s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            0.5s
+?25h?25l[+] Building 0.7s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            0.6s
+?25h?25l[+] Building 0.9s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            0.8s
+?25h?25l[+] Building 1.0s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            0.9s
+?25h?25l[+] Building 1.2s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            1.1s
+?25h?25l[+] Building 1.3s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            1.2s
+?25h?25l[+] Building 1.5s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            1.4s
+?25h?25l[+] Building 1.6s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            1.5s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting flask                                                      </span>
+?25h?25l[+] Building 1.8s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            1.7s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting flask                                                      </span>
+?25h?25l[+] Building 1.9s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            1.8s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting flask                                                      </span>
+?25h?25l[+] Building 2.1s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.0s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting flask                                                      </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Flask-2.2.3-py3-none-any.whl (101 kB)                   </span>
+?25h?25l[+] Building 2.2s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.1s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting flask                                                      </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Flask-2.2.3-py3-none-any.whl (101 kB)                   </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 101.8/101.8 kB 878.6 kB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Werkzeug&gt;=2.2.2                                            </span>
+?25h?25l[+] Building 2.4s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.3s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting flask                                                      </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Flask-2.2.3-py3-none-any.whl (101 kB)                   </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 101.8/101.8 kB 878.6 kB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Werkzeug&gt;=2.2.2                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Werkzeug-2.2.3-py3-none-any.whl (233 kB)                </span>
+?25h?25l[+] Building 2.5s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.4s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 101.8/101.8 kB 878.6 kB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Werkzeug&gt;=2.2.2                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Werkzeug-2.2.3-py3-none-any.whl (233 kB)                </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 1.2 MB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+?25h?25l[+] Building 2.6s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.5s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Werkzeug&gt;=2.2.2                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Werkzeug-2.2.3-py3-none-any.whl (233 kB)                </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 1.2 MB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Jinja2&gt;=3.0                                                </span>
+?25h?25l[+] Building 2.7s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.6s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Werkzeug&gt;=2.2.2                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Werkzeug-2.2.3-py3-none-any.whl (233 kB)                </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.6/233.6 kB 1.2 MB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Jinja2&gt;=3.0                                                </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Jinja2-3.1.2-py3-none-any.whl (133 kB)                  </span>
+?25h?25l[+] Building 2.8s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.7s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Jinja2&gt;=3.0                                                </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Jinja2-3.1.2-py3-none-any.whl (133 kB)                  </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.1/133.1 kB 1.1 MB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting itsdangerous&gt;=2.0                                          </span>
+?25h?25l[+] Building 3.0s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            2.9s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting Jinja2&gt;=3.0                                                </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading Jinja2-3.1.2-py3-none-any.whl (133 kB)                  </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.1/133.1 kB 1.1 MB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting itsdangerous&gt;=2.0                                          </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading itsdangerous-2.1.2-py3-none-any.whl (15 kB)             </span>
+?25h?25l[+] Building 3.1s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.0s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.1/133.1 kB 1.1 MB/s e</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ta 0:00:00                                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting itsdangerous&gt;=2.0                                          </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading itsdangerous-2.1.2-py3-none-any.whl (15 kB)             </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting click&gt;=8.0                                                 </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading click-8.1.3-py3-none-any.whl (96 kB)                    </span>
+?25h?25l[+] Building 3.3s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.2s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting itsdangerous&gt;=2.0                                          </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading itsdangerous-2.1.2-py3-none-any.whl (15 kB)             </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting click&gt;=8.0                                                 </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading click-8.1.3-py3-none-any.whl (96 kB)                    </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.6/96.6 kB 1.2 MB/s et</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # a 0:00:00                                                             </span>
+?25h?25l[+] Building 3.4s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.3s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading itsdangerous-2.1.2-py3-none-any.whl (15 kB)             </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting click&gt;=8.0                                                 </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading click-8.1.3-py3-none-any.whl (96 kB)                    </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 96.6/96.6 kB 1.2 MB/s et</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # a 0:00:00                                                             </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting MarkupSafe&gt;=2.0                                            </span>
+?25h?25l[+] Building 3.5s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.4s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # a 0:00:00                                                             </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting MarkupSafe&gt;=2.0                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading MarkupSafe-2.1.2-cp311-cp311-manylinux_2_17_aarch64.many</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # linux2014_aarch64.whl (28 kB)                                         </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Installing collected packages: MarkupSafe, itsdangerous, click, Werkze</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ug, Jinja2, flask                                                     </span>
+?25h?25l[+] Building 3.7s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.6s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # a 0:00:00                                                             </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Collecting MarkupSafe&gt;=2.0                                            </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; #   Downloading MarkupSafe-2.1.2-cp311-cp311-manylinux_2_17_aarch64.many</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # linux2014_aarch64.whl (28 kB)                                         </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Installing collected packages: MarkupSafe, itsdangerous, click, Werkze</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ug, Jinja2, flask                                                     </span>
+?25h?25l[+] Building 3.8s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.7s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Successfully installed Jinja2-3.1.2 MarkupSafe-2.1.2 Werkzeug-2.2.3 cl</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ick-8.1.3 flask-2.2.3 itsdangerous-2.1.2                              </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # WARNING: Running pip as the &#39;root&#39; user can result in broken permissio</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ns and conflicting behaviour with the system package manager. It is re</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # commended to use a virtual environment instead: https://pip.pypa.io/wa</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # rnings/venv                                                           </span>
+?25h?25l[+] Building 4.0s (7/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+ =&gt; [4/4] RUN pip install flask                                            3.9s
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # Successfully installed Jinja2-3.1.2 MarkupSafe-2.1.2 Werkzeug-2.2.3 cl</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ick-8.1.3 flask-2.2.3 itsdangerous-2.1.2                              </span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # WARNING: Running pip as the &#39;root&#39; user can result in broken permissio</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # ns and conflicting behaviour with the system package manager. It is re</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # commended to use a virtual environment instead: https://pip.pypa.io/wa</span>
+<span class=" -Color -Color-Faint"> =&gt; =&gt; # rnings/venv                                                           </span>
+?25h?25l[+] Building 4.1s (8/8)                                                         
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [4/4] RUN pip install flask                                            4.0s</span>
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+?25h?25l[+] Building 4.2s (9/9) FINISHED                                                
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build definition from Dockerfile                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring dockerfile: 152B                                       0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load .dockerignore                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 2B                                            0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load metadata for docker.io/library/python:3                0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [1/4] FROM docker.io/library/python:3                                  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [internal] load build context                                          0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; transferring context: 202.93kB                                      0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; CACHED [2/4] WORKDIR /Users/khongdat/Library/CloudStorage/GoogleDrive  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [3/4] COPY . .                                                         0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; [4/4] RUN pip install flask                                            4.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; exporting to image                                                     0.1s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; exporting layers                                                    0.1s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; writing image sha256:324475812f6b1277af40fd0c5c762be2c40a0d29e70c7  0.0s</span>
+<span class=" -Color -Color-Blue"> =&gt; =&gt; naming to docker.io/datkt98/exam02                                  0.0s</span>
+?25h
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-images">
+<h3><span class="section-number">2.6.2.4. </span>docker images<a class="headerlink" href="#docker-images" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để liệt kê các image có trên máy tính</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>images
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>REPOSITORY       TAG       IMAGE ID       CREATED          SIZE
+datkt98/exam02   latest    324475812f6b   4 seconds ago    887MB
+datkt98/exam01   latest    1b3ec0e42e26   21 minutes ago   887MB
+python           3         74707af2d4ec   2 days ago       871MB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-run">
+<h3><span class="section-number">2.6.2.5. </span>docker run<a class="headerlink" href="#docker-run" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để tạo 1 container với images của bạn, ví dụ để tạo 1 container với image ubuntu đã tải về trước đó, bạn dùng lệnh
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">ubuntu</span></code></p>
+<p><strong>Các option thường dùng với <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code></strong>
+Trong các lệnh trên có lẽ docker run là lệnh hữu ích nhất và ta sẽ thường sử dụng nhất. Nó sử dụng để tạo container dựa vào một image cụ thể. Có nhiều option có thể sử dụng với docker run.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--detach</span></code>, <code class="docutils literal notranslate"><span class="pre">-d</span></code>
+Mặc định docker container chạy thì mọi input, output, lỗi được hiện thị trực tiếp trên màn hình terminal. Tuy nhiên với tùy chọn –detach/-d, container sẽ được chạy ngầm vì vậy mọi output, lỗi sẽ không hiển thị.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--entrypoint</span></code>
+Thiết lập hoặc ghi đè các lệnh mặc định khi chạy images. Entrypoint là một tập các lệnh và tham số sẽ chạy đầu tiên khi container được chạy từ image. Bất kỳ câu lệnh và tham số được truyền vào sau docker run sẽ được nối vào entrypoint.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--env</span></code>, <code class="docutils literal notranslate"><span class="pre">-e</span></code>
+Thiết lập biến môi trường sử dụng cặp (key=value). Nếu ta có biến môi trường trong file ta có thể truền nó vào file bằng tùy chọn –env-file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ip</span></code>
+Khai báo địa chỉ IP cho container</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--name</span></code>
+Gắn tên cho container</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--publish</span></code>, <code class="docutils literal notranslate"><span class="pre">-p</span></code> | <code class="docutils literal notranslate"><span class="pre">--publish-all</span></code>, <code class="docutils literal notranslate"><span class="pre">-P</span></code>
+Do các container của docker được gộp và chạy trong một network riêng nên nó sẽ độc lập với máy chủ mà docker chạy trên đó. Để mở các cổng của network các container và ánh xạ nó với cổng của máy host ta sử dụng tùy chọn –publish, -p. Hoặc sử dụng –publish-all, -P sẽ mở tất cả các cổng của container.</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--publish</span> <span class="pre">80:80</span> <span class="pre">&lt;image_name&gt;</span> <span class="pre">bash</span></code></p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--rm</span></code>
+Tự động xóa container khi nó thoát.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tty</span></code>, <code class="docutils literal notranslate"><span class="pre">-t</span></code>
+Cấp một terminal ảo cho container. Tùy chọn này thường được sử dụng với –interactive, -i giúp cho STDIN mở ngay cả khi container chạy ở dạng ngầm.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--volume</span></code>, <code class="docutils literal notranslate"><span class="pre">-v</span></code>
+Gắn một volume vào một container, cho phép chúng ta thao tác ở container nhưng dữ liệu vẫn được lưu trữ ở máy chủ.</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--volume</span> <span class="pre">/volume_name</span> <span class="pre">&lt;image_name&gt;</span> <span class="pre">bash</span></code></p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--workdir</span></code>, <code class="docutils literal notranslate"><span class="pre">-w</span></code>
+Chỉ định thư mục sẽ làm việc bên trong container. Giả sử ta sẽ làm việc với thư mục app trong docker</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--workdir</span> <span class="pre">/app</span> <span class="pre">&lt;image_name&gt;</span> <span class="pre">bash</span></code></p>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>con_exam01<span class="w"> </span>datkt98/exam01
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hello world !
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># neu code app su dung port 5000 va tuong duong voi port 5000 tren container, anh xa sang cong 5555 tren host</span>
+<span class="o">!</span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>con_exam02<span class="w"> </span>-p<span class="w"> </span><span class="m">5555</span>:5000<span class="w"> </span>datkt98/exam02
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * Serving Flask app &#39;run_flask&#39;
+ * Debug mode: on
+<span class=" -Color -Color-Bold -Color-Bold-Red">WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.</span>
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.0.2:5000
+<span class=" -Color -Color-Yellow">Press CTRL+C to quit</span>
+172.17.0.1 - - [25/Mar/2023 18:53:14] &quot;GET / HTTP/1.1&quot; 200 -
+172.17.0.1 - - [25/Mar/2023 18:53:14] &quot;<span class=" -Color -Color-Yellow">GET /favicon.ico HTTP/1.1</span>&quot; 404 -
+^C
+</pre></div>
+</div>
+</div>
+</div>
+<p>–&gt; ta se truy cap <strong><a class="reference external" href="http://172.17.0.2:5555">http://172.17.0.2:5555</a></strong> tren host</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># entry tới thư mục trong container</span>
+<span class="o">!</span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--entrypoint<span class="w"> </span>bash<span class="w"> </span>myimage01
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-ps">
+<h3><span class="section-number">2.6.2.6. </span>docker ps<a class="headerlink" href="#docker-ps" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này để liệt kê các container đang chạy</p>
+<p>Khi sử dụng với các tham số</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-a</span></code>/<code class="docutils literal notranslate"><span class="pre">-all</span></code>: Liệt kê tất cả các container, kể cả đang chạy hay đã kể thúc</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-q</span></code>/<code class="docutils literal notranslate"><span class="pre">-quiet</span></code>: chỉ liệt kê ra id của các container.</p></li>
+</ul>
+<p>Để liệt kệ các container đã tạo trước đó bạn dùng lệnh
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>ps<span class="w"> </span>-a
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS                      PORTS     NAMES
+9978bf498c50   b4d961f671a2     &quot;python ./run_flask.…&quot;   2 minutes ago    Exited (0) 30 seconds ago             con_exam02
+794e689cc8b9   datkt98/exam01   &quot;python ./run.py&quot;        20 minutes ago   Exited (0) 20 minutes ago             con_exam01
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-stop">
+<h3><span class="section-number">2.6.2.7. </span>docker stop<a class="headerlink" href="#docker-stop" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để dừng 1 container đang chạy. Ví dụ như hình bên dưới bạn có container đang chạy với ID là 03a1db578cc3, bạn dùng lệnh <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">03a1</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>stop<span class="w"> </span>a6e267c
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a6e267c
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-start">
+<h3><span class="section-number">2.6.2.8. </span>docker start<a class="headerlink" href="#docker-start" title="Permalink to this heading">#</a></h3>
+<p>Để start lại container đã dừng trước đó, bạn dùng lệnh docker start, ví dụ bạn start lại container đã stop phía trên dùng lệnh
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">start</span> <span class="pre">03a1</span></code></p>
+</section>
+<section id="docker-rm">
+<h3><span class="section-number">2.6.2.9. </span>docker rm<a class="headerlink" href="#docker-rm" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để xóa 1 or nhiều container đã tạo trước đó, nếu container đang chạy, bạn cần thêm tham số <code class="docutils literal notranslate"><span class="pre">-f</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>9978bf498c50
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9978bf498c50
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-rmi">
+<h3><span class="section-number">2.6.2.10. </span>docker rmi<a class="headerlink" href="#docker-rmi" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để xóa một hoặc nhiều images.</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rmi</span> <span class="pre">&lt;list_image_id&gt;</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>rmi<span class="w"> </span>-f<span class="w"> </span>b4d961f671a2
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Untagged: datkt98/exam02:latest
+Deleted: sha256:b4d961f671a28ce02bbb75ec7990c4a6207741d8bb68e2bbd079901929a34fb3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-exec">
+<h3><span class="section-number">2.6.2.11. </span>docker exec<a class="headerlink" href="#docker-exec" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để chạy 1 lệnh trong container, ví dụ bên dưới là liệt kê các tệp tin, thư mục trong folder root của container
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">03a1</span> <span class="pre">ls</span> <span class="pre">-la</span> <span class="pre">/root</span></code></p>
+</section>
+<section id="docker-logs">
+<h3><span class="section-number">2.6.2.12. </span>docker logs<a class="headerlink" href="#docker-logs" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này được sử dụng để hiển thị logs của một container, ta cần phải chỉ rõ container để hiển thị logs thông qua tên của nó. Ngoài cũng có thể sử dụng thêm một số flag như <code class="docutils literal notranslate"><span class="pre">--follow</span></code> để giữ việc theo dõi logs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">--follow</span> <span class="pre">your_name_container</span></code></p>
+</section>
+<section id="docker-volume-ls">
+<h3><span class="section-number">2.6.2.13. </span>docker volume ls<a class="headerlink" href="#docker-volume-ls" title="Permalink to this heading">#</a></h3>
+<p>Lệnh này dùng để liệt kê ra các volumn mà các container sử dụng, volume là một cơ chế dùng để lưu trữ dữ liệu sinh ra và sử dụng bởi Docker.</p>
+</section>
+<section id="docker-network-ls">
+<h3><span class="section-number">2.6.2.14. </span>docker network ls<a class="headerlink" href="#docker-network-ls" title="Permalink to this heading">#</a></h3>
+<p>liệt kê tất cả các network có sẵn</p>
+</section>
+<section id="docker-network">
+<h3><span class="section-number">2.6.2.15. </span>docker network<a class="headerlink" href="#docker-network" title="Permalink to this heading">#</a></h3>
+<p>tao connect vào một network mới. Nó giúp container giao tiếp được với một container khác qua tên thay vì mở cổng IP để giao tiếp trên host.</p>
+</section>
+<section id="docker-save">
+<h3><span class="section-number">2.6.2.16. </span>docker save<a class="headerlink" href="#docker-save" title="Permalink to this heading">#</a></h3>
+<p>save docker image to a tar archive</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">save</span> <span class="pre">[OPTIONS]</span> <span class="pre">IMAGE</span> <span class="pre">[IMAGE...]</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>save<span class="w"> </span>image_name01<span class="w"> </span>&gt;<span class="w"> </span>image_name01.tar<span class="w"> </span>#<span class="w"> </span>using<span class="w"> </span>STDOUT
+<span class="o">!</span>docker<span class="w"> </span>save<span class="w"> </span>-o<span class="w"> </span>image_name01.tar<span class="w"> </span>&gt;<span class="w"> </span>image_name01<span class="w"> </span>#<span class="w"> </span>using<span class="w"> </span>Write<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>file,<span class="w"> </span>instead<span class="w"> </span>of<span class="w"> </span>STDOUT<span class="w"> </span><span class="o">(</span>want<span class="w"> </span>to<span class="w"> </span>specific<span class="w"> </span>output<span class="w"> </span>path<span class="o">)</span>
+<span class="o">!</span>docker<span class="w"> </span>save<span class="w"> </span>image_name01:latest<span class="w"> </span><span class="p">|</span><span class="w"> </span>gzip<span class="w"> </span>&gt;<span class="w"> </span>image_name01.tar.gz<span class="w"> </span>#gzip<span class="w"> </span>to<span class="w"> </span>smaller<span class="w"> </span>file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-load">
+<h3><span class="section-number">2.6.2.17. </span>docker load<a class="headerlink" href="#docker-load" title="Permalink to this heading">#</a></h3>
+<p>load docker image from a tar archive or STDIN</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">load</span> <span class="pre">[OPTIONS]</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>docker<span class="w"> </span>load<span class="w"> </span>&lt;<span class="w"> </span>image_name01.tar.gz<span class="w"> </span>#<span class="w"> </span>using<span class="w"> </span>STDIN
+<span class="o">!</span>docker<span class="w"> </span>load<span class="w"> </span>--input<span class="w"> </span>image_name01.tar<span class="w"> </span>#<span class="w"> </span>Read<span class="w"> </span>from<span class="w"> </span>tar<span class="w"> </span>archive<span class="w"> </span>file<span class="w"> </span><span class="o">(</span>want<span class="w"> </span>to<span class="w"> </span>specific<span class="w"> </span>input<span class="w"> </span>path<span class="o">)</span>,<span class="w"> </span>instead<span class="w"> </span>of<span class="w"> </span>STDIN
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="dockerfile">
+<h2><span class="section-number">2.6.3. </span>Dockerfile<a class="headerlink" href="#dockerfile" title="Permalink to this heading">#</a></h2>
+<p><strong>Dockerfile</strong> là một file dạng text không có phần đuôi mở rộng, chứa các đặc tả về một trường thực thi phần mềm, cấu trúc cho Docker Image. Từ những câu lệnh đó, Docker sẽ build ra Docker image (thường có dung lượng nhỏ từ vài MB đến lớn vài GB).</p>
+<p><strong>Cú pháp của một Dockerfile</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTRUCTION</span> <span class="n">arguments</span>
+</pre></div>
+</div>
+<p>trong đó:</p>
+<ul class="simple">
+<li><p><strong>INSTRUCTION</strong> là tên các chỉ thị có trong Dockerfile, mỗi chỉ thị thực hiện một nhiệm vụ nhất định, được Docker quy định. Khi khai báo các chỉ thị này phải được viết bằng chữ IN HOA.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aguments</span></code> là phần nội dung của các chỉ thị, quyết định chỉ thị sẽ làm gì.</p></li>
+</ul>
+<p>Ví dụ:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">alpine</span><span class="p">:</span><span class="mf">3.4</span>
+
+<span class="n">RUN</span> <span class="n">apk</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
+    <span class="n">apk</span> <span class="n">add</span> <span class="n">curl</span> <span class="o">&amp;&amp;</span> \
+    <span class="n">apk</span> <span class="n">add</span> <span class="n">git</span> <span class="o">&amp;&amp;</span> \
+    <span class="n">apk</span> <span class="n">add</span> <span class="n">vim</span>
+
+</pre></div>
+</div>
+<p><a class="reference external" href="https://docs.docker.com/engine/reference/builder/">Các chỉ thị trong Dockerfile</a></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FROM</span></code></p></li>
+</ol>
+<p>Chỉ định rằng image nào sẽ được dùng làm image cơ sở để quá trình build image thực thiện các câu lệnh tiếp theo. Các image base này sẽ được tải về từ Public Repository hoặc Private Repository riêng của mỗi người tùy theo setup.</p>
+<p>Chỉ thị <code class="docutils literal notranslate"><span class="pre">FROM</span></code> là bắt buộc và phải được để lên phía trên cùng của Dockerfile.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="o">&lt;</span><span class="n">image</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">AS</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="n">FROM</span> <span class="o">&lt;</span><span class="n">image</span><span class="o">&gt;</span><span class="p">[:</span><span class="o">&lt;</span><span class="n">tag</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="n">AS</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="n">FROM</span> <span class="o">&lt;</span><span class="n">image</span><span class="o">&gt;</span><span class="p">[</span><span class="o">@&lt;</span><span class="n">digest</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="n">AS</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">FROM</span> <span class="pre">ubuntu</span></code>
+hoặc <code class="docutils literal notranslate"><span class="pre">FROM</span> <span class="pre">ubuntu:latest</span></code></p>
+<ol class="arabic simple" start="2">
+<li><p><code class="docutils literal notranslate"><span class="pre">LABEL</span></code></p></li>
+</ol>
+<p>được dùng để thêm các thông tin <code class="docutils literal notranslate"><span class="pre">meta</span></code> vào Docker Image khi chúng được build. Chúng tồn tại dưới dạng các cặp <code class="docutils literal notranslate"><span class="pre">key</span></code> - <code class="docutils literal notranslate"><span class="pre">value</span></code>, được lưu trữ dưới dạng chuỗi. Có thể chỉ định nhiều label cho một Docker Image, và tất nhiên mỗi cặp <code class="docutils literal notranslate"><span class="pre">key</span></code> - <code class="docutils literal notranslate"><span class="pre">value</span></code> phải là duy nhất. Nếu cùng một key mà được khai báo nhiều giá trị (<code class="docutils literal notranslate"><span class="pre">value</span></code>) thì giá trị được khai báo gần đây nhất sẽ ghi đè lên giá trị trước đó.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LABEL</span> <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="o">...</span> <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LABEL</span> <span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">some</span><span class="o">-</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;lorem&quot;</span>
+<span class="n">LABEL</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&quot;</span>
+</pre></div>
+</div>
+<p>Để xem thông tin meta của một Docker Image, ta sử dụng dòng lệnh:
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">inspect</span> <span class="pre">&lt;image</span> <span class="pre">id&gt;</span></code></p>
+<ol class="arabic simple" start="3">
+<li><p><code class="docutils literal notranslate"><span class="pre">RUN</span></code></p></li>
+</ol>
+<p>dùng để chạy một lệnh nào đó trong quá trình build image và thường là các câu lệnh Linux. Tùy vào image gốc được khai báo trong phần <code class="docutils literal notranslate"><span class="pre">FROM</span></code> thì sẽ có các câu lệnh tương ứng. Ví dụ, để chạy câu lệnh update đối với <strong>Ubuntu</strong> sẽ là <code class="docutils literal notranslate"><span class="pre">RUN</span> <span class="pre">apt-get</span> <span class="pre">update</span> <span class="pre">-y</span></code> còn đối với <strong>CentOS</strong> thì sẽ là <code class="docutils literal notranslate"><span class="pre">Run</span> <span class="pre">yum</span> <span class="pre">update</span> <span class="pre">-y</span></code>. Kết quả của câu lệnh sẽ được commit lại, kết quả commit đó sẽ được sử dụng trong bước tiếp theo của Dockerfile.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RUN</span> <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span>
+<span class="n">RUN</span> <span class="p">[</span><span class="s2">&quot;executable&quot;</span><span class="p">,</span> <span class="s2">&quot;param1&quot;</span><span class="p">,</span> <span class="s2">&quot;param2&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RUN</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;source $HOME/.bashrc; echo $HOME&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RUN</span> <span class="p">[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;echo hello&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span><span class="p">;</span> \
+    <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">curl</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><code class="docutils literal notranslate"><span class="pre">ADD</span></code></p></li>
+</ol>
+<p>Chỉ thị <code class="docutils literal notranslate"><span class="pre">ADD</span></code> sẽ thực hiện sao chép các tập, thư mục từ máy đang build hoặc remote file URLs từ <code class="docutils literal notranslate"><span class="pre">src</span></code> và thêm chúng vào filesystem của image <code class="docutils literal notranslate"><span class="pre">dest</span></code>.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADD</span> <span class="p">[</span><span class="o">--</span><span class="n">chown</span><span class="o">=&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">src</span><span class="o">&gt;...</span> <span class="o">&lt;</span><span class="n">dest</span><span class="o">&gt;</span>
+<span class="n">ADD</span> <span class="p">[</span><span class="o">--</span><span class="n">chown</span><span class="o">=&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="s2">&quot;&lt;src&gt;&quot;</span><span class="p">,</span><span class="o">...</span> <span class="s2">&quot;&lt;dest&gt;&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Trong đó:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code> có thể khai báo nhiều file, thư mục, …</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dest</span></code> phải là đường dẫn tuyệt đối hoặc có quan hệ chỉ thị đối với WORKDIR.</p></li>
+</ul>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ADD hom* /mydir/
+ADD hom?.txt /mydir/
+ADD test.txt relativeDir/
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p><code class="docutils literal notranslate"><span class="pre">COPY</span></code></p></li>
+</ol>
+<p>Chỉ thị <code class="docutils literal notranslate"><span class="pre">COPY</span></code> cũng giống với <code class="docutils literal notranslate"><span class="pre">ADD</span></code> là copy file, thư mục từ <code class="docutils literal notranslate"><span class="pre">&lt;src&gt;</span></code> và thêm chúng vào <code class="docutils literal notranslate"><span class="pre">&lt;dest&gt;</span></code> của container. Khác với <code class="docutils literal notranslate"><span class="pre">ADD</span></code>, nó không hỗ trợ thêm các file remote file URLs từ các nguồn trên mạng.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COPY</span> <span class="p">[</span><span class="o">--</span><span class="n">chown</span><span class="o">=&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">src</span><span class="o">&gt;...</span> <span class="o">&lt;</span><span class="n">dest</span><span class="o">&gt;</span>
+<span class="n">COPY</span> <span class="p">[</span><span class="o">--</span><span class="n">chown</span><span class="o">=&lt;</span><span class="n">user</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="s2">&quot;&lt;src&gt;&quot;</span><span class="p">,</span><span class="o">...</span> <span class="s2">&quot;&lt;dest&gt;&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>COPY hom* /mydir/
+COPY hom?.txt /mydir/
+COPY . .
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p><code class="docutils literal notranslate"><span class="pre">ENV</span></code></p></li>
+</ol>
+<p>Chỉ thị <code class="docutils literal notranslate"><span class="pre">ENV</span></code> dùng để khai báo các biến môi trường. Các biến này được khai báo dưới dạng <code class="docutils literal notranslate"><span class="pre">key</span></code> - <code class="docutils literal notranslate"><span class="pre">value</span></code> bằng các chuỗi. Giá trị của các biến này sẽ có hiện hữu cho các chỉ thị tiếp theo của <strong>Dockerfile</strong>.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ENV</span> <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;=&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ENV</span> <span class="n">DOMAIN</span><span class="o">=</span><span class="s2">&quot;viblo.asia&quot;</span>
+<span class="n">ENV</span> <span class="n">PORT</span><span class="o">=</span><span class="mi">80</span>
+<span class="n">ENV</span> <span class="n">USERNAME</span><span class="o">=</span><span class="s2">&quot;namdh&quot;</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;secret&quot;</span>
+</pre></div>
+</div>
+<p>Ngoài ra cũng có thể thay đổi giá trị của biến môi trường bằng câu lệnh khởi động container:
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--env</span> <span class="pre">&lt;key&gt;=&lt;value&gt;</span></code></p>
+<ol class="arabic simple" start="7">
+<li><p><code class="docutils literal notranslate"><span class="pre">CMD</span></code></p></li>
+</ol>
+<p>Chỉ thị <code class="docutils literal notranslate"><span class="pre">CMD</span></code> định nghĩa các câu lệnh sẽ được chạy sau khi container được khởi động từ image đã build. Có thể khai báo được nhiều nhưng chỉ có duy nhất <code class="docutils literal notranslate"><span class="pre">CMD</span></code> cuối cùng được chạy.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;executable&quot;</span><span class="p">,</span><span class="s2">&quot;param1&quot;</span><span class="p">,</span><span class="s2">&quot;param2&quot;</span><span class="p">]</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;param1&quot;</span><span class="p">,</span><span class="s2">&quot;param2&quot;</span><span class="p">]</span>
+<span class="n">CMD</span> <span class="n">command</span> <span class="n">param1</span> <span class="n">param2</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;main.py&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p><code class="docutils literal notranslate"><span class="pre">EXPOSE</span></code></p></li>
+</ol>
+<p>Chỉ thị <code class="docutils literal notranslate"><span class="pre">EXPOSE</span></code> cho phép container mở publish port chỉ định sau khi run từ image.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EXPOSE</span> <span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">port</span><span class="o">&gt;/&lt;</span><span class="n">protocol</span><span class="o">&gt;...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EXPOSE</span> <span class="mi">8080</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p><code class="docutils literal notranslate"><span class="pre">VOLUME</span></code></p></li>
+</ol>
+<p>Tạo 1 volume bên ngoài từ host hoặc 1 container khác mà container có thể giao tiếp được.</p>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VOLUME</span> <span class="p">[</span><span class="s2">&quot;/data&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="10">
+<li><p><code class="docutils literal notranslate"><span class="pre">WORKDIR</span></code></p></li>
+</ol>
+<p>sets the working directory for any <code class="docutils literal notranslate"><span class="pre">RUN</span></code>, <code class="docutils literal notranslate"><span class="pre">CMD</span></code>, <code class="docutils literal notranslate"><span class="pre">ENTRYPOINT</span></code>, <code class="docutils literal notranslate"><span class="pre">COPY</span></code> and <code class="docutils literal notranslate"><span class="pre">ADD</span></code> <strong>instructions</strong> that follow it in the Dockerfile. If the <code class="docutils literal notranslate"><span class="pre">WORKDIR</span></code> doesn’t exist, it will be created even if it’s not used in any subsequent Dockerfile instruction. Set <code class="docutils literal notranslate"><span class="pre">WORKDIR</span></code> trước khi thực hiện các <strong>instructions</strong> trên.</p>
+<p><strong>Cú pháp</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WORKDIR</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">workdir</span>
+</pre></div>
+</div>
+<p><strong>Ví dụ</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">WORKDIR</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">khongdat</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">CloudStorage</span><span class="o">/</span><span class="n">GoogleDrive</span><span class="o">-</span><span class="n">k55</span><span class="mf">.1613310017</span><span class="nd">@ftu</span><span class="o">.</span><span class="n">edu</span><span class="o">.</span><span class="n">vn</span><span class="o">/</span><span class="n">My</span> <span class="n">Drive</span><span class="o">/</span><span class="n">GitCode</span><span class="o">/</span><span class="n">My_learning</span><span class="o">/</span><span class="mf">6.</span> <span class="n">Docker</span>
+<span class="n">RUN</span> <span class="n">pwd</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./4_Programming"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="6_Git.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.5. </span>Git</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../2_My_Modules/1_Data_Cleaning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Data Cleaning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#khai-niem-co-ban">2.6.1. Khái niệm cơ bản</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cac-cau-lenh-co-ban">2.6.2. Các câu lệnh cơ bản</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-search">2.6.2.1. docker search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-pull">2.6.2.2. docker pull</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-build">2.6.2.3. docker build</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-images">2.6.2.4. docker images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-run">2.6.2.5. docker run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-ps">2.6.2.6. docker ps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-stop">2.6.2.7. docker stop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-start">2.6.2.8. docker start</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-rm">2.6.2.9. docker rm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-rmi">2.6.2.10. docker rmi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-exec">2.6.2.11. docker exec</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-logs">2.6.2.12. docker logs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-volume-ls">2.6.2.13. docker volume ls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-network-ls">2.6.2.14. docker network ls</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-network">2.6.2.15. docker network</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-save">2.6.2.16. docker save</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-load">2.6.2.17. docker load</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dockerfile">2.6.3. Dockerfile</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
