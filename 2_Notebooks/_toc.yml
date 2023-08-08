@@ -124,11 +124,15 @@ parts:
       - file: '4_Programming/6_Git'
       - file: '4_Programming/7_Docker'
 
-  - file: 2_My_Modules/1_Data_Cleaning
-    title: 'Data cleaning'
+  - file: 2_My_Modules/0_toc
+    title: 'My Functions'
+    sections:
+      - file: '2_My_Modules/1_Data_Cleaning'
+      - file: '2_My_Modules/2_Connection'
 
-  - file: 2_My_Modules/2_Connection
-    title: 'Data connection'
-
+  - file: 6_Tools_and_Projects/0_toc
+    title: 'Tools and Projects'
+    sections:
+      - file: '6_Tools_and_Projects/deploy_callAPI_model_in_GCP'
 
 # - caption: frameworks
