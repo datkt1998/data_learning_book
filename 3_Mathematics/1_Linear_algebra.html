@@ -1,0 +1,1708 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>1.1. Linear algebra &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '3_Mathematics/1_Linear_algebra';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1.5. Calculus and optimization" href="2_Calculus_and_optimization.html" />
+    <link rel="prev" title="1. Mathematics" href="0_toc.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc.html">1. Mathematics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/3_Mathematics/1_Linear_algebra.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Linear algebra</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1.1. Linear algebra</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-and-vector">1.2. Matrix and vector</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector">1.2.1. Vector</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tich-vo-huong-2-vector">1.2.1.1. tích vô hướng 2 vector</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-matrix">1.2.2. Create matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-matrix">1.2.2.1. custom matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#array-of-zeros">1.2.2.2. array of zeros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#array-of-ones">1.2.2.3. array of ones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#array-of-constant">1.2.2.4. array of constant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-don-vi">1.2.2.5. matrix don vi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-matrix">1.2.2.6. random matrix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-function">1.2.3. Matrix function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-info">1.2.3.1. get info</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resize-reshape">1.2.3.2. resize , reshape</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concat">1.2.3.3. concat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#split">1.2.3.4. split</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filter-matrix">1.2.3.5. filter matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expand-matrix">1.2.3.6. expand matrix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-matrix-function">1.2.4. Math matrix function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose">1.2.4.1. transpose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nhan-matrix">1.2.4.2. nhân matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-matrix">1.2.4.3. inverse matrix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalue-eigenvector">1.2.5. Eigenvalue - Eigenvector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonality-and-orthonarmal-set">1.2.6. Orthogonality and Orthonarmal Set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hang-cua-matrix-low-rank-factorization">1.2.7. Hạng của matrix - low rank factorization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-factorization">1.2.7.1. low rank factorization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cac-loai-khoang-cach">1.3. Các loại khoảng cách</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation">1.4. Correlation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.4.1. Correlation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pearson">1.4.1.1. Pearson</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spearman">1.4.1.2. Spearman</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">1.4.2. Covariance</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="linear-algebra">
+<h1><span class="section-number">1.1. </span>Linear algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="matrix-and-vector">
+<h1><span class="section-number">1.2. </span>Matrix and vector<a class="headerlink" href="#matrix-and-vector" title="Permalink to this heading">#</a></h1>
+<section id="vector">
+<h2><span class="section-number">1.2.1. </span>Vector<a class="headerlink" href="#vector" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Vector thể hiện một quan sát gồm có các feature</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 2, 3, 2])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array of evenly</span>
+<span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> 
+<span class="n">v2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10, 15, 20])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array of evenly - array tuyen tinh</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.,  2.,  4.,  6.,  8., 10.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2 vector</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">40</span><span class="p">])</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">])</span>
+<span class="n">C</span><span class="nd">@D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-270
+</pre></div>
+</div>
+</div>
+</div>
+<section id="tich-vo-huong-2-vector">
+<h3><span class="section-number">1.2.1.1. </span>tích vô hướng 2 vector<a class="headerlink" href="#tich-vo-huong-2-vector" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="create-matrix">
+<h2><span class="section-number">1.2.2. </span>Create matrix<a class="headerlink" href="#create-matrix" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Matrix thể hiện tập hợp nhiều vector</p></li>
+</ul>
+<section id="custom-matrix">
+<h3><span class="section-number">1.2.2.1. </span>custom matrix<a class="headerlink" href="#custom-matrix" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Taking a 3 * 3 matrix</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Taking a 2 * 2 * 3 matrix (3 dimensions)</span>
+<span class="n">ar_3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[(</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)]],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+<span class="n">ar_3d</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 2, 3)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="array-of-zeros">
+<h3><span class="section-number">1.2.2.2. </span>array of zeros<a class="headerlink" href="#array-of-zeros" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array of zeros</span>
+<span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0., 0., 0., 0.],
+       [0., 0., 0., 0.],
+       [0., 0., 0., 0.]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="array-of-ones">
+<h3><span class="section-number">1.2.2.3. </span>array of ones<a class="headerlink" href="#array-of-ones" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array of ones</span>
+<span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[[1., 1., 1., 1.],
+        [1., 1., 1., 1.],
+        [1., 1., 1., 1.]],
+
+       [[1., 1., 1., 1.],
+        [1., 1., 1., 1.],
+        [1., 1., 1., 1.]]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="array-of-constant">
+<h3><span class="section-number">1.2.2.4. </span>array of constant<a class="headerlink" href="#array-of-constant" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a constant array </span>
+<span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[7, 7],
+       [7, 7]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="matrix-don-vi">
+<h3><span class="section-number">1.2.2.5. </span>matrix don vi<a class="headerlink" href="#matrix-don-vi" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 2X2 identity matrix - matrix don vi</span>
+<span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-matrix">
+<h3><span class="section-number">1.2.2.6. </span>random matrix<a class="headerlink" href="#random-matrix" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an array with random values</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.6686836 , 0.22002484],
+       [0.91715112, 0.93238177]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an empty array</span>
+<span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.5, 2. , 3. , 4. ],
+       [5. , 6. , 3. , 2. ],
+       [1. , 4. , 5. , 6. ]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="matrix-function">
+<h2><span class="section-number">1.2.3. </span>Matrix function<a class="headerlink" href="#matrix-function" title="Permalink to this heading">#</a></h2>
+<section id="get-info">
+<h3><span class="section-number">1.2.3.1. </span>get info<a class="headerlink" href="#get-info" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Array dimensions - xem chieu array</span>
+<span class="n">c</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 2, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Length of array - so phan tu array ben ngoai</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of array dimensions - so chieu</span>
+<span class="n">c</span><span class="o">.</span><span class="n">ndim</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of array elements - so elements trong ca array</span>
+<span class="n">c</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data type of array elements</span>
+<span class="n">b</span><span class="o">.</span><span class="n">dtype</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dtype(&#39;float64&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Name of data type</span>
+<span class="n">b</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;float64&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert an array to a different type</span>
+<span class="n">b</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1, 2, 3],
+       [4, 5, 6]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="resize-reshape">
+<h3><span class="section-number">1.2.3.2. </span>resize , reshape<a class="headerlink" href="#resize-reshape" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flatten the array</span>
+<span class="n">A</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1,  2,  3,  0, -2, -2,  2,  0,  4])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># reshape</span>
+<span class="n">A</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1],
+       [ 2],
+       [ 3],
+       [ 0],
+       [-2],
+       [-2],
+       [ 2],
+       [ 0],
+       [ 4]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># resize</span>
+<span class="n">A</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="n">refcheck</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  2,  3,  0, -2, -2],
+       [ 2,  0,  4,  0,  0,  0],
+       [ 0,  0,  0,  0,  0,  0]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="concat">
+<h3><span class="section-number">1.2.3.3. </span>concat<a class="headerlink" href="#concat" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># append</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 2, 3, 1, 2, 3])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combining:</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">],[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">]])</span>
+<span class="c1"># concatenate row-wise</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1  2  3]
+ [ 4  5  6]
+ [11 12 13]
+ [14 15 16]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenate column-wise</span>
+<span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  2,  3, 11, 12, 13],
+       [ 4,  5,  6, 14, 15, 16]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># stack</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  2,  3, 11, 12, 13],
+       [ 4,  5,  6, 14, 15, 16]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="split">
+<h3><span class="section-number">1.2.3.4. </span>split<a class="headerlink" href="#split" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Splitting:</span>
+<span class="c1"># - Splits array into 3 sub-arrays</span>
+<span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[array([[1, 2, 3]]), array([[4, 5, 6]])]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[array([[1],
+        [4]]),
+ array([[2],
+        [5]]),
+ array([[3],
+        [6]])]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="filter-matrix">
+<h3><span class="section-number">1.2.3.5. </span>filter matrix<a class="headerlink" href="#filter-matrix" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># boolean array</span>
+<span class="n">A</span> <span class="o">&lt;</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ True,  True,  True],
+       [ True, False, False]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">[</span><span class="n">A</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 2, 3, 4])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">A</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  2,  3],
+       [ 4, 15, 16]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="expand-matrix">
+<h3><span class="section-number">1.2.3.6. </span>expand matrix<a class="headerlink" href="#expand-matrix" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pad</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="c1"># pad axis 0 with 1 before and 3 after, axis 2 with 2 before and 4 after</span>
+<span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1 2 3]
+ [4 5 6]]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 1, 2, 3, 0, 0, 0, 0],
+       [0, 0, 4, 5, 6, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0, 0]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pad axis 0 with 1 before and 3 after, axis 2 with 2 before and 4 after</span>
+<span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)),</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       [nan, nan,  1.,  2.,  3., nan, nan, nan, nan],
+       [nan, nan,  4.,  5.,  6., nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan, nan, nan, nan, nan],
+       [nan, nan, nan, nan, nan, nan, nan, nan, nan]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">30</span><span class="p">],[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">60</span><span class="p">]])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)),</span> <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;edge&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[  1.,   1.,   1.,  nan,  30.,  30.,  30.,  30.,  30.],
+       [  1.,   1.,   1.,  nan,  30.,  30.,  30.,  30.,  30.],
+       [ -4.,  -4.,  -4.,   5., -60., -60., -60., -60., -60.],
+       [ -4.,  -4.,  -4.,   5., -60., -60., -60., -60., -60.],
+       [ -4.,  -4.,  -4.,   5., -60., -60., -60., -60., -60.],
+       [ -4.,  -4.,  -4.,   5., -60., -60., -60., -60., -60.]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="math-matrix-function">
+<h2><span class="section-number">1.2.4. </span>Math matrix function<a class="headerlink" href="#math-matrix-function" title="Permalink to this heading">#</a></h2>
+<section id="transpose">
+<h3><span class="section-number">1.2.4.1. </span>transpose<a class="headerlink" href="#transpose" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># transpose</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">A</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1, 4],
+       [2, 5],
+       [3, 6]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="nhan-matrix">
+<h3><span class="section-number">1.2.4.2. </span>nhân matrix<a class="headerlink" href="#nhan-matrix" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mũ matrix lên cơ số n</span>
+<span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  4,  9],
+       [16, 25, 36]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># mũ matrix lên cơ số n</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[    5,     9,    27],
+       [   16,    32,    64],
+       [  256,  3125, 46656]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple matrix - thuc hien nhan cac phan tu ở vị trí giống nhau</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">A</span> <span class="o">*</span> <span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  4,  9],
+       [16, 25, 36]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">]])</span>
+<span class="n">A</span> <span class="o">*</span> <span class="n">B</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[11, 24, 39],
+       [44, 60, 78]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nhan matrix - This will return dot product 2x3 * 3x1 = 2x1</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 74],
+       [182]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># or</span>
+<span class="n">A</span><span class="nd">@B</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 74],
+       [182]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2 vector</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">40</span><span class="p">])</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">])</span>
+<span class="n">C</span><span class="nd">@D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-270
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tinh cos goc 2 vector c, d</span>
+<span class="n">norm_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+<span class="n">norm_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="n">cos_cd</span> <span class="o">=</span> <span class="n">C</span><span class="nd">@D</span> <span class="o">/</span> <span class="p">(</span><span class="n">norm_c</span> <span class="o">*</span> <span class="n">norm_d</span><span class="p">)</span>
+
+<span class="c1"># tinh goc</span>
+<span class="n">radians_cd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">cos_cd</span><span class="p">)</span>
+<span class="n">degree_cd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">radians_cd</span><span class="p">)</span>
+
+<span class="c1"># độ lớn</span>
+<span class="n">magnitude_cd</span> <span class="o">=</span> <span class="n">norm_c</span> <span class="o">*</span> <span class="n">norm_d</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">cos_cd</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">degree_cd</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">magnitude_cd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.7836925573198097
+141.59991698191385
+344.52285845789686
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># giai he phuong trinh</span>
+<span class="c1"># 3a + 4b + 10c = 410</span>
+<span class="c1"># 6a + 6b + 1c = 210</span>
+<span class="c1"># 2a + 7b + 15c = 610</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">15</span><span class="p">],</span>
+<span class="p">])</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">410</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">210</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">610</span><span class="p">],</span>
+<span class="p">])</span>
+
+<span class="n">X_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">nghiem</span> <span class="o">=</span> <span class="n">X_inv</span><span class="nd">@Y</span>
+<span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">nghiem</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10.0 20.0 30.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check 2 matrix co giong nhau hay k ?</span>
+<span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">X</span><span class="nd">@X_inv</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="inverse-matrix">
+<h3><span class="section-number">1.2.4.3. </span>inverse matrix<a class="headerlink" href="#inverse-matrix" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.33333333  0.33333333]
+ [-0.33333333  0.66666667]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="eigenvalue-eigenvector">
+<h2><span class="section-number">1.2.5. </span>Eigenvalue - Eigenvector<a class="headerlink" href="#eigenvalue-eigenvector" title="Permalink to this heading">#</a></h2>
+<p>Khi ma trận hiệp phương sai A (thể hiện biến thiên của các biến với nhau) khi chiếu lên chiều mới là u (tức A𝛍) thì kết quả thu được chỉ là tỷ lệ của chiều đó (𝛌𝛍), tức các biến thiên ban đầu có ựu độc lập với nhau theo chiều u và có tỷ lệ độ dài trên chiều u –&gt; thể hiện đầy đủ covariance A. Khi đó: 𝛌 eigen value, 𝛍 eigen vector của A</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="n">e</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ie</span><span class="p">,</span> <span class="n">iv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">):</span> <span class="c1"># v.T do vector theo cột, cần T để lấy ra value (CHÚ Ý - VECTOR ở dạng cột)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">ie</span> <span class="o">*</span> <span class="n">iv</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ie</span> <span class="o">*</span> <span class="n">iv</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0ecd347a99a61dce57690ae94f9ca08950674b6ccbe42b52732f53704c2b6512.png" src="../_images/0ecd347a99a61dce57690ae94f9ca08950674b6ccbe42b52732f53704c2b6512.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CenterPoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">CovXY_random</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.2</span><span class="p">]])</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">Points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">CenterPoint</span><span class="p">,</span> <span class="n">CovXY_random</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">Points</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Points</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Points</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+
+
+<span class="c1"># tim eigenvalue, eigenvector</span>
+<span class="c1"># ie là value của vector, iv là chiều vector</span>
+<span class="n">e</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ie</span><span class="p">,</span> <span class="n">iv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">):</span> <span class="c1"># v.T do vector theo cột, cần T để lấy ra value (CHÚ Ý - VECTOR ở dạng cột)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">ie</span> <span class="o">*</span> <span class="n">iv</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ie</span> <span class="o">*</span> <span class="n">iv</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fba213506cfb3bfc2f6b08ca69711415ca2c748b55515df189f01efd7f8e6dfa.png" src="../_images/fba213506cfb3bfc2f6b08ca69711415ca2c748b55515df189f01efd7f8e6dfa.png" />
+</div>
+</div>
+</section>
+<section id="orthogonality-and-orthonarmal-set">
+<h2><span class="section-number">1.2.6. </span>Orthogonality and Orthonarmal Set<a class="headerlink" href="#orthogonality-and-orthonarmal-set" title="Permalink to this heading">#</a></h2>
+<p>(trực giao và trực chuẩn)</p>
+<ul class="simple">
+<li><p><strong>1. Trực giao</strong>: Bộ Vector trong không gian V mà từng vector đôi một có tích vô hướng = 0 (vuông góc với nhau)</p></li>
+<li><p><strong>2. Trực chuẩn</strong>: Là bộ vector trực giao và độ dài từng vector là vector đơn vị ( độ dài = 1)</p></li>
+<li><p><strong>Gram-schmidt</strong>: là proces tìm ra bộ vectỏ trực chuẩn/trực giao từ 1 hệ vector hữu hạn và độc lập tuyến tính</p>
+<ul>
+<li><p>Việc tìm maxtrix ttrực giao/ trực chuẩn giúp hình thành 1 space mới tốt hơn từ vector đã có</p></li>
+<li><p>Tích vô hướng của các vector sau khi xoay/chiếu sẽ không đổi</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gs</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">row_vecs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">row_vecs</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">proj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">row_vecs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Y</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span>
+<span class="n">gs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.89442719,  0.4472136 ],
+       [-0.4472136 ,  0.89442719]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="hang-cua-matrix-low-rank-factorization">
+<h2><span class="section-number">1.2.7. </span>Hạng của matrix - low rank factorization<a class="headerlink" href="#hang-cua-matrix-low-rank-factorization" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Span</strong>: Không gian sinh, trong không gian n chiều, span được tạo bởi m vector độc lập tuyến tính (1&lt;=m&lt;=n)</p></li>
+<li><p><strong>Rank matrix</strong>: là số vector independent trong matrix đôi một, túc là số vector độc lập tuyến tính biểu diễn được tất các các vector trong matrix</p>
+<ul>
+<li><p>rank(M) &lt;= Số vector tạo ra matrix M</p></li>
+</ul>
+</li>
+</ul>
+<p>Với data matrix mxn có rank k, thể hiện k obs đặc trưng (k nhóm) và mỗi obs trong m obs là sự kết hợp tuyến tính của k obs đặc trưng</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matrixA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">23</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">28</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">41</span><span class="p">]])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">matrixA</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<section id="low-rank-factorization">
+<h3><span class="section-number">1.2.7.1. </span>low rank factorization<a class="headerlink" href="#low-rank-factorization" title="Permalink to this heading">#</a></h3>
+<p>Áp dụng cho bài toán xấp xỉ và gom nhóm, với số <span class="math notranslate nohighlight">\(k &lt; rank(A_{m.n})\)</span>, ta phân rã <span class="math notranslate nohighlight">\(A_{m.n} \approx W_{m.k} x H_{k.n}\)</span>, khi đó tích của 2 matrix mới sẽ  có rank = k, tức k nhóm được gom lại</p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="cac-loai-khoang-cach">
+<h1><span class="section-number">1.3. </span>Các loại khoảng cách<a class="headerlink" href="#cac-loai-khoang-cach" title="Permalink to this heading">#</a></h1>
+<p><img alt="" src="https://miro.medium.com/v2/resize:fit:1200/1*FTVRr_Wqz-3_k6Mk6G4kew.png" /></p>
+<p><strong>1. Euclidean</strong></p>
+<ul class="simple">
+<li><p>Khoảng cách này ko quan tâm độ dài từng trục mà chỉ quan tâm tới khoảng cách đường chéo</p></li>
+</ul>
+<p><strong>2. Manhattan</strong></p>
+<ul class="simple">
+<li><p>Quan tâm tới sụ sai khác trên từng trục</p></li>
+</ul>
+<p>VD: bài toán gom nhóm KH theo <code class="docutils literal notranslate"><span class="pre">tuổi</span></code> và <code class="docutils literal notranslate"><span class="pre">order</span></code>. Nếu sử dụng euclidean thì KH tuổi nhỏ và order lớn có thể cùng nhóm với KH tuổi lớn  và order nhỏ.
+Nếu sử dụng manhattan thì quan tâm tới distance trên từng feature.</p>
+<p>Nếu ko rõ được pp xác định k/c phù hợp thì nên sử dụng feature scaling trước.</p>
+<p><strong>3. Minkowski</strong>
+Khoảng cách nhỏ nhất theo 1 hướng nào đó</p>
+<p><strong>4. Chebychev</strong>
+Khoảng cách hình chiếu</p>
+<p><strong>5. Cosine</strong>
+Khoảng cách góc, phù hợp cho các bài toán recommendation system</p>
+<p><strong>6. Hamming</strong>
+Khoảng cách theo mức độ tương đồng, phù hợp với các bài toán NLP</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="correlation">
+<h1><span class="section-number">1.4. </span>Correlation<a class="headerlink" href="#correlation" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2><span class="section-number">1.4.1. </span>Correlation<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<section id="pearson">
+<h3><span class="section-number">1.4.1.1. </span>Pearson<a class="headerlink" href="#pearson" title="Permalink to this heading">#</a></h3>
+<p>Tính correlation áp dụng cho dữ liệu linear</p>
+<p><img alt="" src="https://editor.analyticsvidhya.com/uploads/39170Formula.JPG" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># correlation of 2 arrays</span>
+<span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([39793])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># correlation matrix</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.        ,  0.29815244, -0.19037969],
+       [ 0.29815244,  1.        , -0.13043545],
+       [-0.19037969, -0.13043545,  1.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="spearman">
+<h3><span class="section-number">1.4.1.2. </span>Spearman<a class="headerlink" href="#spearman" title="Permalink to this heading">#</a></h3>
+<p>Tính correlation theo rank ( tính rank của X trong sample rồi tính corr của các giá trị rank)</p>
+<ul class="simple">
+<li><p>Spearman áp dụng trong TH dữ liệu non-linear, hoặc nghi ngờ tính chính xác của dữ liệu (dữ liệu ở dạng xấp xỉ hoặc là output của 1 model khác)</p></li>
+</ul>
+</section>
+</section>
+<section id="covariance">
+<h2><span class="section-number">1.4.2. </span>Covariance<a class="headerlink" href="#covariance" title="Permalink to this heading">#</a></h2>
+<p><img alt="" src="https://cdn.educba.com/academy/wp-content/uploads/2019/05/Covariance-Formula.jpg" /></p>
+<p>Covariance thể hiện tương quan của 2 biến, mà không bị giới hạn trong [-1,1] như correlation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sn</span>
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">39</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">54</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">85</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">47</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="mi">38</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">33</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">73</span><span class="p">,</span><span class="mi">85</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">77</span><span class="p">,</span><span class="mi">78</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">47</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">66</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">44</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">43</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">52</span><span class="p">,</span><span class="mi">86</span><span class="p">,</span><span class="mi">68</span><span class="p">,</span><span class="mi">69</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">82</span><span class="p">,</span><span class="mi">93</span><span class="p">]</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">])</span>
+<span class="n">covMatrix1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">covMatrix1</span><span class="p">)</span>
+<span class="n">sn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">covMatrix1</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 530.21264368  157.74712644 -107.91954023]
+ [ 157.74712644  527.95402299  -73.7816092 ]
+ [-107.91954023  -73.7816092   606.05057471]]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: &gt;
+</pre></div>
+</div>
+<img alt="../_images/234246dbffc0b4ec7a8e28fc4d69b3dca0b8a7fca083a620c7b23a257c312b85.png" src="../_images/234246dbffc0b4ec7a8e28fc4d69b3dca0b8a7fca083a620c7b23a257c312b85.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./3_Mathematics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="0_toc.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Mathematics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_Calculus_and_optimization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.5. </span>Calculus and optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">1.1. Linear algebra</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-and-vector">1.2. Matrix and vector</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector">1.2.1. Vector</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tich-vo-huong-2-vector">1.2.1.1. tích vô hướng 2 vector</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-matrix">1.2.2. Create matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-matrix">1.2.2.1. custom matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#array-of-zeros">1.2.2.2. array of zeros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#array-of-ones">1.2.2.3. array of ones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#array-of-constant">1.2.2.4. array of constant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-don-vi">1.2.2.5. matrix don vi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-matrix">1.2.2.6. random matrix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-function">1.2.3. Matrix function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-info">1.2.3.1. get info</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resize-reshape">1.2.3.2. resize , reshape</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concat">1.2.3.3. concat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#split">1.2.3.4. split</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filter-matrix">1.2.3.5. filter matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expand-matrix">1.2.3.6. expand matrix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-matrix-function">1.2.4. Math matrix function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose">1.2.4.1. transpose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nhan-matrix">1.2.4.2. nhân matrix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-matrix">1.2.4.3. inverse matrix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigenvalue-eigenvector">1.2.5. Eigenvalue - Eigenvector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orthogonality-and-orthonarmal-set">1.2.6. Orthogonality and Orthonarmal Set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hang-cua-matrix-low-rank-factorization">1.2.7. Hạng của matrix - low rank factorization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-rank-factorization">1.2.7.1. low rank factorization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cac-loai-khoang-cach">1.3. Các loại khoảng cách</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation">1.4. Correlation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.4.1. Correlation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pearson">1.4.1.1. Pearson</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spearman">1.4.1.2. Spearman</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">1.4.2. Covariance</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

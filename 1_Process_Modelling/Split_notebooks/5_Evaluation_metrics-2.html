@@ -1,0 +1,692 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>5.3. Regression metrics &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-2';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4. Clustering metrics" href="5_Evaluation_metrics-3.html" />
+    <link rel="prev" title="5.2. Classification metrics" href="5_Evaluation_metrics-1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regression metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-metrics">5.3.1. Variance metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-square">5.3.1.1. R square</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explained-variance-score">5.3.1.2. explained variance score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics">5.3.2. Error metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection">5.3.3. Model selection</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regression-metrics">
+<h1><span class="section-number">5.3. </span>Regression metrics<a class="headerlink" href="#regression-metrics" title="Permalink to this heading">#</a></h1>
+<p><strong>Chú ý</strong> : Bài toán <strong>logistic</strong> bản chất là 1 bài toán <code class="docutils literal notranslate"><span class="pre">regression</span></code> bới output của model là dự báo xác suất (giá trị <code class="docutils literal notranslate"><span class="pre">continuous</span></code>), kết hợp cùng với <code class="docutils literal notranslate"><span class="pre">cutpoint</span></code> để phân loại nhành kết quả nhị phân <code class="docutils literal notranslate"><span class="pre">Positive</span></code>/<code class="docutils literal notranslate"><span class="pre">Negetive</span></code>. Tuy nhiên <code class="docutils literal notranslate"><span class="pre">target</span></code> của bài toán là nhị phân 0/1 nên kết hợp điều chỉnh <code class="docutils literal notranslate"><span class="pre">cutpoint</span></code> và đánh giá kết hợp theo nhiều metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="variance-metrics">
+<h2><span class="section-number">5.3.1. </span>Variance metrics<a class="headerlink" href="#variance-metrics" title="Permalink to this heading">#</a></h2>
+<section id="r-square">
+<h3><span class="section-number">5.3.1.1. </span>R square<a class="headerlink" href="#r-square" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">R-square</span></code> / <code class="docutils literal notranslate"><span class="pre">adjusted</span> <span class="pre">R-square</span></code>: tỷ lệ variation được giải thích bởi model, from 0 to 1, dùng trong việc model giải thích tốt được bao nhiêu % trong hồi quy. Trong đó, <code class="docutils literal notranslate"><span class="pre">adjusted</span> <span class="pre">R-square</span></code> điều chỉnh lại R2 bằng số lượng biến trong model, vì càng nhiều biến multicorrlinearity dẫn tới overfitting, R2 càng cao, cần phải được điều chỉnh.
+$<span class="math notranslate nohighlight">\(R^2 = 1-\frac{\sum_{i=1}^{n}(y_{i}-\hat{y}_{i})^{2}}{\sum_{i=1}^{n}(y_{i}-\bar{y}_{i})^{2}}\)</span>$</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[R_{adj}^2 = 1-(1-R^2)\frac{n-1}{n-p-1}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+
+<span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9486081370449679
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="explained-variance-score">
+<h3><span class="section-number">5.3.1.2. </span>explained variance score<a class="headerlink" href="#explained-variance-score" title="Permalink to this heading">#</a></h3>
+<p>The Explained Variance score is similar to the R^2 score, with the notable difference that it does not account for systematic offsets in the prediction. Most often the R^2 score should be preferred.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">explained_variance_score</span>
+
+<span class="n">explained_variance_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9571734475374732
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="error-metrics">
+<h2><span class="section-number">5.3.2. </span>Error metrics<a class="headerlink" href="#error-metrics" title="Permalink to this heading">#</a></h2>
+<p>Trong bài toán dự báo thì chúng ta muốn sai số giữa giá trị dự báo và giá trị thực tế là nhỏ nhất thường lựa chọn các metrics:</p>
+<ul class="simple">
+<li><p>MSE: Trung bình tổng bình phương sai số giữa giá trị dự báo và thực tế.
+$<span class="math notranslate nohighlight">\(\text{MSE} = \frac{1}{n}\sum_{i=1}^{n} (y_i-\hat{y}_i)^2\)</span>$</p></li>
+<li><p>RMSE: Khai căn bậc hai của MSE và nó đại diện cho độ lệch giữa giá trị dự báo và thực tế.
+$<span class="math notranslate nohighlight">\(\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i-\hat{y}_i)^2)}\)</span>$</p></li>
+<li><p>MAE: Trung bình trị tuyệt đối của sai số giữa giá trị dự báo và thực tế.
+$<span class="math notranslate nohighlight">\(\text{MAE} = \frac{1}{n}\sum_{i=1}^{n} |y_i-\hat{y}_i|\)</span>$</p></li>
+<li><p>MAPE: Trung bình của tỷ lệ phần trăm sai số tuyệt đối giữa giá trị dự báo và thực tế.
+$<span class="math notranslate nohighlight">\(\text{MAPE} = \frac{1}{n}\sum_{i=1}^{n} |\frac{y_i-\hat{y}_i}{y_i}|\)</span>$</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">mean_absolute_percentage_error</span>
+
+<span class="c1"># MSE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MSE&#39;</span><span class="p">,</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="c1"># RMSE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># MAE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="c1"># MAPE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAPE&#39;</span><span class="p">,</span> <span class="n">mean_absolute_percentage_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MSE 0.375
+RMSE 0.6123724356957945
+MAE 0.5
+MAPE 0.3273809523809524
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-selection">
+<h2><span class="section-number">5.3.3. </span>Model selection<a class="headerlink" href="#model-selection" title="Permalink to this heading">#</a></h2>
+<p>Model R2 and RMSE always become better when adding more variables, but that is not alway get better model. Need to use metric to assessing “add more variable effection” or use all variable possible is better ?</p>
+<p>Method to find all model possible with large dataset is stepwise regression: start at full model and drop the variables that dont contribute meanningfully</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">adjusted</span> <span class="pre">R-square</span></code></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathrm{AIC}=2P+n\log(\mathrm{RSS}/n)\)</span></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">AICc</span></code> is suitable for small dataset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BIC</span></code> is Stronger penalty</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="5_Evaluation_metrics-1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.2. </span>Classification metrics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="5_Evaluation_metrics-3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.4. </span>Clustering metrics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-metrics">5.3.1. Variance metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-square">5.3.1.1. R square</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explained-variance-score">5.3.1.2. explained variance score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics">5.3.2. Error metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection">5.3.3. Model selection</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

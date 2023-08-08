@@ -1,0 +1,1188 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.5. Git &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '4_Programming/6_Git';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.6. Docker" href="7_Docker.html" />
+    <link rel="prev" title="2.4. Python" href="4_Python.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_Process_Modelling/Split_notebooks/4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc.html">2. Programming</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/4_Programming/6_Git.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Git</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-navigator">2.5.1. Command navigator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-config">2.5.2. Git config</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-git-info">2.5.2.1. Get git info</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-config">2.5.2.2. Modify config</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git-authenticate-account">2.5.2.3. Git authenticate account</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-flow">2.5.3. Git-flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#github-flow">2.5.4. Github-flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-command">2.5.5. Git command</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-new-repo">2.5.5.1. Create new repo</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#init">2.5.5.1.1. init</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#clone">2.5.5.1.2. clone</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#connect-to-remote">2.5.5.1.3. connect to remote</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-change">2.5.5.2. File change</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#file-s-status">2.5.5.2.1. file’s status</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#status">2.5.5.2.2. status</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#add">2.5.5.2.3. add</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#commit">2.5.5.2.4. commit</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#log">2.5.5.2.5. log</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diff">2.5.5.2.6. diff</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rollback">2.5.5.2.7. rollback</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#branch-command">2.5.5.3. Branch command</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-command">2.5.5.4. Repository command</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fetch">2.5.5.4.1. fetch</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#merge">2.5.5.4.2. merge</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rebase">2.5.5.4.3. rebase</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cherry-pick">2.5.5.4.4. cherry-pick</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pull">2.5.5.4.5. pull</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#push">2.5.5.4.6. push</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git-stash">2.5.5.5. git stash</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-ignore">2.5.6. Git ignore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-tags">2.5.7. Git tags</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-ci-cd">2.5.8. Git CI/CD</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions">2.5.8.1. GitHub Actions</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="git">
+<h1><span class="section-number">2.5. </span>Git<a class="headerlink" href="#git" title="Permalink to this heading">#</a></h1>
+<section id="command-navigator">
+<h2><span class="section-number">2.5.1. </span>Command navigator<a class="headerlink" href="#command-navigator" title="Permalink to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># di chuyen den folder</span>
+<span class="c1">## nếu có space sử dụng &quot;\ &quot;</span>
+<span class="c1">## &quot;tab&quot; để auto completion</span>
+<span class="nb">cd</span><span class="w"> </span>&lt;folder<span class="w"> </span>directory&gt;
+
+<span class="c1"># hiện all content in folder</span>
+ls
+
+<span class="c1"># tạo content</span>
+mkdir<span class="w"> </span>&lt;content<span class="w"> </span>name&gt;
+
+<span class="c1"># remove content</span>
+rmdir<span class="w"> </span>&lt;content<span class="w"> </span>name&gt;
+
+<span class="c1"># To navigate to your home directory</span>
+<span class="nb">cd</span>
+<span class="nb">cd</span><span class="w"> </span>~
+
+<span class="c1"># To navigate up one directory level</span>
+<span class="nb">cd</span><span class="w"> </span>..
+
+<span class="c1"># To navigate to the previous directory (or back)</span>
+<span class="nb">cd</span><span class="w"> </span>-
+
+<span class="c1"># To navigate into the root directory</span>
+<span class="nb">cd</span><span class="w"> </span>/
+</pre></div>
+</div>
+</section>
+<section id="git-config">
+<h2><span class="section-number">2.5.2. </span>Git config<a class="headerlink" href="#git-config" title="Permalink to this heading">#</a></h2>
+<section id="get-git-info">
+<h3><span class="section-number">2.5.2.1. </span>Get git info<a class="headerlink" href="#get-git-info" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># check version</span>
+git<span class="w"> </span>--version
+
+<span class="c1"># help</span>
+git<span class="w"> </span>--help
+</pre></div>
+</div>
+</section>
+<section id="modify-config">
+<h3><span class="section-number">2.5.2.2. </span>Modify config<a class="headerlink" href="#modify-config" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># view list config</span>
+git<span class="w"> </span>config<span class="w"> </span>--list
+
+<span class="c1"># user.name</span>
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span>&lt;name&gt;
+
+<span class="c1"># user.email</span>
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span>&lt;email&gt;
+</pre></div>
+</div>
+</section>
+<section id="git-authenticate-account">
+<h3><span class="section-number">2.5.2.3. </span>Git authenticate account<a class="headerlink" href="#git-authenticate-account" title="Permalink to this heading">#</a></h3>
+<p>Authenticate with <a class="reference external" href="https://cli.github.com/">GitHub CLI</a> then run <code class="docutils literal notranslate"><span class="pre">gh</span> <span class="pre">auth</span> <span class="pre">login</span></code> in cmd</p>
+</section>
+</section>
+<section id="git-flow">
+<h2><span class="section-number">2.5.3. </span>Git-flow<a class="headerlink" href="#git-flow" title="Permalink to this heading">#</a></h2>
+<p><img alt="" src="https://images.viblo.asia/84f47fd1-a009-4beb-8957-26395fe1023d.png" /></p>
+<ul class="simple">
+<li><p><strong>Master/Prod/Main</strong>: branchs có sẵn trong git và là branchs chứa mã nguồn khởi tạo của ứng dụng và các version đã sẵn sàng để realease cho người dùng có thể sử dụng (đặt Tag trên mỗi version). Thường cấu hình cho manage tương tác. Đây là branch dùng cho sản phẩm chính thức. Đây luôn là branch ổn định nhất và nó chưa lịch sử các lần release của dự án</p></li>
+<li><p><strong>Hotfix</strong>: Khi sản phẩm trên <code class="docutils literal notranslate"><span class="pre">master</span></code> branch của chúng ta gặp phải trục trặc và cần có bản vá ngay lập tức thì ta sẽ tạo ra <code class="docutils literal notranslate"><span class="pre">hotfix</span></code> branch. Branch này tương tự như <code class="docutils literal notranslate"><span class="pre">release</span></code> branch nhưng nó được tạo ra từ master branch thay vì từ <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch như <code class="docutils literal notranslate"><span class="pre">release</span></code> (<em>Chú ý <code class="docutils literal notranslate"><span class="pre">hotfix</span></code> branch cũng cần được gộp lại với <code class="docutils literal notranslate"><span class="pre">master</span></code> branch với <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch để các version <code class="docutils literal notranslate"><span class="pre">develop</span></code> tiếp theo đã được fix bug từ bản <code class="docutils literal notranslate"><span class="pre">hotfix</span></code></em>), teamlead sẽ tạo branchs <code class="docutils literal notranslate"><span class="pre">hotfix</span></code> base trên branchs <code class="docutils literal notranslate"><span class="pre">Master</span></code> để hotfix sau đó merge lại vào <code class="docutils literal notranslate"><span class="pre">Master</span></code> (thường thì sẽ không được thay đổi trược tiếp mã nguồn trên branch <code class="docutils literal notranslate"><span class="pre">master</span></code> nên phải lam cách này)</p></li>
+<li><p><strong>Release</strong>: Trước khi Release một phần mềm, dev team cần được tạo ra để kiểm tra lại lần cuối trước đi release sản phần để người dùng có thể sử dụng (Thuông thường mã nguồn tại thời điểm này sẽ tạo ra bản build để test và kiểm tra lại bussiness). Khi <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch đã có đủ số tính năng cần thiết để có thể release, ta có thể tạo branch mới với tên quy ước <code class="docutils literal notranslate"><span class="pre">release/tên_version</span></code>. Khi đến thời điểm release ứng dụng, teamlead sẽ merge lên branchs <code class="docutils literal notranslate"><span class="pre">master</span></code> để release cho ngời dùng.</p></li>
+<li><p><strong>Develop</strong>: Được khởi tạo từ <code class="docutils literal notranslate"><span class="pre">master</span></code> branches để lưu lại tất cả lịch sử thay đổi của mã nguồn, là nhánh dùng cho sản phẩm trong quá trình phát triển. <code class="docutils literal notranslate"><span class="pre">Develop</span></code> branchs là merge code của tất cả các branchs <code class="docutils literal notranslate"><span class="pre">feature</span></code>. Khi dev team hoàn thành hết <code class="docutils literal notranslate"><span class="pre">feature</span></code> của một topic, teamlead sẽ review ứng dụng và merge đến branchs <code class="docutils literal notranslate"><span class="pre">release</span></code> để tạo ra bản một bản release cho sản phẩm.</p></li>
+<li><p><strong>Feature</strong>: Được base trên branchs <code class="docutils literal notranslate"><span class="pre">Develop</span></code>. Mỗi khi phát triển một feature mới chúng ta cần tạo một branchs để việt mã nguồn cho từng feature. Khi có một feature mới dev tạo một branchs mới (thường đặt theo tên feature/&lt;tên feature đó&gt;) base trên branchs <code class="docutils literal notranslate"><span class="pre">Develop</span></code> để code cho feature đó. Sau khi code xong, dev tạo merge request đến branchs <code class="docutils literal notranslate"><span class="pre">develop</span></code> để teamlead review mà merge lại vào branchs <code class="docutils literal notranslate"><span class="pre">Develop</span></code>. (Lưu ý: các Feature không được phép gộp trực tiếp với master branch)</p></li>
+</ul>
+<p>Ngoài ra còn một số branchs mà chúng ta thường tạo ra tùy vào yêu cầu của dự án:</p>
+<ul class="simple">
+<li><p><strong>Pre-pro</strong>: môi trường chưa mã nguồi của bản buil chạy trên môi trường user test,</p></li>
+<li><p><strong>QC</strong>: Môi trường chứa mã nguồi của bản build chạy trên môi trường test,</p></li>
+<li><p><strong>BugFix</strong>: để chứa mã nguồn khi thực hiện công việc fix bug.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Git-flow</strong> là một set of command của git, để thực hiện dự án theo đúng git-flow <a class="reference external" href="https://danielkummer.github.io/git-flow-cheatsheet/index.vi_VN.html">Tham khảo cheatsheet về git-flow</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># khởi tạo một git-flow cho một project, Lệnh này sẽ tạo ra hai branch ban đầu là master và develop</span>
+<span class="c1"># Bạn sẽ cần trả lời một số câu hỏi cho việc thiết lập git-flow sau câu lệnh khởi tạo</span>
+git<span class="w"> </span>flow<span class="w"> </span>init
+
+<span class="c1"># tạo một feature: Sẽ tạo ra một nhánh mới có tên dạng feature/&lt;tên-feature&gt; từ nhánh &#39;develop&#39; và tự động chuyển sang nhánh mới này </span>
+git<span class="w"> </span>flow<span class="w"> </span>feature<span class="w"> </span>start<span class="w"> </span>&lt;tên-feature&gt;
+
+<span class="c1"># Sau khi feature đó được thực hiện xong, ta có thể công bố feature đó lên remote server để mọi người cùng có thể cập nhật</span>
+<span class="c1"># Khi bạn làm việc với những người khác trên cùng một chức năng, bạn sẽ cần đẩy (push) phần mã nguồn của bạn cho chức năng đó lên máy chủ (remote) để những người khác có thể kéo về (pull) được.</span>
+git<span class="w"> </span>flow<span class="w"> </span>feature<span class="w"> </span>publish<span class="w"> </span>&lt;tên-feature&gt;
+
+<span class="c1"># pull feature của người khác về</span>
+git<span class="w"> </span>flow<span class="w"> </span>feature<span class="w"> </span>pull<span class="w"> </span>REMOTE_NAME<span class="w"> </span>MYFEATURE
+
+<span class="c1"># Để tiến hành gộp branch đó vào develop branch ta dùng lệnh</span>
+<span class="c1"># merge to &quot;develop&quot; + del &quot;feature&quot; branch + checkout &quot;develop&quot; branch</span>
+git<span class="w"> </span>flow<span class="w"> </span>feature<span class="w"> </span>finish<span class="w"> </span>&lt;tên-feature&gt;
+
+<span class="c1"># Tạo ra nhánh &#39;release&#39; từ nhánh &#39;develop&#39; để bắt đầu một phát hành mới</span>
+git<span class="w"> </span>flow<span class="w"> </span>release<span class="w"> </span>start<span class="w"> </span>&lt;verion-no&gt;
+
+<span class="c1"># Để công bố phần code &#39;release&#39; của mình cho các thành viên khác</span>
+git<span class="w"> </span>flow<span class="w"> </span>release<span class="w"> </span>publish<span class="w"> </span>&lt;verion-no&gt;
+
+<span class="c1"># Để tiến hành merge bản release đó vào master branch và develop branch</span>
+<span class="c1"># = merge &quot;release&quot; to &quot;master&quot; + tag &quot;master&quot; theo &quot;release&quot; + merge &quot;release&quot; to &quot;dev&quot; + del &quot;release&quot;</span>
+git<span class="w"> </span>flow<span class="w"> </span>release<span class="w"> </span>finish<span class="w"> </span>&lt;version-no&gt;
+
+<span class="c1"># Để tạo một bản &quot;hotfix&quot; ta dùng lệnh</span>
+git<span class="w"> </span>flow<span class="w"> </span>hotfix<span class="w"> </span>start<span class="w"> </span>&lt;tên-hotfix&gt;
+
+<span class="c1"># Sau khi bản &quot;hotfix&quot; hoàn thiện ta có thể tiến hành merge lại với &quot;master&quot; branch và &quot;develop&quot; branch như sau</span>
+git<span class="w"> </span>flow<span class="w"> </span>hotfix<span class="w"> </span>finish<span class="w"> </span>&lt;tên-hotfix&gt;
+</pre></div>
+</div>
+</section>
+<section id="github-flow">
+<h2><span class="section-number">2.5.4. </span>Github-flow<a class="headerlink" href="#github-flow" title="Permalink to this heading">#</a></h2>
+<p>Việc thao tác, vận dụng với Git-flow khá lằng nhằng, nên GitHub-flow đã đơn giản nó đi rất nhiều</p>
+<blockquote>
+<div><p>Github Flow là một quy trình đơn giản dựa trên các branch với mục đích hỗ trợ team và các project được deploy một cách thường xuyên, automated deployments</p>
+</div></blockquote>
+<blockquote>
+<div><p>Gitflow thường sử dụng cho các product có tần suất release ít hơn Github-flow,</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>GitHub-flow bao gồm nhánh <strong>master</strong> và nhánh <strong>feature</strong>.</p></li>
+<li><p>Từ nhánh <strong>master</strong> dùng cho Product, tạo 1 nhánh có tên phù hợp với mục đích. (ở đây gọi là <strong>feature</strong>, gần giống với _<strong>feature/hotfix</strong> ở git-flow)</p></li>
+<li><p>Làm việc trên nhánh <strong>feature</strong> đã tạo, sau khi hoàn thành công việc thì <code class="docutils literal notranslate"><span class="pre">push</span></code> lên nhánh <strong>remote</strong>.</p></li>
+<li><p>Sử dụng chức năng tạo <code class="docutils literal notranslate"><span class="pre">Pull</span> <span class="pre">Request</span></code> của GitHub, sau khi review thì <code class="docutils literal notranslate"><span class="pre">merge</span></code> vào nhánh <strong>master</strong>.</p></li>
+<li><p>Sau khi <code class="docutils literal notranslate"><span class="pre">merge</span></code> vào nhánh <strong>master</strong> thì lập tức được <code class="docutils literal notranslate"><span class="pre">deploy</span></code> lên Product</p></li>
+</ul>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668070000889/rvf5Hx764.png" /></p>
+</section>
+<section id="git-command">
+<h2><span class="section-number">2.5.5. </span>Git command<a class="headerlink" href="#git-command" title="Permalink to this heading">#</a></h2>
+<section id="create-new-repo">
+<h3><span class="section-number">2.5.5.1. </span>Create new repo<a class="headerlink" href="#create-new-repo" title="Permalink to this heading">#</a></h3>
+<section id="init">
+<h4><span class="section-number">2.5.5.1.1. </span>init<a class="headerlink" href="#init" title="Permalink to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install git for new project</span>
+git<span class="w"> </span>init
+</pre></div>
+</div>
+</section>
+<section id="clone">
+<h4><span class="section-number">2.5.5.1.2. </span>clone<a class="headerlink" href="#clone" title="Permalink to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># clone repo from link</span>
+git<span class="w"> </span>clone<span class="w"> </span>&lt;link.git<span class="w"> </span>-<span class="w"> </span>HTTPS&gt;
+</pre></div>
+</div>
+</section>
+<section id="connect-to-remote">
+<h4><span class="section-number">2.5.5.1.3. </span>connect to remote<a class="headerlink" href="#connect-to-remote" title="Permalink to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set new remote với tên là &quot;origin&quot;, tạo new repo từ github.com xong copy paste SSH url của repository</span>
+git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>&lt;remote_url&gt;
+
+<span class="c1"># Verifies the new remote URL</span>
+git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-change">
+<h3><span class="section-number">2.5.5.2. </span>File change<a class="headerlink" href="#file-change" title="Permalink to this heading">#</a></h3>
+<section id="file-s-status">
+<h4><span class="section-number">2.5.5.2.1. </span>file’s status<a class="headerlink" href="#file-s-status" title="Permalink to this heading">#</a></h4>
+<p><strong>4 type of status</strong>: <code class="docutils literal notranslate"><span class="pre">Untracked</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">Unmodified</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">Modified</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">Staged</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Untracked</span><span class="p">)</span> <span class="o">------------------------------</span><span class="n">add</span><span class="o">--------------------------------------&gt;&gt;</span><span class="p">(</span><span class="n">Staged</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">Untracked</span><span class="p">)</span> <span class="o">&lt;&lt;----</span><span class="n">remove</span><span class="o">-----</span> <span class="p">(</span><span class="n">Unmodified</span><span class="p">)</span> <span class="o">-----</span><span class="n">edit</span><span class="o">----&gt;&gt;</span> <span class="p">(</span><span class="n">Modified</span><span class="p">)</span><span class="o">-----</span><span class="n">stage</span><span class="o">----&gt;&gt;</span><span class="p">(</span><span class="n">Staged</span><span class="p">)</span>
+
+                              <span class="p">(</span><span class="n">Unmodified</span><span class="p">)</span> <span class="o">&lt;&lt;------------</span><span class="n">commit</span><span class="o">----------------------</span><span class="p">(</span><span class="n">Staged</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="status">
+<h4><span class="section-number">2.5.5.2.2. </span>status<a class="headerlink" href="#status" title="Permalink to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># check status</span>
+git<span class="w"> </span>status
+
+<span class="c1"># check status each file</span>
+git<span class="w"> </span>status<span class="w"> </span>-s
+</pre></div>
+</div>
+</section>
+<section id="add">
+<h4><span class="section-number">2.5.5.2.3. </span>add<a class="headerlink" href="#add" title="Permalink to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Thêm tất cả thay đổi</span>
+git<span class="w"> </span>add<span class="w"> </span>-A<span class="w">   </span>
+
+<span class="c1"># track all file (exclude file/folder begin &quot;.&quot;)</span>
+git<span class="w"> </span>add<span class="w"> </span>*<span class="w"> </span>
+
+<span class="c1"># track all file (include file/folder begin &quot;.&quot;) , trừ xóa file</span>
+git<span class="w"> </span>add<span class="w"> </span>.<span class="w">   </span>
+
+<span class="c1"># add file from untracked to status</span>
+git<span class="w"> </span>add<span class="w"> </span>&lt;filename&gt;
+
+<span class="c1"># Thêm tất cả các file có phần mở rộng .c</span>
+git<span class="w"> </span>add<span class="w"> </span>*.c
+</pre></div>
+</div>
+</section>
+<section id="commit">
+<h4><span class="section-number">2.5.5.2.4. </span>commit<a class="headerlink" href="#commit" title="Permalink to this heading">#</a></h4>
+<p>Việc thực <code class="docutils literal notranslate"><span class="pre">commit</span></code> là thao tác đưa toàn bộ nội dung trong <code class="docutils literal notranslate"><span class="pre">staged</span></code> vào dữ liệu của <code class="docutils literal notranslate"><span class="pre">Git</span></code> - nó tạo ra ảnh chụp toàn bộ thư mục làm việc ở thời điểm đó.</p>
+<p>Như sơ đồ trên nếu đã commit thì nó chuyển file từ trạng thái <code class="docutils literal notranslate"><span class="pre">staged</span></code> sang <code class="docutils literal notranslate"><span class="pre">unmodified</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># commit include the message</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;C0 - Khoi tao du an&quot;</span>
+
+<span class="c1"># commit, nhưng sửa lại commit message ngay trước đó</span>
+git<span class="w"> </span>commit<span class="w"> </span>--amend<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Thông báo ...&quot;</span><span class="w"> </span>
+</pre></div>
+</div>
+<p><strong>Xóa commit khi commit nhầm</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tuỳ vào từng trường hợp mà ta có 3 cách sau để đưa lịch sử commit về như cũ</span>
+<span class="w"> </span>
+<span class="c1"># 1. Chỉ đưa HEAD về như cũ</span>
+git<span class="w"> </span>reset<span class="w"> </span>--soft<span class="w"> </span>HEAD~
+<span class="w"> </span>
+<span class="c1"># 2. Đưa HEAD và index về như cũ</span>
+git<span class="w"> </span>reset<span class="w"> </span>HEAD~
+<span class="w"> </span>
+<span class="c1"># 3. Đưa cả index, working tree về 1 commit trước đó</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD~
+</pre></div>
+</div>
+<p><strong>Hồi phục commit đã xóa</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Xem lại toàn bộ lịch sử commit</span>
+git<span class="w"> </span>reflog<span class="w"> </span>
+
+<span class="c1"># Chọn commit muốn phục hồi và khôi phục lại</span>
+<span class="c1"># git reset --hard HEAD@{2}</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>&lt;commit&gt;
+</pre></div>
+</div>
+<p><strong>Xóa bỏ 1 vài commit gần đây</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># tạo ra một commit mới đảo ngược lại những thay đổi trong commit được chỉ định</span>
+git<span class="w"> </span>revert<span class="w"> </span>&lt;commit-hash-code&gt;
+</pre></div>
+</div>
+</section>
+<section id="log">
+<h4><span class="section-number">2.5.5.2.5. </span>log<a class="headerlink" href="#log" title="Permalink to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># check log commit</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>
+
+<span class="c1"># xem log nhánh master của remote origin</span>
+!git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>origin/master
+</pre></div>
+</div>
+</section>
+<section id="diff">
+<h4><span class="section-number">2.5.5.2.6. </span>diff<a class="headerlink" href="#diff" title="Permalink to this heading">#</a></h4>
+<p>check sự khác nhau nội dung trong thư mục đang làm việc, staged với commit cuối</p>
+<blockquote>
+<div><p>Nó cho biết bản có màu đỏ là bản gốc (ở commit cuối), bản có màu xanh là bản đang sửa đổi.</p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kiểm tra thay đổi giữa hai commit</span>
+git<span class="w"> </span>diff<span class="w"> </span>commit1<span class="w"> </span>commit2
+
+<span class="c1"># Kiểm tra sự thay đổi của hai nhánh</span>
+git<span class="w"> </span>diff<span class="w"> </span>branch1<span class="w"> </span>branch2
+</pre></div>
+</div>
+</section>
+<section id="rollback">
+<h4><span class="section-number">2.5.5.2.7. </span>rollback<a class="headerlink" href="#rollback" title="Permalink to this heading">#</a></h4>
+<p>Chuyển trạng thái file về commit trước đó / phục hồi file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># chuyển về commit trước</span>
+git<span class="w"> </span>checkout<span class="w"> </span>--<span class="w"> </span>&lt;tên<span class="w"> </span>file&gt;
+
+<span class="c1"># phục hồi file test2.html nếu xóa</span>
+git<span class="w"> </span>checkout<span class="w"> </span><span class="o">[</span>hash<span class="o">]</span><span class="w"> </span>filename<span class="w"> </span><span class="c1"># khôi phục lại filename</span>
+git<span class="w"> </span>reset<span class="w"> </span>HEAD<span class="w"> </span>test2.html
+git<span class="w"> </span>checkout<span class="w"> </span>--<span class="w"> </span>test2.html
+</pre></div>
+</div>
+</section>
+</section>
+<section id="branch-command">
+<h3><span class="section-number">2.5.5.3. </span>Branch command<a class="headerlink" href="#branch-command" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># check current brancha</span>
+git<span class="w"> </span>branch
+
+<span class="c1"># tao branch mới</span>
+git<span class="w"> </span>branch<span class="w"> </span>&lt;branch_name&gt;<span class="w"> </span>
+
+<span class="c1"># switch to other branch</span>
+git<span class="w"> </span>checkout<span class="w"> </span>&lt;branch&gt;<span class="w"> </span>
+
+<span class="c1"># add and switch new branch</span>
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>&lt;branch&gt;<span class="w"> </span>
+
+<span class="w"> </span><span class="c1"># rename branch</span>
+git<span class="w"> </span>branch<span class="w"> </span>-m<span class="w"> </span>&lt;newname&gt;
+
+<span class="c1"># delete branch remotely</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>--delete<span class="w"> </span>&lt;remoteBranchName&gt;<span class="w"> </span>
+
+<span class="c1"># Xóa branch đã tồn tại</span>
+git<span class="w"> </span>branch<span class="w"> </span>-d<span class="w"> </span>BRANCH_NAME
+
+<span class="c1"># Xóa branch có commit nhưng chưa được merge</span>
+git<span class="w"> </span>branch<span class="w"> </span>-D<span class="w"> </span>BRANCH_NAME
+</pre></div>
+</div>
+<p><strong>Phục hồi branch đã xóa</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Xem lại toàn bộ lịch sử commit</span>
+git<span class="w"> </span>reflog
+<span class="w"> </span>
+<span class="c1"># Từ các commit này, chọn rồi tạo branch mới</span>
+git<span class="w"> </span>branch<span class="w"> </span>&lt;tên<span class="w"> </span>branch&gt;<span class="w"> </span>&lt;commit&gt;
+</pre></div>
+</div>
+</section>
+<section id="repository-command">
+<h3><span class="section-number">2.5.5.4. </span>Repository command<a class="headerlink" href="#repository-command" title="Permalink to this heading">#</a></h3>
+<p>Ưu tiên sử dụng luồng <strong>Git-flow</strong> hoặc <strong>github-flow</strong> ở trên.</p>
+<section id="fetch">
+<h4><span class="section-number">2.5.5.4.1. </span>fetch<a class="headerlink" href="#fetch" title="Permalink to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code> tải xuống các nội dung từ <strong>Remote repository</strong> mà không làm thay đổi trạng thái của <strong>Local repository</strong> (các dữ liệu như commit, các file, refs), <strong>git</strong> sẽ thu thập và lưu trữ những thay đổi mới từ các branch của <strong>Remote repository</strong> về máy tính của bạn, nhưng không hợp nhất chúng với <strong>Local repository</strong>.</p>
+<p>Với <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>, bạn có thể theo dõi các <code class="docutils literal notranslate"><span class="pre">commit</span></code> người khác đã cập nhật lên <strong>server</strong>, đồng thời nắm bắt được những thông tin khác nhau giữa <strong>remote</strong> và <strong>local</strong>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tải về thông tin của tất cả các nhánh của remote có trong folder &quot;origin&quot;</span>
+git<span class="w"> </span>fetch<span class="w"> </span>origin
+
+<span class="c1"># Get all</span>
+git<span class="w"> </span>fetch<span class="w"> </span>--all
+
+<span class="c1"># tải 1 nhánh cụ thể</span>
+git<span class="w"> </span>fetch<span class="w"> </span>origin<span class="w"> </span>&lt;branch&gt;
+</pre></div>
+</div>
+</section>
+<section id="merge">
+<h4><span class="section-number">2.5.5.4.2. </span>merge<a class="headerlink" href="#merge" title="Permalink to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">merge</span></code> sẽ tạo ra một <code class="docutils literal notranslate"><span class="pre">commit</span></code> mới là kết hợp từ 2 <code class="docutils literal notranslate"><span class="pre">commit</span></code> cuối cùng của 2 nhánh cần gộp vào với nhau. <code class="docutils literal notranslate"><span class="pre">Log</span> <span class="pre">commit</span></code> sẽ không bị thay đổi và thứ tự các <code class="docutils literal notranslate"><span class="pre">commit</span></code> sẽ được sắp xếp theo thời gian tạo <code class="docutils literal notranslate"><span class="pre">commit</span></code>.</p>
+<p><img alt="" src="https://images.viblo.asia/2916cb93-a062-4546-9414-16781503b1c1.png" /> ==&gt; <img alt="" src="https://images.viblo.asia/8da09449-44e1-49e6-902e-0648cdcb2977.png" /></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># chuyển nhánh &quot;master&quot;</span>
+git<span class="w"> </span>checkout<span class="w"> </span>master
+
+<span class="c1"># Lấy code mới nhất về nhánh master trên local</span>
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
+
+<span class="c1"># merge &quot;feature1&quot; into current branch (master)</span>
+git<span class="w"> </span>merge<span class="w"> </span>feature1<span class="w">             </span>
+</pre></div>
+</div>
+<p><strong>Lưu ý khi merge</strong>: Không nên <code class="docutils literal notranslate"><span class="pre">merge</span></code> trực tiếp code vào <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch, mà hãy tạo và <code class="docutils literal notranslate"><span class="pre">push</span></code> lên <code class="docutils literal notranslate"><span class="pre">feature</span></code> branch, sau đó sử dụng <code class="docutils literal notranslate"><span class="pre">merge</span> <span class="pre">request</span></code>:</p>
+<ul class="simple">
+<li><p>tạo merge request để teamlead hoặc review có thể review mã nguồi trước khi merge để đảm bảo tính toàn vẹn của mã nguồn</p></li>
+<li><p>người review sẽ comment trực tiếp cần thay đổi lên merge request để giảm thời gian trao đổi tăng tính hiệu quả khi làm việc nhóm</p></li>
+<li><p>tạo merge request để lưu lại lịch sử thay đổi của mã nguồi.Khi có vấn đề về lỗi, chất lượng phần mềm…. chúng ta có thể xem lại tất cả những sự thay đổi trên từ dòng code ( việc này có thể kiếm tra bằng cách kiểm tra trên từng commit nhưng commit thì rất nhiều)</p></li>
+<li><p>đây còn là nơi để lưu lại các comment của người review, các lỗi thông thường để các member sao không còn mắc lại lỗi cũ và là nơi để học hỏi code lẫn nhau thông qua việc xem lại sự thay đổi từng dòng code của member khác.</p></li>
+<li><p>Để tránh conflict code, nên thường xuyên merge code ở branchs về để đảm bảo code hiện tại là mới nhất, merge code của branchs trước và sau khi code nếu có conflict thì merge conflict trước khi tạo merge request.</p></li>
+</ul>
+<p>Thông thường thì tất cả các thay đổi về mã nguồi của branchs <code class="docutils literal notranslate"><span class="pre">develop</span></code>, <code class="docutils literal notranslate"><span class="pre">release</span></code>, <code class="docutils literal notranslate"><span class="pre">master</span></code> đều thông qua <strong>merge request</strong> (trừ mã nguồn lúc khởi tạo dự án).</p>
+</section>
+<section id="rebase">
+<h4><span class="section-number">2.5.5.4.3. </span>rebase<a class="headerlink" href="#rebase" title="Permalink to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">rebase</span></code> sẽ đưa toàn bộ branch Feature lên trên top branch <code class="docutils literal notranslate"><span class="pre">master</span></code>, làm thay đổi lịch sử <code class="docutils literal notranslate"><span class="pre">commit</span></code>.</p>
+<p><img alt="" src="https://images.viblo.asia/2916cb93-a062-4546-9414-16781503b1c1.png" /> ==&gt; <img alt="" src="https://images.viblo.asia/e26ee7ad-e024-4dda-b500-261cfe7b9dd9.png" /></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chuyển sang nhánh master</span>
+git<span class="w"> </span>checkout<span class="w"> </span>master
+
+<span class="c1"># Lấy code mới nhất về nhánh master trên local</span>
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
+
+<span class="c1"># Quay lại branch bạn muốn bổ sung phần thay đổi của master mới nhất trước khi chạy đến các commit của BRANCH_NAME</span>
+git<span class="w"> </span>checkout<span class="w"> </span>BRANCH_NAME
+
+<span class="c1"># BRANCH_NAME sẽ được bắt đầu bằng last commit của master, rồi mới chạy các commit tiếp theo của BRANCH_NAME</span>
+git<span class="w"> </span>rebase<span class="w"> </span>master<span class="w">        </span>
+</pre></div>
+</div>
+<p><img alt="" src="https://jeffkreeftmeijer.com/git-rebase/git-rebase.png" /></p>
+<p><strong>Nếu bị conflict khi rebase</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kiểm tra các file bị conflict</span>
+git<span class="w"> </span>status
+
+<span class="c1"># Sửa các file bị conflict (sửa bằng tay)</span>
+
+<span class="c1"># Sau khi sửa conflict, dùng lệnh add để phản ảnh sự điều chinhr</span>
+git<span class="w"> </span>add<span class="w"> </span>FILE_PATH
+
+<span class="c1"># Sau khi sửa conflict, tiếp tục lại lệnh rebase</span>
+git<span class="w"> </span>rebase<span class="w"> </span>--continue
+
+<span class="c1"># Hủy rebase</span>
+git<span class="w"> </span>rebase<span class="w"> </span>--abort
+</pre></div>
+</div>
+</section>
+<section id="cherry-pick">
+<h4><span class="section-number">2.5.5.4.4. </span>cherry-pick<a class="headerlink" href="#cherry-pick" title="Permalink to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">cherry-pick</span></code> tương tự với <code class="docutils literal notranslate"><span class="pre">merge</span></code> và <code class="docutils literal notranslate"><span class="pre">rebase</span></code> là lấy thay đổi từ một branch này và gộp vào branch khác, tuy nhiên <code class="docutils literal notranslate"><span class="pre">cherry-pick</span></code> chỉ gộp một <strong>commit</strong> được chỉ định từ một nhánh khác vào nhánh hiện tại trong khi <code class="docutils literal notranslate"><span class="pre">merge</span></code> và <code class="docutils literal notranslate"><span class="pre">rebase</span></code> sẽ gộp toàn bộ các <strong>commit</strong> lại.</p>
+<p>Để sử dụng <code class="docutils literal notranslate"><span class="pre">cherry-pick</span></code>, ta cần xem lại <code class="docutils literal notranslate"><span class="pre">log</span></code> các <strong>commit</strong> sau đó lấy <strong>mã hash của commit</strong> cần được <code class="docutils literal notranslate"><span class="pre">cherry-pick</span></code> và <code class="docutils literal notranslate"><span class="pre">checkout</span></code> sang nhánh cần được gộp <strong>commit</strong> của mã hash kia và thực hiện lệnh:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>cherry-pick<span class="w"> </span>&lt;commit-hash-code&gt;
+</pre></div>
+</div>
+<p>Ví dụ lấy commit <code class="docutils literal notranslate"><span class="pre">C</span></code> từ nhánh master gộp vào nhanh cherry-pick:</p>
+<p><img alt="" src="https://images.viblo.asia/58fb9676-c97d-4ad8-8431-172c129cdad1.png" /> ===&gt; <img alt="" src="https://images.viblo.asia/4db578c2-aa4c-44fa-a6ae-4af4ec1d548c.png" /></p>
+</section>
+<section id="pull">
+<h4><span class="section-number">2.5.5.4.5. </span>pull<a class="headerlink" href="#pull" title="Permalink to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">pull</span></code> = <code class="docutils literal notranslate"><span class="pre">fetch</span></code> + <code class="docutils literal notranslate"><span class="pre">merge</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>pull<span class="w"> </span>&lt;tên-remote&gt;<span class="w"> </span>&lt;tên-remote-branch&gt;
+</pre></div>
+</div>
+</section>
+<section id="push">
+<h4><span class="section-number">2.5.5.4.6. </span>push<a class="headerlink" href="#push" title="Permalink to this heading">#</a></h4>
+<p>push <strong>local repository</strong> to <strong>remote repository</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set new remote với tên là &quot;origin&quot;, tạo new repo từ github.com xong copy paste SSH url của repository</span>
+git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>&lt;remote_url&gt;
+
+<span class="c1"># Verifies the new remote URL</span>
+git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span>
+
+<span class="c1"># add file to stage status</span>
+git<span class="w"> </span>add<span class="w"> </span>.
+
+<span class="c1"># commit file to git snapshoot with the message comment with push</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;initial commit&quot;</span>
+
+<span class="c1"># đẩy từ local repo lên remote repo với folder tên &quot;origin&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;remote<span class="w"> </span>branch&gt;
+
+<span class="c1"># force push the file is in working</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;branch&gt;<span class="w"> </span>--force<span class="w"> </span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="git-stash">
+<h3><span class="section-number">2.5.5.5. </span>git stash<a class="headerlink" href="#git-stash" title="Permalink to this heading">#</a></h3>
+<p>Khi muốn tạm dừng công việc hiện tại và chuyển sang một branch khác. <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">stash</span></code> cho bạn khả năng lưu lại trạng những thay đổi mà bạn đã tạo ra mà không cần thiết phải commit nó giúp bạn có thể dễ dàng chuyển sang nhánh khác làm việc và sau đó quay lại và tiếp tục những gì bạn đang làm ở nhánh đó</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Để lưu được những thay đổi mà không cần commit nó</span>
+git<span class="w"> </span>add<span class="w"> </span>.
+
+<span class="c1"># Tạm thời lưu lại các phần công việc còn đang làm dở</span>
+git<span class="w"> </span>stash<span class="w"> </span>-u
+
+<span class="c1"># xem lại các thay đổi đã lưu</span>
+git<span class="w"> </span>stash<span class="w"> </span>list
+<span class="w"> </span>
+<span class="c1"># Chuyển sang một branch khác và làm việc</span>
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>other-branch
+
+<span class="c1">#### ~làm việc, làm việc, làm việc~</span>
+
+git<span class="w"> </span>add<span class="w"> </span>&lt;các<span class="w"> </span>file<span class="w"> </span>cần<span class="w"> </span>thiết&gt;
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;commit message&quot;</span>
+<span class="w"> </span>
+<span class="c1"># Trở về branch cũ</span>
+git<span class="w"> </span>checkout<span class="w"> </span>origin-branch
+<span class="w"> </span>
+<span class="c1"># Lấy lại các nội dung công việc đang làm dở trước đó</span>
+git<span class="w"> </span>stash<span class="w"> </span>pop
+
+<span class="c1"># Để xóa toàn bộ những lần đã lưu</span>
+git<span class="w"> </span>stash<span class="w"> </span>clear
+
+<span class="c1"># Để drop một lần lưu chỉ định</span>
+git<span class="w"> </span>stash<span class="w"> </span>drop<span class="w"> </span><span class="s1">&#39;stash@{n}&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="git-ignore">
+<h2><span class="section-number">2.5.6. </span>Git ignore<a class="headerlink" href="#git-ignore" title="Permalink to this heading">#</a></h2>
+<p>File <strong>.gitignore</strong> sử dụng để chỉ định các file/folder mà sẽ untrack từ git. Trong file <strong>.gitignore</strong> sẽ là list danh sách các TH:</p>
+<ul class="simple">
+<li><p>Một <strong>file</strong> cụ thể cần ignore: example.exe</p></li>
+<li><p>Một <strong>folder</strong> cụ thể cần ignore: example_folder/</p></li>
+<li><p>Dấu <code class="docutils literal notranslate"><span class="pre">!</span></code> phía trước có ý nghĩa phủ định: !abc/example.exe</p></li>
+<li><p>Sử dụng 1 <code class="docutils literal notranslate"><span class="pre">*</span></code> để tìm các file có cùng định dạng.</p></li>
+</ul>
+<blockquote>
+<div><p>Ví dụ 1: <code class="docutils literal notranslate"><span class="pre">*.xml</span></code> (ignore tất cả các file <code class="docutils literal notranslate"><span class="pre">.xml</span></code> trong project)</p>
+</div></blockquote>
+<blockquote>
+<div><p>Ví dụ 2: <code class="docutils literal notranslate"><span class="pre">config/*.xml</span></code> (ignore các file <code class="docutils literal notranslate"><span class="pre">*.xml</span></code> trong thư mục config)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Sử dụng <code class="docutils literal notranslate"><span class="pre">**</span></code> để có hiệu lực cho các thư mục không cần định rõ tên.</p></li>
+</ul>
+<blockquote>
+<div><p>Ví dụ 1: <code class="docutils literal notranslate"><span class="pre">**/foo</span></code> (ignore tất cả file/thư mục có tên là “foo” ở mọi nơi trong project)</p>
+</div></blockquote>
+<blockquote>
+<div><p>Ví dụ 2: <code class="docutils literal notranslate"><span class="pre">folder/**</span></code> (ignore tất cả các file bên trong folder)</p>
+</div></blockquote>
+<p><strong>Tips:</strong></p>
+<ul class="simple">
+<li><p>Sử dụng <code class="docutils literal notranslate"><span class="pre">#</span></code> để <strong>comment</strong> và có thể để cách dòng cho dễ đọc.</p></li>
+<li><p>Khi <strong>ignore thư mục</strong> nên có dấu <code class="docutils literal notranslate"><span class="pre">/</span></code> ở sau tên thư mục để nhận biết đó là thư mục, nếu không nó có thể là coi là <strong>thư mục</strong> hoặc <strong>file</strong> hay <strong>symbolic link</strong>.</p></li>
+<li><p>Cách tạo <a class="reference external" href="https://www.toptal.com/developers/gitignore/">gitignore</a></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># create file gitignore</span>
+touch<span class="w"> </span>.gitignore
+
+<span class="c1"># các file trong git cache vẫn sẽ được git quản lý mặc dù đã list trong gitignore, phải xoá git cache (xong add các file lại để commit)</span>
+git<span class="w"> </span>rm<span class="w"> </span>-r<span class="w"> </span>--cached<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="git-tags">
+<h2><span class="section-number">2.5.7. </span>Git tags<a class="headerlink" href="#git-tags" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Tag</span></code> là chức năng đặt tên một cách đơn giản của Git, nó cho phép ta xác định một cách rõ ràng các phiên bản mã nguồn (code) của dự án. Ta có thể coi <code class="docutils literal notranslate"><span class="pre">tag</span></code> như một branch không thay đổi được. Một khi nó được tạo (gắn với 1 commit cụ thể) thì ta không thể thay đổi lịch sử commit ấy được nữa.</p>
+</section>
+<section id="git-ci-cd">
+<h2><span class="section-number">2.5.8. </span>Git CI/CD<a class="headerlink" href="#git-ci-cd" title="Permalink to this heading">#</a></h2>
+<p><strong>CI (Continuous Integration)</strong> và <strong>CD (Continuous Delivery)</strong> tức là quá trình tích và triển khai hợp nhanh và liên tục, là quá trình tự động thực hiện các quá trình <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">release</span></code>, <code class="docutils literal notranslate"><span class="pre">deploy</span></code> khi có các trigger như <code class="docutils literal notranslate"><span class="pre">commit/merge</span></code> code lên một branch định sẵn hoặc có thể là tự động chạy theo một lịch cố định</p>
+<p><img alt="" src="https://images.viblo.asia/c334d2bd-3851-499c-9bc2-81c8631fdaf8.png" /></p>
+<ul class="simple">
+<li><p>khi hoàn thành một <strong>feature</strong> thì teamlead tạo <strong>merge request</strong> rồi <code class="docutils literal notranslate"><span class="pre">merge</span></code> vào branch <strong>develop</strong>, <strong>đúng 5h chiều hàng ngày</strong> hệ thống sẽ tự động <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">quét</span> <span class="pre">sonar</span></code>…. và <code class="docutils literal notranslate"><span class="pre">deploy</span></code> lên <strong>develop eviroment</strong> (quá trình này là CD).(<em>không trigger merger code để deploy với branch này vì code được merge vào đây liên tục nếu trigger merger code sẽ dẫn đến việc build liên tục, làm chậm hệ thống</em>)</p></li>
+<li><p>Với branch <strong>prepro</strong> thì sẽ được trigger mỗi lần có sự thay đổi về code sẽ tự động thực hiện các bước như với branch <strong>develop</strong>.</p></li>
+<li><p>Với branch <strong>master</strong> thì có hơi khách một chúc, Git cũng sẽ tự động trigger và tiến hành các bước <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">unit</span> <span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">quét</span> <span class="pre">sonar</span></code>…. nhưng không tiến hành <code class="docutils literal notranslate"><span class="pre">deploy</span></code> (quá trình này chỉ là CI) lên server mà chỉ được <code class="docutils literal notranslate"><span class="pre">deploy</span></code> khi có confirm từ một người có quyền hoặc <code class="docutils literal notranslate"><span class="pre">deploy</span></code> bằng tay để đảm bảo quá trình delevery sản phẩm không xảy ra lỗi và đúng với thời gian khách hàng mong muốn.</p></li>
+</ul>
+<section id="github-actions">
+<h3><span class="section-number">2.5.8.1. </span>GitHub Actions<a class="headerlink" href="#github-actions" title="Permalink to this heading">#</a></h3>
+<p><strong>Github actions</strong> được sinh ra để hỗ trợ việc tự động hóa các tác vụ trong vòng đời của một phần mềm. <strong>Git actions</strong> hoạt động theo hướng sự kiện, nghĩa là nó sẽ thực hiện một loạt commands đã được định nghĩa sẵn khi có một sự kiện được xảy ra.</p>
+<blockquote>
+<div><p>Ví dụ như, bạn có thể cấu hình để mỗi khi có người tạo một <code class="docutils literal notranslate"><span class="pre">mergers</span> <span class="pre">request</span></code> lên một repository nào đó hệ thống sẽ tự động run <code class="docutils literal notranslate"><span class="pre">commands</span></code> để run các unit test case của bạn.</p>
+</div></blockquote>
+<p><a class="reference external" href="https://viblo.asia/p/cau-hinh-cicd-voi-github-phan-1-mot-it-ly-thuyet-Qbq5Q9NL5D8">Tham khảo</a></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./4_Programming"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="4_Python.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Python</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="7_Docker.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.6. </span>Docker</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-navigator">2.5.1. Command navigator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-config">2.5.2. Git config</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-git-info">2.5.2.1. Get git info</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-config">2.5.2.2. Modify config</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git-authenticate-account">2.5.2.3. Git authenticate account</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-flow">2.5.3. Git-flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#github-flow">2.5.4. Github-flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-command">2.5.5. Git command</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-new-repo">2.5.5.1. Create new repo</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#init">2.5.5.1.1. init</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#clone">2.5.5.1.2. clone</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#connect-to-remote">2.5.5.1.3. connect to remote</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-change">2.5.5.2. File change</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#file-s-status">2.5.5.2.1. file’s status</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#status">2.5.5.2.2. status</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#add">2.5.5.2.3. add</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#commit">2.5.5.2.4. commit</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#log">2.5.5.2.5. log</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diff">2.5.5.2.6. diff</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rollback">2.5.5.2.7. rollback</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#branch-command">2.5.5.3. Branch command</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-command">2.5.5.4. Repository command</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fetch">2.5.5.4.1. fetch</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#merge">2.5.5.4.2. merge</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rebase">2.5.5.4.3. rebase</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cherry-pick">2.5.5.4.4. cherry-pick</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pull">2.5.5.4.5. pull</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#push">2.5.5.4.6. push</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git-stash">2.5.5.5. git stash</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-ignore">2.5.6. Git ignore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-tags">2.5.7. Git tags</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-ci-cd">2.5.8. Git CI/CD</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions">2.5.8.1. GitHub Actions</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

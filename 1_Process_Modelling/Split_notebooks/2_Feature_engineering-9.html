@@ -1,0 +1,1129 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.9. Feature scaling &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/2_Feature_engineering-9';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.10. Feature selection" href="2_Feature_engineering-10.html" />
+    <link rel="prev" title="2.8. Outliers" href="2_Feature_engineering-8.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/2_Feature_engineering-9.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Feature scaling</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standardization">2.9.1. Standardization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-normalisation">2.9.2. Mean Normalisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minmaxscaling">2.9.3. MinMaxScaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#max-absolute-scaling">2.9.4. Max Absolute Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-centering-maxabsscaling">2.9.5. Zero-Centering + MaxAbsScaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust-scaling">2.9.6. Robust Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unit-norm-scaling">2.9.7. Unit Norm Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gower-s-distance-mixed">2.9.8. Gower’s distance (mixed)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="feature-scaling">
+<h1><span class="section-number">2.9. </span>Feature scaling<a class="headerlink" href="#feature-scaling" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>It is a technique to standardize/normalize the independent features in a data in a fixed range or scale. In other words, the methods to set feature value range within a similar scale</p></li>
+<li><p>Feature Scaling is one of the last steps in the whole life cycle of Feature Engineering, before Feature selection or training model.</p></li>
+</ul>
+<p><strong>1. Feature Magnitude matters:</strong></p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">regression</span> <span class="pre">coefficient</span></code> is directly influenced by the scale of the variables</p></li>
+<li><p>Variables with bigger magnitude/value range dominate over the ones with smaller magnitude</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gradient</span> <span class="pre">decent</span></code> converges faster when features are on similar scales</p></li>
+<li><p>Feature scaling helps decrease the time to find vectors for <code class="docutils literal notranslate"><span class="pre">SVMs</span></code></p></li>
+<li><p>Many algorithms that are base on distances (e.g. <code class="docutils literal notranslate"><span class="pre">Euclidean</span> <span class="pre">distances</span></code>) are sensitive to feature magitude.</p></li>
+</ul>
+<p><strong>2. Algorithms affected to magnitude</strong></p>
+<ul class="simple">
+<li><p>Sensitive:</p>
+<ul>
+<li><p>Linear &amp; Logistic Regression</p></li>
+<li><p>Neural Networks</p></li>
+<li><p>SVM</p></li>
+<li><p>KNN, Kmean</p></li>
+<li><p>Linear Discriminant Analysis (LDA)</p></li>
+<li><p>Principal Component Analysis (PCA)</p></li>
+</ul>
+</li>
+<li><p>Insensitive: (tree-base)</p>
+<ul>
+<li><p>Classification and regression tree</p></li>
+<li><p>Random Forests</p></li>
+<li><p>Gradient Boosted Trees</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>3. Types of Feature Scaling:</strong></p>
+<ul class="simple">
+<li><p><strong>Rescaling</strong>: add or subtract a constant and then multiply or divide by a constant</p></li>
+<li><p><strong>Standardization (column-wise):</strong> subtract a measure of location and dividing by a measure of scale.</p>
+<ul>
+<li><p>Standard Scaler (<em>If do not understand the data, non-normal data, It works most of the times.</em>)</p></li>
+<li><p>Min Max Scaling (<em>know the max and min values of the feature, like in CNN</em>)</p></li>
+<li><p>Mean Normalization</p></li>
+<li><p>Max Absolute Scaling (<em>Mean is closed to 0 or sparce matrix</em>)</p></li>
+<li><p>Robust Scaling. (<em>the data has outliers</em>)</p></li>
+</ul>
+</li>
+<li><p><strong>Normalization (row-wise):</strong>: divide by a norm of the vector</p>
+<ul>
+<li><p>Vector unit norm/lenght (<em>use for text-classification or clustering</em>)</p></li>
+</ul>
+</li>
+</ul>
+<p>(If you do not know which scaler to use, apply all and check the effect on the models.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">palette</span><span class="o">=</span><span class="s2">&quot;rainbow&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;darkgrid&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="k">def</span> <span class="nf">kdeplot</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">df1</span><span class="p">,</span> <span class="n">df2</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">df2</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">2</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">!=</span><span class="nb">str</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="n">var</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">!=</span><span class="nb">str</span> <span class="k">else</span> <span class="p">[</span><span class="n">var</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">cols</span><span class="p">,</span><span class="mi">4</span><span class="o">*</span><span class="n">rows</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">r</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">df2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kdeplot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 2
+</pre></div>
+</div>
+<img alt="../../_images/3b1dd23a84b345cdd20f25d7bdf10bac88c4acb4f794460500d8cb88c11d76d1.png" src="../../_images/3b1dd23a84b345cdd20f25d7bdf10bac88c4acb4f794460500d8cb88c11d76d1.png" />
+</div>
+</div>
+<section id="standardization">
+<h2><span class="section-number">2.9.1. </span>Standardization<a class="headerlink" href="#standardization" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Standardization is a scaling technique where the values are centered around the mean with a unit standard deviation.
+$<span class="math notranslate nohighlight">\(Z{\mathrm{score}}={\frac{X-mean(X)}{Std(X)}}\)</span>$</p></li>
+<li><p>After scale:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mean(x)</span> <span class="pre">=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">Std(X)</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">Variance</span></code> = 1</p></li>
+<li><p>Preserves the shape of distribution and Outliers</p></li>
+<li><p>Range value change and Min/max values are vary
+<img alt="image.png" src="../../_images/Standardization.png" /></p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># set up the scaler</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+
+<span class="c1"># fit the scaler to the train set, it will learn the parameters</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># transform train and test sets</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">kdeplot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/25cf7b736a147f9800e20bfc30cd2870139173da01910b002220f789e2564b57.png" src="../../_images/25cf7b736a147f9800e20bfc30cd2870139173da01910b002220f789e2564b57.png" />
+</div>
+</div>
+</section>
+<section id="mean-normalisation">
+<h2><span class="section-number">2.9.2. </span>Mean Normalisation<a class="headerlink" href="#mean-normalisation" title="Permalink to this heading">#</a></h2>
+<p><strong>x_scaled = (x - x_mean) / ( x_max - x_min)</strong></p>
+<ul class="simple">
+<li><p>After scale:</p>
+<ul>
+<li><p>Mean = 0</p></li>
+<li><p>Variance will be different, value range in [-1, 1]</p></li>
+<li><p>May alter the shape of the original distribution, but a little bit</p></li>
+<li><p>preserves outliers</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sklearn does not have any specific class for mean normalization. </span>
+<span class="c1"># We can implement mean normalisation by combining the use of 2 transformers</span>
+
+<span class="c1"># the scaler - for mean normalisation</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">RobustScaler</span>
+
+<span class="n">scaler_mean</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">with_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+<span class="n">scaler_minmax</span> <span class="o">=</span> <span class="n">RobustScaler</span><span class="p">(</span><span class="n">with_centering</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">with_scaling</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quantile_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler_minmax</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">scaler_mean</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+
+<span class="n">X_train_scaled</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>7.310000e+02</td>
+      <td>7.310000e+02</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-1.184643e-17</td>
+      <td>-1.366896e-18</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.854057e-01</td>
+      <td>1.124550e-01</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-3.934165e-01</td>
+      <td>-7.372044e-02</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-1.210905e-01</td>
+      <td>-5.800789e-02</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-1.524698e-02</td>
+      <td>-4.278330e-02</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.170574e-01</td>
+      <td>-1.989218e-03</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>6.065835e-01</td>
+      <td>9.262796e-01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="minmaxscaling">
+<h2><span class="section-number">2.9.3. </span>MinMaxScaling<a class="headerlink" href="#minmaxscaling" title="Permalink to this heading">#</a></h2>
+<p><strong>X_scaled = (X - X.min / (X.max - X.min)</strong></p>
+<ul class="simple">
+<li><p>After scale:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Value</span> <span class="pre">range</span></code> in [0,1]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mean</span></code> is not 0, <code class="docutils literal notranslate"><span class="pre">vaiance</span></code> change</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">of</span> <span class="pre">distribution</span></code> would be similar to the original, but not be preserved because <code class="docutils literal notranslate"><span class="pre">Std</span></code> change and not identical.</p></li>
+<li><p>Scaler would be sensitive by <code class="docutils literal notranslate"><span class="pre">outliers</span></code></p></li>
+<li><p><strong>Min Max Normalization will perform best when the maximum and minimum value is very distinct and known.</strong></p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+<span class="c1"># set up the scaler</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+
+<span class="c1"># fit the scaler to the train set, it will learn the parameters</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># transform train and test sets</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">kdeplot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d873c72677f78921625ee34abeb9e9bb06f2df8863a656cd52ed158060537011.png" src="../../_images/d873c72677f78921625ee34abeb9e9bb06f2df8863a656cd52ed158060537011.png" />
+</div>
+</div>
+</section>
+<section id="max-absolute-scaling">
+<h2><span class="section-number">2.9.4. </span>Max Absolute Scaling<a class="headerlink" href="#max-absolute-scaling" title="Permalink to this heading">#</a></h2>
+<p><strong>X_scaled = X / abs(X.max)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Value</span> <span class="pre">range</span></code> of [-1, 1]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mean</span></code> not 0, <code class="docutils literal notranslate"><span class="pre">std</span></code> varies across variables</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">distribution</span></code> would be similar to original</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Scaler</span></code> is sensitive by <code class="docutils literal notranslate"><span class="pre">outliers</span></code></p></li>
+<li><p><strong>Recommend use for <code class="docutils literal notranslate"><span class="pre">Zero-mean</span> <span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">data</span></code>.</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the scaler - for MaxAbsScaling, with centering</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MaxAbsScaler</span><span class="p">,</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># set up the scaler</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">MaxAbsScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+
+<span class="c1"># fit the scaler to the train set, it will learn the parameters</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># transform train and test sets</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">kdeplot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/54d42a397d406ef576b922fc9a9f07c184969f1db1c957f9aa00b19016ade469.png" src="../../_images/54d42a397d406ef576b922fc9a9f07c184969f1db1c957f9aa00b19016ade469.png" />
+</div>
+</div>
+</section>
+<section id="zero-centering-maxabsscaling">
+<h2><span class="section-number">2.9.5. </span>Zero-Centering + MaxAbsScaling<a class="headerlink" href="#zero-centering-maxabsscaling" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can center the distributions at zero and then scale to its absolute maximum, </span>
+<span class="c1"># as recommended by Scikit-learn by combining the use of 2 transformers.</span>
+
+<span class="n">scaler_mean</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">with_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+<span class="n">scaler_maxabs</span> <span class="o">=</span> <span class="n">MaxAbsScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+
+<span class="c1"># fit the scalers to the train set, it will learn the parameters</span>
+<span class="n">X_train_demean</span> <span class="o">=</span> <span class="n">scaler_mean</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># we fit to the transformed data, because the maximum</span>
+<span class="c1"># value will change with the centering</span>
+<span class="n">scaler_maxabs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_demean</span><span class="p">)</span>
+
+<span class="c1"># transform train and test sets</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler_maxabs</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">scaler_mean</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler_maxabs</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">scaler_mean</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+
+<span class="n">kdeplot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">)</span>
+
+<span class="n">X_train_scaled</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/00b268b0194684510c8220a430b9df20f795e80ebec5706ec7959a17485eacd0.png" src="../../_images/00b268b0194684510c8220a430b9df20f795e80ebec5706ec7959a17485eacd0.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>7.310000e+02</td>
+      <td>7.310000e+02</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-2.247784e-17</td>
+      <td>-3.037546e-18</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.056556e-01</td>
+      <td>1.214050e-01</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-6.485776e-01</td>
+      <td>-7.958768e-02</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-1.996270e-01</td>
+      <td>-6.262460e-02</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-2.513582e-02</td>
+      <td>-4.618832e-02</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.929782e-01</td>
+      <td>-2.147535e-03</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Similar effect to mean normalisation, but in this case, the values vary across a narrower range.</p>
+</section>
+<section id="robust-scaling">
+<h2><span class="section-number">2.9.6. </span>Robust Scaling<a class="headerlink" href="#robust-scaling" title="Permalink to this heading">#</a></h2>
+<p>This Scaler removes the median and scales the data according to the quantile range (defaults to IQR: Interquartile Range). The IQR is the range between the 1st quartile (25th quantile) and the 3rd quartile (75th quantile).
+<strong>X_scaled = X - X_median / ( X.quantile(0.75) - X.quantile(0.25) )</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Median</span></code> = 0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Vairance</span></code> change across variables</p></li>
+<li><p>May be not preserves the <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">original</span> <span class="pre">distribution</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Max</span></code>/<code class="docutils literal notranslate"><span class="pre">Min</span></code> would be changed</p></li>
+<li><p><strong>Robust Scaling is best for data that has <code class="docutils literal notranslate"><span class="pre">outliers</span></code></strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">RobustScaler</span>
+<span class="c1"># set up the scaler</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">RobustScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+
+<span class="c1"># fit the scaler to the train set, it will learn the parameters</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># transform train and test sets</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">kdeplot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">)</span>
+<span class="n">X_train_scaled</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e451b1e5b8c7a6856ea84b380e8bb35e7cea1dc63cacd9dce8eb60cf4d58a79a.png" src="../../_images/e451b1e5b8c7a6856ea84b380e8bb35e7cea1dc63cacd9dce8eb60cf4d58a79a.png" />
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>731.000000</td>
+      <td>731.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.064023</td>
+      <td>0.763733</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.778532</td>
+      <td>2.007455</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-1.587961</td>
+      <td>-0.552265</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.444444</td>
+      <td>-0.271777</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.555556</td>
+      <td>0.728223</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.611111</td>
+      <td>17.298927</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="unit-norm-scaling">
+<h2><span class="section-number">2.9.7. </span>Unit Norm Scaling<a class="headerlink" href="#unit-norm-scaling" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Scaling to unit norm is achieved by dividing each observation vector by either the Manhattan distance (l1 norm) or the Euclidean distance of the vector (l2 norm)</p></li>
+<li><p>Applying for each obs independently (i.e. each row of the data matrix) with at least one non zero component is rescaled independently of other samples so that its norm (l1 or l2) equals one.(instead of applying for feature columns like others)</p></li>
+<li><p>Method : <code class="docutils literal notranslate"><span class="pre">L1</span></code>, <code class="docutils literal notranslate"><span class="pre">L2</span></code>, <code class="docutils literal notranslate"><span class="pre">MaxAbs</span></code></p>
+<ul>
+<li><p>With outliers, we may prefer to use l1 normalisation.</p></li>
+<li><p>The Euclidean distance (L2) is always smaller than the Manhattan distance (L1)</p></li>
+</ul>
+</li>
+<li><p>After normalization by norm:</p>
+<ul>
+<li><p>The shape of features (columns) distributions are quite change.</p></li>
+<li><p>Each row have unit norm</p></li>
+</ul>
+</li>
+<li><p><strong>Recommend use for text-classification, clustering, or if value of feature is more related other features in this observation rather than to the distribution of the feature</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">Normalizer</span>
+
+<span class="c1"># set up the scaler</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">Normalizer</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">)</span>
+
+<span class="c1"># fit the scaler, this procedure does NOTHING</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># transform train and test sets</span>
+<span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="gower-s-distance-mixed">
+<h2><span class="section-number">2.9.8. </span>Gower’s distance (mixed)<a class="headerlink" href="#gower-s-distance-mixed" title="Permalink to this heading">#</a></h2>
+<p>Apply a differenct distance metric to each variable depending on the type of data:</p>
+<ul class="simple">
+<li><p>for <strong>numeric variables</strong> and <strong>ordered factor</strong>: manhattan distance</p></li>
+<li><p>for <strong>categorical variables</strong>: the distance is 1 with the difference of 2 values, else 0 for the equal values</p></li>
+</ul>
+<p><strong>Gower Similarity</strong> tính trung bình partial similarities (ps) thông qua m features của 2 quan sát (khác với xét tính tương đồng thông qua 1 feature)</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_Feature_engineering-8.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.8. </span>Outliers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_Feature_engineering-10.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.10. </span>Feature selection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standardization">2.9.1. Standardization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-normalisation">2.9.2. Mean Normalisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minmaxscaling">2.9.3. MinMaxScaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#max-absolute-scaling">2.9.4. Max Absolute Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-centering-maxabsscaling">2.9.5. Zero-Centering + MaxAbsScaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust-scaling">2.9.6. Robust Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unit-norm-scaling">2.9.7. Unit Norm Scaling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gower-s-distance-mixed">2.9.8. Gower’s distance (mixed)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1101 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>1.6. Kiểm định giả thuyết (Hypothesis testing) &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-5';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.7. ANOVA" href="1_Statistics_and_EDA-6.html" />
+    <link rel="prev" title="1.5. Inferential statistic" href="1_Statistics_and_EDA-4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/1_Statistics_and_EDA-5.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Kiểm định giả thuyết (Hypothesis testing)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kiem-dinh-gia-tri-thong-ke">1.6.1. Kiểm định giá trị thống kê</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-test-z-test">1.6.2. T_test/Z_test</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kiem-dinh-khoang-tin-cay">1.6.2.1. Kiểm định khoảng tin cậy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so-sanh-hai-quan-the">1.6.2.2. So sánh hai quần thể</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#theo-ty-le-proportion">1.6.2.2.1. Theo tỷ lệ - proportion</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#theo-mean">1.6.2.2.2. Theo mean</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-square">1.6.2.3. Chi-Square</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="kiem-dinh-gia-thuyet-hypothesis-testing">
+<h1><span class="section-number">1.6. </span>Kiểm định giả thuyết (Hypothesis testing)<a class="headerlink" href="#kiem-dinh-gia-thuyet-hypothesis-testing" title="Permalink to this heading">#</a></h1>
+<p>Thực hiện 4 bước</p>
+<ol class="arabic simple">
+<li><p>Thiệt lập giả thuyết <span class="math notranslate nohighlight">\(H_0, H_a\)</span> và chọn mức ý nghĩa/ngưỡng chấp nhận/độ không chắc chắn/độ tin cậy <span class="math notranslate nohighlight">\(\alpha\)</span></p></li>
+<li><p>Xác định dạng kiểm định (binomial-test, z-test, t-test, chi-square-test, f-test)</p></li>
+<li><p>Tính p-value</p></li>
+<li><p>Đối chiếu p-value với mức ý nghĩa đã chọn</p></li>
+</ol>
+<section id="kiem-dinh-gia-tri-thong-ke">
+<h2><span class="section-number">1.6.1. </span>Kiểm định giá trị thống kê<a class="headerlink" href="#kiem-dinh-gia-tri-thong-ke" title="Permalink to this heading">#</a></h2>
+<p><strong>Bài toán 1 (binomial-test): nữ sinh bị gọi lên bảng trả bài nhiều hơn nam đúng hay sai?</strong></p>
+<ul class="simple">
+<li><p>gọi tên 50 người thì thấy tỉ lệ nam/nữ như sau: <code class="docutils literal notranslate"><span class="pre">n_boys</span></code> = 14, <code class="docutils literal notranslate"><span class="pre">n_girls</span></code> = 36</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Thiết lập giả thuyết</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H_0\)</span> cho rằng nữ bị gọi là do tình cờ (happend by chance) nghĩa là xác suất bị gọi <span class="math notranslate nohighlight">\(p \le 0.5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(H_a\)</span> cho rằng nữ bị gọi là do thiên vị (not by chance) nghĩa là xác suất bị gọi <span class="math notranslate nohighlight">\(p &gt; 0.5\)</span></p></li>
+<li><p>Chọn mức ý nghĩa <span class="math notranslate nohighlight">\(\alpha = 5\%\)</span>. Nếu tỉ lệ nữ bị gọi nhiều hơn 36 có xác suất nhỏ hơn 5% thì ta sẽ loại bỏ <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Xác định dạng kiểm định:</p>
+<ul class="simple">
+<li><p>Đây là binomial-test với <span class="math notranslate nohighlight">\(p = 0.5\)</span></p></li>
+</ul>
+</li>
+<li><p>Tính p-value (chính là Zscore)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_boys</span><span class="p">,</span> <span class="n">n_girls</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">36</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">n_boys</span> <span class="o">+</span> <span class="n">n_girls</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.51</span>
+<span class="n">p_value</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">n_girls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;p_value = &#39;</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span>
+
+<span class="c1"># reject H0 or not</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject H0 =&gt; nữ bị gọi là do thiên vị&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Accept H0 =&gt; nữ bị gọi là do tình cờ&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p_value =  0.0012805685488382526
+Reject H0 =&gt; nữ bị gọi là do thiên vị
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Bài toán 2 (z-test): test khả năng thắng cử của ứng cử viên</strong></p>
+<ol class="arabic simple">
+<li><p>Thiết lập giả thuyết</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H_0: p \le 0.5\)</span> - ứng viên thua cử</p></li>
+<li><p><span class="math notranslate nohighlight">\(H_a: p &gt; 0.5\)</span> - ứng viên thắng cử</p></li>
+<li><p>Chọn mức ý nghĩa <span class="math notranslate nohighlight">\(\alpha = 5\%\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Xác định dạng kiểm định:</p>
+<ul class="simple">
+<li><p>Đây là z-test với <span class="math notranslate nohighlight">\(z_p = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1 - p_0)}{n}}}\)</span></p></li>
+</ul>
+</li>
+<li><p>Tính p-value (chính là Zscore)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">p_hat</span> <span class="o">=</span> <span class="n">yes</span> <span class="o">=</span> <span class="mf">0.54</span>
+<span class="n">p_0</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">z_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_hat</span> <span class="o">-</span> <span class="n">p_0</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p_0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span>
+
+<span class="c1"># one_tail test</span>
+<span class="n">z_cdf</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z_p</span><span class="p">)</span>
+<span class="n">p_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">z_cdf</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;p_value = &#39;</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span>
+
+<span class="c1"># reject H0 or not</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject H0 =&gt; ứng viên thắng cử&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Accept H0 =&gt; ứng viên thua cử&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p_value =  0.03681913506015122
+Reject H0 =&gt; ứng viên thắng cử
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Bài toán 3 (z-test): khách hàng không thích sản phẩm nhỏ hơn 20kg, trước khi ship nhà sản xuất cần phải test điều này</strong></p>
+<ol class="arabic simple">
+<li><p>Thiết lập giả thuyết</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H_0: \mu \ge 20.15 \ kg\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(H_a: \mu &lt; 20.15 \ kg\)</span></p></li>
+<li><p>Chọn mức ý nghĩa <span class="math notranslate nohighlight">\(\alpha = 5\%\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Xác định dạng kiểm định:</p>
+<ul class="simple">
+<li><p>Đây là z-test với <span class="math notranslate nohighlight">\(z = \frac{\bar{x} - \mu}{\frac{\sigma}{\sqrt{n}}}\)</span></p></li>
+</ul>
+</li>
+<li><p>Tính p-value (chính là Zscore)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mf">20.15</span>
+<span class="n">avg_weight</span> <span class="o">=</span> <span class="mf">20.05</span>
+<span class="n">std_weight</span> <span class="o">=</span> <span class="mf">0.26</span>
+<span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_weight</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">std_weight</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<span class="c1">#one-tail test</span>
+<span class="n">p_value</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;p_value = &#39;</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span>
+
+<span class="c1"># reject H0 or not</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject H0 =&gt; không ship hàng&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Accept H0 =&gt; ship hàng&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p_value =  5.999322044891979e-05
+Reject H0 =&gt; không ship hàng
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="t-test-z-test">
+<h2><span class="section-number">1.6.2. </span>T_test/Z_test<a class="headerlink" href="#t-test-z-test" title="Permalink to this heading">#</a></h2>
+<section id="kiem-dinh-khoang-tin-cay">
+<h3><span class="section-number">1.6.2.1. </span>Kiểm định khoảng tin cậy<a class="headerlink" href="#kiem-dinh-khoang-tin-cay" title="Permalink to this heading">#</a></h3>
+<p>Áp dụng t-statistics khi kích thước mẫu n &lt; 30, ngược lại ta dùng z-score. Khi kích thước mẫu càng lớn thì t-score xấp xỉ z-score.</p>
+<ul class="simple">
+<li><p>z-test: so sánh mẫu thu thập với quần thể (sample vs population)</p></li>
+<li><p>t-test: so sánh 2 mẫu thu thập độc lập (sample_1 vs sample_2, curve_1 vs curve_2)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import libraries</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># t_test cho từng giá trị n tăng dần, với độ tin cậy 5% (2-tail)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;n = 3:&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;n = 10:&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;n = 10:&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">,</span> <span class="mi">19</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">n = 100:&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">,</span> <span class="mi">99</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">n = 1000:&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">,</span> <span class="mi">99</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;z-score:&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>n = 3: 4.302652729911275
+n = 10: 2.262157162740991
+n = 10: 2.093024054408263
+
+n = 100: 1.9842169515086827
+
+n = 1000: 1.9842169515086827
+z-score: 1.959963984540054
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Bài toán: tính khoảng tin cậy cho điểm số học sinh</strong>
+$<span class="math notranslate nohighlight">\(SE_{\bar{X}} = \frac{s}{\sqrt{n}} \ (SE: standard \ error)\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(UCL = \bar{x} + tScore * SE_{\bar{X}}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(LCL = \bar{x} - tScore * SE_{\bar{X}}\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mf">8.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">7.25</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">7.25</span><span class="p">,</span> <span class="mf">8.25</span><span class="p">])</span>
+<span class="n">n_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="n">dof</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">CI</span> <span class="o">=</span> <span class="mf">0.98</span> <span class="c1"># confidence interval</span>
+
+<span class="n">sample_mean</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">t_score</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">CI</span><span class="p">,</span> <span class="n">dof</span><span class="p">)</span>
+<span class="n">standard_err</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">ucl</span> <span class="o">=</span> <span class="n">sample_mean</span> <span class="o">+</span> <span class="n">t_score</span> <span class="o">*</span> <span class="n">standard_err</span>
+<span class="n">lcl</span> <span class="o">=</span> <span class="n">sample_mean</span> <span class="o">-</span> <span class="n">t_score</span> <span class="o">*</span> <span class="n">standard_err</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sample mean = &#39;</span><span class="p">,</span> <span class="n">sample_mean</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Khoang tin cay </span><span class="si">{</span><span class="n">lcl</span><span class="si">}</span><span class="s1"> - </span><span class="si">{</span><span class="n">ucl</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sample mean =  8.025
+Khoang tin cay 7.770695599535218 - 8.279304400464783
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="so-sanh-hai-quan-the">
+<h3><span class="section-number">1.6.2.2. </span>So sánh hai quần thể<a class="headerlink" href="#so-sanh-hai-quan-the" title="Permalink to this heading">#</a></h3>
+<p><strong>Case study</strong></p>
+<ul class="simple">
+<li><p>Sử dụng <strong>aspirin</strong> có giảm tình trạng đau tim hay không?</p></li>
+<li><p><strong>Nam giới</strong> khi lái xe thường gây ra tai nạn nhiều hơn <strong>nữ giới</strong> phải không?</p></li>
+<li><p>Tình trạng an ninh ở <strong>Hồ Chí Minh</strong> có tốt hơn ở <strong>Hà Nội</strong>?</p></li>
+<li><p><strong>Nam giới</strong> thường có mức lương cao hơn <strong>nữ giới</strong> đúng không?</p></li>
+<li><p><strong>Ăn kiêng</strong> và không tập luyện hay <strong>tập luyện 2h/ngày</strong> nhưng được ăn đủ thứ thì cái nào giúp giảm béo tốt hơn?</p></li>
+<li><p>Sử dụng <strong>multi-vitamin</strong> có giúp học sinh tiếp thu môn toán tốt hơn không?</p></li>
+<li><p>Học <strong>online</strong> hay học qua <strong>sách giáo khoa</strong> cái nào tốt hơn?</p></li>
+</ul>
+<p><strong>Steps</strong></p>
+<ol class="arabic simple">
+<li><p>Chia quần thể thành experiment và control group</p></li>
+<li><p>Chuẩn bị các thông số</p>
+<ul class="simple">
+<li><p>Tính standard error</p></li>
+<li><p>Tính khoảng tin cậy</p></li>
+</ul>
+</li>
+<li><p>Thực hiện kiểm định giả thuyết</p></li>
+</ol>
+<section id="theo-ty-le-proportion">
+<h4><span class="section-number">1.6.2.2.1. </span>Theo tỷ lệ - proportion<a class="headerlink" href="#theo-ty-le-proportion" title="Permalink to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[SE = \sqrt{\frac{\hat{p}_1(1 - \hat{p_1})}{n_1} + \frac{\hat{p}_2(1 - \hat{p_2})}{n_2}}\]</div>
+<div class="math notranslate nohighlight">
+\[UCL = (\hat{p}_2 - \hat{p}_1) + (Zscore * SE)\]</div>
+<div class="math notranslate nohighlight">
+\[LCL = (\hat{p}_2 - \hat{p}_1) - (Zscore * SE)\]</div>
+<p><strong>Sử dụng aspirin có giảm tình trạng đau tim hay không?</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Chia quần thể thành experiment và control group</span>
+<span class="n">group_aspirin</span> <span class="o">=</span> <span class="mi">2219</span>
+<span class="n">group_control</span> <span class="o">=</span> <span class="mi">2035</span>
+<span class="n">aspirin_heart_attacks</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="n">control_heart_attacks</span> <span class="o">=</span> <span class="mi">46</span>
+
+<span class="c1"># 2. Tính các thông số</span>
+<span class="n">p_aspirin_attacks</span> <span class="o">=</span> <span class="n">aspirin_heart_attacks</span><span class="o">/</span><span class="n">group_aspirin</span>
+<span class="n">p_control_attacks</span> <span class="o">=</span> <span class="n">control_heart_attacks</span><span class="o">/</span><span class="n">group_control</span>
+<span class="n">SE</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p_aspirin_attacks</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_aspirin_attacks</span><span class="p">)</span><span class="o">/</span><span class="n">group_aspirin</span> <span class="o">+</span> <span class="n">p_control_attacks</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_control_attacks</span><span class="p">)</span><span class="o">/</span><span class="n">group_control</span><span class="p">))</span>
+
+    <span class="c1"># tính khoảng tin cậy</span>
+<span class="n">diff_from_sample</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p_aspirin_attacks</span> <span class="o">-</span> <span class="n">p_control_attacks</span><span class="p">)</span>
+<span class="n">critical_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">)</span>
+<span class="n">ucl</span> <span class="o">=</span> <span class="n">diff_from_sample</span> <span class="o">+</span> <span class="n">critical_value</span> <span class="o">*</span> <span class="n">SE</span>
+<span class="n">lcl</span> <span class="o">=</span> <span class="n">diff_from_sample</span> <span class="o">-</span> <span class="n">critical_value</span> <span class="o">*</span> <span class="n">SE</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Tỉ lệ phần trăm bị đau tim khi sử dụng aspirin:&quot;</span><span class="p">,</span> <span class="n">p_aspirin_attacks</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Tỉ lệ phần trăm bị đau tim khi không sử dụng aspirin:&quot;</span><span class="p">,</span> <span class="n">p_control_attacks</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Standard error giữa hai nhóm lấy mẫu:&quot;</span><span class="p">,</span> <span class="n">SE</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Differences from samples:&quot;</span><span class="p">,</span> <span class="n">diff_from_sample</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;UCL:&quot;</span><span class="p">,</span> <span class="n">ucl</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;LCL:&quot;</span><span class="p">,</span> <span class="n">lcl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tỉ lệ phần trăm bị đau tim khi sử dụng aspirin: 0.011716989634970707
+Tỉ lệ phần trăm bị đau tim khi không sử dụng aspirin: 0.022604422604422605
+Standard error giữa hai nhóm lấy mẫu: 0.004009385358305656
+Differences from samples: 0.010887432969451898
+UCL: 0.018745683871873205
+LCL: 0.003029182067030593
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. Thực hiện kiểm định giả thuyết</span>
+<span class="c1"># H0: cho rằng tỉ lệ mắc bệnh tim không thay đỗi. Nghĩa là p1 - p0 = 0</span>
+<span class="c1"># H1: cho rằng tỉ lệ mắc bệnh tim sẽ giảm. Nghĩa là p1 - p0 != 0</span>
+<span class="c1"># Chọn significant level (alpha, mức ý nghĩa) = 5%</span>
+<span class="c1"># Ở đây là population nên ta sẽ chọn Z-statistic để test</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[z = \frac{(\hat{p}_1 - \hat{p}_2) - (p_1 - p_2)}{SE} = \frac{\hat{p}_1 - \hat{p}_2}{SE} \ (assuming \ no \ differences: p_1 = p_2)\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">diff_from_sample</span> <span class="o">/</span> <span class="n">SE</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Z-score:&quot;</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Critical value:&quot;</span><span class="p">,</span> <span class="n">critical_value</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="n">critical_value</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject H0 =&gt; Sử dụng aspirin làm giảm nguy cơ bị đau tim&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject Ha =&gt; Sử dụng aspirin không làm giảm nguy cơ bị đau tim&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Z-score: 2.715486788242492
+Critical value: 1.959963984540054
+Reject H0 =&gt; Sử dụng aspirin làm giảm nguy cơ bị đau tim
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="theo-mean">
+<h4><span class="section-number">1.6.2.2.2. </span>Theo mean<a class="headerlink" href="#theo-mean" title="Permalink to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[SE = \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}\]</div>
+<div class="math notranslate nohighlight">
+\[UCL = (\hat{\mu}_1 - \hat{\mu}_1) + (Zscore * SE)\]</div>
+<div class="math notranslate nohighlight">
+\[LCL = (\hat{\mu}_1 - \hat{\mu}_1) - (Zscore * SE)\]</div>
+<p>Học <strong>online</strong> hay học qua <strong>sách giáo khoa</strong> cái nào tốt hơn?</p>
+<ul class="simple">
+<li><p>Chọn ngẫu nhiên 100 học sinh để học online</p></li>
+<li><p>Chọn ngẫu nhiên 100 học sinh để học qua sách giáo khoa</p></li>
+<li><p>Cho 2 nhóm này học cùng một kiến thức toán nhưng từ hai nguồn khác nhau (online, sách giáo khoa)</p></li>
+<li><p>Làm bài kiểm tra toán trắc nghiệm để đánh giá 2 nhóm này.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kết quả làm kiểm tra toán từ 2 nhóm</span>
+<span class="c1"># A: học online</span>
+<span class="c1"># B: học sách giáo khoa</span>
+<span class="c1"># 30 câu trắc nghiệm, mỗi câu 1 điểm</span>
+
+<span class="k">def</span> <span class="nf">do_the_test</span><span class="p">():</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+    
+    <span class="c1"># cho từng nhóm làm kiểm tra</span>
+    <span class="n">group_A_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)])</span>
+    <span class="n">group_B_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)])</span>
+
+    <span class="c1"># tính số điểm median của hai nhóm</span>
+    <span class="n">group_A_median_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">group_A_scores</span><span class="p">)</span>
+    <span class="n">group_B_median_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">group_B_scores</span><span class="p">)</span>
+    
+    <span class="c1"># so sánh sự khác biệt điểm số</span>
+    <span class="n">diff_AB</span> <span class="o">=</span> <span class="n">group_A_median_scores</span> <span class="o">-</span> <span class="n">group_B_median_scores</span>
+    <span class="k">return</span> <span class="n">diff_AB</span>
+
+<span class="c1"># Thực hiện kiểm tra nhiều lần</span>
+<span class="n">median_diffs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>
+    <span class="n">median_diffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">do_the_test</span><span class="p">())</span>
+
+<span class="c1"># biểu diễn bằng histogram    </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">median_diffs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Med diff&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/865c7d88bfa7021968e2da8fa1d1f8dca8626a156b336cf0d04571a7af5bb203.png" src="../../_images/865c7d88bfa7021968e2da8fa1d1f8dca8626a156b336cf0d04571a7af5bb203.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Chia quần thể thành digital và text group</span>
+<span class="n">n_digital_group</span> <span class="o">=</span> <span class="mi">130</span>
+<span class="n">n_text_group</span> <span class="o">=</span> <span class="mi">80</span>
+
+<span class="n">digital_mean</span> <span class="o">=</span> <span class="mf">15.8</span>
+<span class="n">text_mean</span> <span class="o">=</span> <span class="mf">14.5</span>
+
+<span class="n">digital_std</span> <span class="o">=</span> <span class="mf">2.8</span>
+<span class="n">text_std</span> <span class="o">=</span> <span class="mf">2.6</span>
+
+<span class="n">diff_of_mean</span> <span class="o">=</span> <span class="n">digital_mean</span> <span class="o">-</span> <span class="n">text_mean</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Difference mean scores:&quot;</span><span class="p">,</span> <span class="n">diff_of_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Difference mean scores: 1.3000000000000007
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Chuẩn bị các thông số</span>
+
+<span class="c1"># tính standard error</span>
+<span class="n">SE</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">digital_std</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">n_digital_group</span> <span class="o">+</span> <span class="n">text_std</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">n_text_group</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Standard error giữa hai nhóm lấy mẫu:&quot;</span><span class="p">,</span> <span class="n">SE</span><span class="p">)</span>
+
+<span class="c1"># tính khoảng tin cậy</span>
+<span class="n">critical_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.975</span><span class="p">)</span>
+<span class="n">ucl</span> <span class="o">=</span> <span class="n">diff_of_mean</span> <span class="o">+</span> <span class="n">critical_value</span> <span class="o">*</span> <span class="n">SE</span>
+<span class="n">lcl</span> <span class="o">=</span> <span class="n">diff_of_mean</span> <span class="o">-</span> <span class="n">critical_value</span> <span class="o">*</span> <span class="n">SE</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;UCL:&quot;</span><span class="p">,</span> <span class="n">ucl</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;LCL:&quot;</span><span class="p">,</span> <span class="n">lcl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Standard error giữa hai nhóm lấy mẫu: 0.3805360591424843
+UCL: 2.045836970738074
+LCL: 0.5541630292619275
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. Thực hiện kiểm định giả thuyết</span>
+<span class="c1"># H0: cho rằng học online không có gì khác học sách giáo khoa. Nghĩa là mean1 - mean2 = 0</span>
+<span class="c1"># H1: cho rằng học online tốt hơn học sách giáo khoa. Nghĩa là mean1 - mean2 &gt; 0</span>
+<span class="c1"># Chọn significant level (alpha, mức ý nghĩa) = 1%</span>
+<span class="c1"># Ở đây là population nên ta sẽ chọn Z-statistic để test</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[z = \frac{(\bar{x_1} - \bar{x_2}) - (\mu_1 - \mu_2)}{SE} = \frac{\bar{x_1} - \bar{x_2}}{SE} \ (assuming \ no \ differences: \mu_1 = \mu_2)\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">diff_of_mean</span> <span class="o">/</span> <span class="n">SE</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Z-score:&quot;</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="n">critical_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Critical value:&quot;</span><span class="p">,</span> <span class="n">critical_value</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="n">critical_value</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject H0 =&gt; học online tốt hơn học sách giáo khoa&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject Ha =&gt; học online không có gì khác học sách giáo khoa&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Z-score: 3.4162334127532477
+Critical value: 2.3263478740408408
+Reject H0 =&gt; học online tốt hơn học sách giáo khoa
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="chi-square">
+<h3><span class="section-number">1.6.2.3. </span>Chi-Square<a class="headerlink" href="#chi-square" title="Permalink to this heading">#</a></h3>
+<p>Còn gọi là goodness-of-fit test: dùng để test các thống kê có phân hoạch theo chu kỳ hay nhóm
+$<span class="math notranslate nohighlight">\(X^2 = \sum \frac{(observed - expected)^2}{expected}\)</span>$
+<strong>Bài toán: báo cáo lượt view trong tuần từ phía Facebook có khác Google không?</strong></p>
+<ul class="simple">
+<li><p>H0: hai báo cáo là như nhau</p></li>
+<li><p>Ha: hai báo cáo là khác nhau</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># số lượt view trong tuần phía Facebook</span>
+<span class="n">facebook_page_view_report</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span>
+
+<span class="c1"># số lượt view trong tuần phía Google</span>
+<span class="n">google_page_view_report</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">45</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">52</span><span class="p">])</span>
+
+<span class="c1"># calculate Chi-square</span>
+<span class="n">diff_observed</span> <span class="o">=</span> <span class="p">(</span><span class="n">google_page_view_report</span> <span class="o">-</span> <span class="n">facebook_page_view_report</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">facebook_inverse</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">facebook_page_view_report</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">diff_observed</span><span class="p">,</span> <span class="n">facebook_inverse</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Chi-square:&quot;</span><span class="p">,</span> <span class="n">X2</span><span class="p">)</span>
+
+<span class="c1"># compare with critical value</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">facebook_page_view_report</span><span class="o">.</span><span class="n">size</span>
+<span class="n">dof</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">critical_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">dof</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Critical value:&quot;</span><span class="p">,</span> <span class="n">critical_value</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">X2</span> <span class="o">&gt;</span> <span class="n">critical_value</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject H0 =&gt; hai báo cáo là khác nhau&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Reject Ha =&gt; hai báo cáo là như nhau&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chi-square: 9.063333333333334
+Critical value: 7.814727903251179
+Reject H0 =&gt; hai báo cáo là khác nhau
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1_Statistics_and_EDA-4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1.5. </span>Inferential statistic</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="1_Statistics_and_EDA-6.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.7. </span>ANOVA</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kiem-dinh-gia-tri-thong-ke">1.6.1. Kiểm định giá trị thống kê</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-test-z-test">1.6.2. T_test/Z_test</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kiem-dinh-khoang-tin-cay">1.6.2.1. Kiểm định khoảng tin cậy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so-sanh-hai-quan-the">1.6.2.2. So sánh hai quần thể</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#theo-ty-le-proportion">1.6.2.2.1. Theo tỷ lệ - proportion</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#theo-mean">1.6.2.2.2. Theo mean</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-square">1.6.2.3. Chi-Square</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1140 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.7. Discretisation &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/2_Feature_engineering-7';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.8. Outliers" href="2_Feature_engineering-8.html" />
+    <link rel="prev" title="2.6. Feature transformation" href="2_Feature_engineering-6.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/2_Feature_engineering-7.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Discretisation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equal-width">2.7.1. Equal-width</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equal-frequency">2.7.2. Equal-frequency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-mean">2.7.3. K-mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-tree-discretesation">2.7.4. Decision Tree discretesation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-knowledge-discretisation">2.7.5. Domain knowledge discretisation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="discretisation">
+<h1><span class="section-number">2.7. </span>Discretisation<a class="headerlink" href="#discretisation" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>The process of binning/Transforming <code class="docutils literal notranslate"><span class="pre">continuous</span></code> variables into  <code class="docutils literal notranslate"><span class="pre">discrete</span></code> variables by creating a set of continuous intervals/bin that span range of value</p></li>
+<li><p>Discretisation can handle the <code class="docutils literal notranslate"><span class="pre">outlier</span></code> because each outlier may be in the lowest or highest bin.</p></li>
+</ul>
+<p><strong>1. Why need to use Discretisation ?</strong></p>
+<ul class="simple">
+<li><p><strong>Reducing complexity</strong>: Discretization can simplify the feature space by reducing the number of possible values that a feature can take on. This can make it easier to build models and <code class="docutils literal notranslate"><span class="pre">reduce</span> <span class="pre">the</span> <span class="pre">risk</span> <span class="pre">of</span> <span class="pre">overfitting</span></code>.</p></li>
+<li><p><strong>Meeting model assumptions</strong>: Some models, such as <code class="docutils literal notranslate"><span class="pre">decision</span> <span class="pre">trees</span></code> and <code class="docutils literal notranslate"><span class="pre">naive</span> <span class="pre">Bayes</span> <span class="pre">classifiers</span></code>, are designed to work with categorical variables. Discretizing continuous variables can help these models perform better.</p></li>
+<li><p><strong>Dealing with sparsity</strong>: In some datasets, certain values of a continuous variable may be rare or non-existent. Discretization can help address this issue by grouping together similar values and reducing the sparsity of the data.</p></li>
+<li><p><strong>Interpretability</strong>: Discretization can make it easier to interpret the relationship between a feature and the target variable. For example, if we discretize age into categories like “young”, “middle-aged”, and “old”, we can more easily see how age affects the outcome variable.</p></li>
+</ul>
+<p>It’s worth noting that discretization is not always necessary or appropriate. In some cases, it may be better to keep continuous variables as they are or to use other techniques, such as binning or scaling, to transform them. The choice of whether to discretize or not depends on the specific problem and the characteristics of the data.</p>
+<p><strong>2. Approaches</strong></p>
+<ul class="simple">
+<li><p><em><strong>Unsupervised</strong></em></p>
+<ul>
+<li><p>Equal-width</p></li>
+<li><p>Equal-frequency</p></li>
+<li><p>K-means</p></li>
+</ul>
+</li>
+<li><p><em><strong>Supervised</strong></em> (need to inform the <code class="docutils literal notranslate"><span class="pre">target</span></code> variables)</p>
+<ul>
+<li><p>Decision Trees</p></li>
+</ul>
+</li>
+<li><p><em><strong>Others</strong></em></p>
+<ul>
+<li><p>Domain Knowledge</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Plus Encoding:</strong> If using linear model and bins may not hold a linear relationship with target, encoding the variable after discretisation may help improve model performance to treat the bins as categories and to one hot encoding, or target guided encodings like mean encoding, weight of evidence, or target guided ordinal encoding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="k">def</span> <span class="nf">bin_hist</span><span class="p">(</span><span class="n">listvar</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="n">listvar</span> <span class="o">=</span> <span class="p">[</span><span class="n">listvar</span><span class="p">]</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">listvar</span><span class="p">)</span><span class="o">==</span><span class="nb">str</span> <span class="k">else</span> <span class="n">listvar</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">listvar</span><span class="p">))</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">listvar</span><span class="p">)</span> <span class="o">//</span> <span class="n">cols</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">listvar</span><span class="p">)</span> <span class="o">%</span> <span class="n">cols</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">listvar</span><span class="p">)</span> <span class="o">//</span> <span class="n">cols</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">cols</span> <span class="p">,</span> <span class="n">subplot_titles</span><span class="o">=</span><span class="n">listvar</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">listvar</span><span class="p">):</span>     
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span> <span class="n">x</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="n">var</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">marker_color</span><span class="o">=</span><span class="s1">&#39;#656FF4&#39;</span><span class="p">,</span> <span class="n">bingroup</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">histnorm</span> <span class="o">=</span> <span class="s1">&#39;percent&#39;</span><span class="p">)</span><span class="c1">#, texttemplate=&quot;%{y}&quot;)</span>
+                      <span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="n">i</span><span class="o">//</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">i</span><span class="o">%</span><span class="k">cols</span> + 1 )
+        <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Histogram</span><span class="p">(</span> <span class="n">x</span> <span class="o">=</span> <span class="n">test</span><span class="p">[</span><span class="n">var</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">marker_color</span><span class="o">=</span><span class="s1">&#39;#F85341&#39;</span><span class="p">,</span> <span class="n">bingroup</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">histnorm</span> <span class="o">=</span> <span class="s1">&#39;percent&#39;</span><span class="p">)</span><span class="c1">#, texttemplate=&quot;%{y}&quot;)</span>
+                          <span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="n">i</span><span class="o">//</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">i</span><span class="o">%</span><span class="k">cols</span> + 1 )
+        
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">autosize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="n">rows</span><span class="o">*</span><span class="mi">400</span><span class="p">,</span> <span class="n">barmode</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">bargap</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">bargroupgap</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;percentage&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">categoryorder</span><span class="o">=</span><span class="s1">&#39;category ascending&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="c1">#.show(renderer=&quot;jpeg&quot;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Datasets/titanic.csv&#39;</span><span class="p">,</span><span class="n">usecols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;survived&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]],</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;survived&#39;</span><span class="p">],</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((731, 2), (314, 2))
+</pre></div>
+</div>
+</div>
+</div>
+<section id="equal-width">
+<h2><span class="section-number">2.7.1. </span>Equal-width<a class="headerlink" href="#equal-width" title="Permalink to this heading">#</a></h2>
+<p>Equal width discretisation divides the scope of possible values into N bins of the same width.The width is determined by the range of values in the variable and the number of bins we wish to use to divide the variable:</p>
+<p><code class="docutils literal notranslate"><span class="pre">width</span></code> = (<code class="docutils literal notranslate"><span class="pre">max</span> <span class="pre">value</span></code> - <code class="docutils literal notranslate"><span class="pre">min</span> <span class="pre">value</span></code>) / <code class="docutils literal notranslate"><span class="pre">N</span></code></p>
+<p>where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of bins or intervals, that is something to determine experimentally.</p>
+<ul class="simple">
+<li><p>Does not improve value spread</p></li>
+<li><p>Handles outliers</p></li>
+<li><p>Creates discrete variable</p></li>
+<li><p>Good to combine with categorical encodings</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pandas cut (cut by specific interval)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">X_train_copy</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">gen_intervals</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="c1"># now let&#39;s capture the lower and upper boundaries</span>
+    <span class="n">min_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span> <span class="n">sr</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+    <span class="n">max_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span> <span class="n">sr</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+
+    <span class="c1"># let&#39;s round the bin width</span>
+    <span class="n">inter_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">max_value</span> <span class="o">-</span> <span class="n">min_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">))</span>
+
+    <span class="c1"># interval list</span>
+    <span class="n">intervals</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span><span class="o">+</span><span class="n">inter_value</span><span class="p">,</span> <span class="n">inter_value</span><span class="p">)]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Bin_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">intervals</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">intervals</span><span class="p">,</span> <span class="n">labels</span>
+
+<span class="n">intervals</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">gen_intervals</span><span class="p">(</span><span class="n">X_train_copy</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">X_train_copy</span><span class="p">[</span><span class="s1">&#39;Age_disc_labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_train_copy</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span><span class="n">bins</span><span class="o">=</span><span class="n">intervals</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X_train_copy</span><span class="p">[</span><span class="s1">&#39;Age_disc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_train_copy</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">intervals</span><span class="p">,</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">X_train_copy</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Age_disc&#39;</span><span class="p">)[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of observations per bin&#39;</span><span class="p">)</span>
+
+<span class="n">X_train_copy</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fare</th>
+      <th>Age_disc_labels</th>
+      <th>Age_disc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>943</th>
+      <td>37.0</td>
+      <td>9.5875</td>
+      <td>Bin_4</td>
+      <td>(30.0, 40.0]</td>
+    </tr>
+    <tr>
+      <th>195</th>
+      <td>16.0</td>
+      <td>86.5000</td>
+      <td>Bin_2</td>
+      <td>(10.0, 20.0]</td>
+    </tr>
+    <tr>
+      <th>1257</th>
+      <td>9.0</td>
+      <td>15.2458</td>
+      <td>Bin_1</td>
+      <td>(-0.001, 10.0]</td>
+    </tr>
+    <tr>
+      <th>1266</th>
+      <td>36.0</td>
+      <td>24.1500</td>
+      <td>Bin_4</td>
+      <td>(30.0, 40.0]</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>48.0</td>
+      <td>65.0000</td>
+      <td>Bin_5</td>
+      <td>(40.0, 50.0]</td>
+    </tr>
+    <tr>
+      <th>1113</th>
+      <td>26.0</td>
+      <td>13.7750</td>
+      <td>Bin_3</td>
+      <td>(20.0, 30.0]</td>
+    </tr>
+    <tr>
+      <th>1091</th>
+      <td>20.0</td>
+      <td>8.6625</td>
+      <td>Bin_2</td>
+      <td>(10.0, 20.0]</td>
+    </tr>
+    <tr>
+      <th>907</th>
+      <td>20.0</td>
+      <td>9.8250</td>
+      <td>Bin_2</td>
+      <td>(10.0, 20.0]</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>59.0</td>
+      <td>51.4792</td>
+      <td>Bin_6</td>
+      <td>(50.0, 60.0]</td>
+    </tr>
+    <tr>
+      <th>1131</th>
+      <td>32.0</td>
+      <td>8.0500</td>
+      <td>Bin_4</td>
+      <td>(30.0, 40.0]</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><img alt="../../_images/fbd9c55016a1f78909311d66746446d3c57b251e779fcfacfb3b51c263158aca.png" src="../../_images/fbd9c55016a1f78909311d66746446d3c57b251e779fcfacfb3b51c263158aca.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">KBinsDiscretizer</span>
+
+<span class="n">disc</span> <span class="o">=</span> <span class="n">KBinsDiscretizer</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+<span class="n">disc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="n">train_t</span> <span class="o">=</span> <span class="n">disc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">disc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">bin_hist</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">train_t</span><span class="p">,</span> <span class="n">test_t</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4895478d77361dd97d57ff49a88b31c4c9282414f39f2734b00853742c3ee7f5.jpg" src="../../_images/4895478d77361dd97d57ff49a88b31c4c9282414f39f2734b00853742c3ee7f5.jpg" />
+</div>
+</div>
+</section>
+<section id="equal-frequency">
+<h2><span class="section-number">2.7.2. </span>Equal-frequency<a class="headerlink" href="#equal-frequency" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Equal frequency discretisation divides the scope of possible values of the variable into N bins, where each bin carries the same amount of observations.</p></li>
+<li><p>This is particularly useful for skewed variables as it spreads the observations over the different bins equally. We find the interval boundaries by determining the quantiles.</p></li>
+<li><p>Does not improve value spread</p></li>
+<li><p>Handles outliers</p></li>
+<li><p>Creates discrete variable</p></li>
+<li><p>Good to combine with categorical encodings</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pandas qcut (cut by Quantile base)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Q</span><span class="si">{:02.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="n">Age_disccretised</span><span class="p">,</span> <span class="n">intervals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span> <span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">N</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">,</span>
+                                      <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># return bin to use for pd.cut testset</span>
+                                      <span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">duplicates</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="n">X_train_copy</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">X_train_copy</span><span class="p">[</span><span class="s1">&#39;Age_disccretised_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Age_disccretised</span>
+<span class="n">bin_hist</span><span class="p">(</span><span class="s1">&#39;Age_disccretised_bin&#39;</span><span class="p">,</span> <span class="n">X_train_copy</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b43c0c525bacad3763461829a109c197a87e80bb96f02aa95fb877de01ed611f.jpg" src="../../_images/b43c0c525bacad3763461829a109c197a87e80bb96f02aa95fb877de01ed611f.jpg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sklearn </span>
+<span class="n">disc</span> <span class="o">=</span> <span class="n">KBinsDiscretizer</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;quantile&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+<span class="n">disc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="n">train_t</span> <span class="o">=</span> <span class="n">disc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">disc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">bin_hist</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">train_t</span><span class="p">,</span> <span class="n">test_t</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f2c63df26915fd189753a9a9da821c0aac9fda4b5a47d39ac72074ec9c007f53.jpg" src="../../_images/f2c63df26915fd189753a9a9da821c0aac9fda4b5a47d39ac72074ec9c007f53.jpg" />
+</div>
+</div>
+</section>
+<section id="k-mean">
+<h2><span class="section-number">2.7.3. </span>K-mean<a class="headerlink" href="#k-mean" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>With K number of clusters was be defined, the method consists in applying k-mean clustering to the continuous variable.</p></li>
+<li><p><strong>Unless you have reasons to believe that the values of the variable are organised in clusters, then use equal width discretisation as an alternative to this method</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">disc</span> <span class="o">=</span> <span class="n">KBinsDiscretizer</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;kmeans&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="decision-tree-discretesation">
+<h2><span class="section-number">2.7.4. </span>Decision Tree discretesation<a class="headerlink" href="#decision-tree-discretesation" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Discretisation with Decision Trees consists in using a decision tree to identify the <strong>optimal bins</strong>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">optimal</span> <span class="pre">bins</span></code> are the limitation outputs from tree model of limited <code class="docutils literal notranslate"><span class="pre">depth</span></code> (2, 3 or 4) using the <code class="docutils literal notranslate"><span class="pre">variable</span></code> and <code class="docutils literal notranslate"><span class="pre">target</span></code></p></li>
+</ul>
+<p><strong>1. Advantages</strong></p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">output</span></code> returned by the decision tree is <em>monotonically related</em> to the <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p></li>
+<li><p>The tree end nodes, or bins in the discretised variable show decreased entropy: that is, <strong>the observations within each bin are more similar among themselves than to those of other bins.</strong></p></li>
+</ul>
+<p><strong>2. Limitations</strong></p>
+<ul class="simple">
+<li><p>Prone over-fitting</p></li>
+<li><p>More importantly, some tuning of the tree parameters needed to obtain the optimal number of splits (e.g., tree depth, minimum number of samples in one partition, maximum number of partitions, and a minimum information gain). This it can be time consuming.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">export_graphviz</span>
+
+<span class="n">X_train_copy</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">X_test_copy</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tree_model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">tree_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_copy</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">train_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">tree_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train_copy</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="c1"># probability for class 1</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">tree_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_copy</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="c1"># probability for class 1</span>
+
+<span class="n">bin_hist</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">train_t</span><span class="p">,</span> <span class="n">test_t</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4ce6d7ef570bdcc639d1481622daef05286004caa3061918b1eecd06b5965ec2.jpg" src="../../_images/4ce6d7ef570bdcc639d1481622daef05286004caa3061918b1eecd06b5965ec2.jpg" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check monotonic in train and test</span>
+<span class="n">y_train</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">train_t</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Monotonic age - target (train)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;mean target&#39;</span><span class="p">)</span>
+<span class="n">y_test</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">test_t</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Monotonic age - target (test)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;mean target&#39;</span><span class="p">)</span>
+<span class="c1"># test is not monotonic ==&gt; overfiting</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Monotonic age - target (test)&#39;}, xlabel=&#39;age&#39;, ylabel=&#39;mean target&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/b7751594f180f5efe31c914662a91276500abe9ee76a39bc4ab42f98ee58b848.png" src="../../_images/b7751594f180f5efe31c914662a91276500abe9ee76a39bc4ab42f98ee58b848.png" />
+<img alt="../../_images/d4af81448a1c7ddb64d763380971a786a1f5da8597198c669366082010620c74.png" src="../../_images/d4af81448a1c7ddb64d763380971a786a1f5da8597198c669366082010620c74.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># optimize the tree model</span>
+<span class="c1"># choose the depth that generates the best roc-auc</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="n">score_ls</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># here we store the roc auc</span>
+<span class="n">score_std_ls</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># here we store the standard deviation of the roc_auc</span>
+
+<span class="k">for</span> <span class="n">tree_depth</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+
+    <span class="c1"># call the model</span>
+    <span class="n">tree_model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="n">tree_depth</span><span class="p">)</span>
+
+    <span class="c1"># train the model using 3 fold cross validation</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">tree_model</span><span class="p">,</span> <span class="n">X_train_copy</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># save the parameters</span>
+    <span class="n">score_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
+    <span class="n">score_std_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
+
+    
+<span class="c1"># capture the parameters in a dataframe</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+    <span class="n">score_ls</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">score_std_ls</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">temp</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;roc_auc_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;roc_auc_std&#39;</span><span class="p">]</span>
+<span class="n">temp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>depth</th>
+      <th>roc_auc_mean</th>
+      <th>roc_auc_std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0.532756</td>
+      <td>0.009545</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0.519149</td>
+      <td>0.015073</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0.514044</td>
+      <td>0.007280</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0.519165</td>
+      <td>0.012087</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="domain-knowledge-discretisation">
+<h2><span class="section-number">2.7.5. </span>Domain knowledge discretisation<a class="headerlink" href="#domain-knowledge-discretisation" title="Permalink to this heading">#</a></h2>
+<p>Frequently, when engineering variables in a business setting, the business experts determine the intervals in which they think the variable should be divided so that it makes sense for the business</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># feature_engine</span>
+<span class="kn">from</span> <span class="nn">feature_engine.discretisation</span> <span class="kn">import</span> <span class="n">ArbitraryDiscretiser</span>
+
+<span class="n">dis</span> <span class="o">=</span> <span class="n">ArbitraryDiscretiser</span><span class="p">({</span><span class="s1">&#39;age&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">200</span><span class="p">]})</span>
+<span class="n">dis</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">dis</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>943</th>
+      <td>1</td>
+      <td>9.5875</td>
+    </tr>
+    <tr>
+      <th>195</th>
+      <td>0</td>
+      <td>86.5000</td>
+    </tr>
+    <tr>
+      <th>1257</th>
+      <td>0</td>
+      <td>15.2458</td>
+    </tr>
+    <tr>
+      <th>1266</th>
+      <td>1</td>
+      <td>24.1500</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>2</td>
+      <td>65.0000</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1290</th>
+      <td>2</td>
+      <td>7.0000</td>
+    </tr>
+    <tr>
+      <th>846</th>
+      <td>0</td>
+      <td>9.5000</td>
+    </tr>
+    <tr>
+      <th>952</th>
+      <td>1</td>
+      <td>7.7750</td>
+    </tr>
+    <tr>
+      <th>614</th>
+      <td>1</td>
+      <td>7.8875</td>
+    </tr>
+    <tr>
+      <th>745</th>
+      <td>1</td>
+      <td>6.9500</td>
+    </tr>
+  </tbody>
+</table>
+<p>731 rows × 2 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pandas</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>943       (20.0, 40.0]
+195     (-0.001, 20.0]
+1257    (-0.001, 20.0]
+1266      (20.0, 40.0]
+440       (40.0, 60.0]
+             ...      
+1290      (40.0, 60.0]
+846     (-0.001, 20.0]
+952       (20.0, 40.0]
+614       (20.0, 40.0]
+745       (20.0, 40.0]
+Name: age, Length: 731, dtype: category
+Categories (4, interval[float64, right]): [(-0.001, 20.0] &lt; (20.0, 40.0] &lt; (40.0, 60.0] &lt; (60.0, 200.0]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_Feature_engineering-6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.6. </span>Feature transformation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_Feature_engineering-8.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.8. </span>Outliers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equal-width">2.7.1. Equal-width</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equal-frequency">2.7.2. Equal-frequency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-mean">2.7.3. K-mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-tree-discretesation">2.7.4. Decision Tree discretesation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-knowledge-discretisation">2.7.5. Domain knowledge discretisation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

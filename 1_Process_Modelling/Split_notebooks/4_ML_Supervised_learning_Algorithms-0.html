@@ -1,0 +1,1209 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>1.1. Regression &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-0';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.2. Naive Bayes" href="4_ML_Supervised_learning_Algorithms-1.html" />
+    <link rel="prev" title="1. Machine Learning Supervised Learning" href="0_toc_ml_su.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/4_ML_Supervised_learning_Algorithms-0.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-model">1.1.1. Linear model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ols">1.1.1.1. OLS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lasso-regression">1.1.1.2. Lasso Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-regression">1.1.1.3. Ridge Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-net">1.1.1.4. Elastic-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-regression">1.1.1.5. Bayesian Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">1.1.1.6. Logistic regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-models">1.1.1.7. Generalized Linear Models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-transform-model">1.1.2. Non-linear transform model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polynomial-features">1.1.2.1. Polynomial features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splines-regression">1.1.2.2. Splines regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isotonic-regression">1.1.2.3. Isotonic regression</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regression">
+<h1><span class="section-number">1.1. </span>Regression<a class="headerlink" href="#regression" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Target values are continuous values.</p></li>
+<li><p>Trong mô hình regression cần check <strong>variable magnitude</strong> –&gt; need to scaling features</p></li>
+</ul>
+<section id="linear-model">
+<h2><span class="section-number">1.1.1. </span>Linear model<a class="headerlink" href="#linear-model" title="Permalink to this heading">#</a></h2>
+<p><strong>Assumption</strong></p>
+<p>Nếu thoả mãn các assumption dưới đây thì coef và params của regression sẽ không bị bias và mô hình chính xác, còn vi phạm thì nên xem xét sử dụng non-linear model hoặc sử dụng transform feature engineer hoặc remove outliers:</p>
+<ul class="simple">
+<li><p><em><strong>Linearity</strong></em>: There is a linear relationship between predictors and target</p></li>
+<li><p><em><strong>No perfect multicollinearity</strong></em>: there are no perfect /high linear relationship between 2 or more of the predictors</p></li>
+<li><p><em><strong>Normally distributed errors</strong></em>: The residuals are random and normally distributed with a mean of 0</p></li>
+<li><p><em><strong>Homoscedasticity</strong></em>: at each level of the predictor variables, the variance of the error should be constant</p></li>
+<li><p><em><strong>No Auto Correlation</strong></em>: trong time-series model, Các biến Y ít có tương quan với nhau, kiểm định thông qua Durbin-Watson statistic</p></li>
+</ul>
+<p><strong>Types of Linear models</strong></p>
+<ul class="simple">
+<li><p>Linear regression</p></li>
+<li><p>Ridge/Lasso regression</p></li>
+<li><p>Logistic regression</p></li>
+<li><p>Linear discriminant analysis - LDA</p></li>
+</ul>
+<p><strong>Evaluate model performance</strong></p>
+<ul class="simple">
+<li><p>Kiểm tra xem có linear relationship between X and Y, X and other X</p></li>
+<li><p>Kiểm định auto-correlation bằng Durbin-Watson statistic</p></li>
+<li><p>Variance inflation factor (VIF) để check multi-collinearity</p>
+<ul>
+<li><p>Các biến luôn có tương quan ít nhiều với nhau, khi hai biến có tương quan lớn với nhau sẽ làm giảm mức độ tin cậy của weight của các biến đó, tính giải thích cho biến phụ thuộc càng ít ý nghĩa. Do khi biến A thay đổi thì sẽ tác động trực tiếp đến biến B, từ đó mới tác động đến Y, chứ A ko tác động trực tiếp đến biến Y.</p></li>
+</ul>
+</li>
+<li><p>Thiếu các biến quan trọng, giải thích tốt cho biến Y trong model</p></li>
+<li><p>Kiểm tra residuals distribution with zero-mean normal by Q-Q plot, or KS-test</p></li>
+<li><p>Ngoài việc xác định outliers từ sample thì detect outliers thông qua sự khác biệt giữa y_real và y_predicted theo <code class="docutils literal notranslate"><span class="pre">standardized</span> <span class="pre">residual</span></code> = <code class="docutils literal notranslate"><span class="pre">error</span></code> / <code class="docutils literal notranslate"><span class="pre">SE</span></code></p></li>
+<li><p>Phân tích ảnh hưởng của high_leverage obs (Influential observations), hỗ trợ xác định anomaly, các pp:</p>
+<ul>
+<li><p>hat-value &gt; 2(p+1)/n</p></li>
+<li><p>Cook’s distance &gt; 4/(n-p-1)</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: &gt;
+</pre></div>
+</div>
+<img alt="../../_images/eacefdcd4f6fd192cec004275616aee1b3cdca858520b9fae58d7280a60022d6.png" src="../../_images/eacefdcd4f6fd192cec004275616aee1b3cdca858520b9fae58d7280a60022d6.png" />
+</div>
+</div>
+<section id="ols">
+<h3><span class="section-number">1.1.1.1. </span>OLS<a class="headerlink" href="#ols" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Minimize the <code class="docutils literal notranslate"><span class="pre">RSS</span></code> (sum of square of error)</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[RSS(\beta) = \sum_{i=1}^{n}(y_i - \hat{y_i})^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(RSS(\beta)\)</span> is the residual sum of squares, <span class="math notranslate nohighlight">\(y_i\)</span> is the dependent variable, <span class="math notranslate nohighlight">\(\beta_0\)</span> is the intercept, <span class="math notranslate nohighlight">\(\beta_j\)</span> are the regression coefficients, <span class="math notranslate nohighlight">\(x_{ij}\)</span> are the independent variables, <span class="math notranslate nohighlight">\(n\)</span> is the number of observations, <span class="math notranslate nohighlight">\(p\)</span> is the number of independent variables, and <span class="math notranslate nohighlight">\(\lambda\)</span> is the penalty parameter. The penalty term <span class="math notranslate nohighlight">\(\lambda\sum_{j=1}^{p}|\beta_j|^2\)</span> is added to the OLS regression model to prevent overfitting and to encourage sparsity in the regression coefficients.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">(</span>
+         <span class="n">positive</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># if Target y is positive, then set True</span>
+            <span class="p">)</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8257897856095553
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lasso-regression">
+<h3><span class="section-number">1.1.1.2. </span>Lasso Regression<a class="headerlink" href="#lasso-regression" title="Permalink to this heading">#</a></h3>
+<p>Minimize <code class="docutils literal notranslate"><span class="pre">RSS_Lasso</span></code> :
+$<span class="math notranslate nohighlight">\(\operatorname*{min}_{w}{\frac{1}{2n_{\mathrm{samples}}}}||X w-y||_{2}^{2}+\alpha||w||_{1} \)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the regularization parameter</p>
+<ul class="simple">
+<li><p>Lasso giống OLS nhưng thêm phần <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">Regularizations</span></code>penalty, <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">Regularizations</span></code>penalty giúp model giảm thiểu bị over-fitting và tính phức tạp của model mạnh mẽ hơn <code class="docutils literal notranslate"><span class="pre">L2</span> <span class="pre">Regularizations</span></code> penalty, Sử dụng <code class="docutils literal notranslate"><span class="pre">absolute</span> <span class="pre">of</span> <span class="pre">weights</span></code> , hay còn gọi là <code class="docutils literal notranslate"><span class="pre">L1</span></code> regularization penalty</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code> càng cao thì more regularizations , tức là model càng giảm mạnh tính over-fitting</p></li>
+<li><p>L1 Regularizationspenalty : giảm overfit mạnh hơn L2</p></li>
+<li><p>Mô hình Lasso giảm sự phức tạp cho model, nên sẽ estimate ra nhiều <code class="docutils literal notranslate"><span class="pre">w(i)</span></code> = 0 hơn.</p></li>
+<li><p><strong>Lasso Phù hợp hơn khi áp dụng cho model tạo ra ít số lượng feature nhưng mỗi feature có high effect so với Ridge</strong></p></li>
+</ul>
+<p>Lasso</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Lasso</span><span class="p">(</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">positive</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># if Target y is positive, then set True</span>
+<span class="p">)</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8259036390894249
+</pre></div>
+</div>
+</div>
+</div>
+<p>LassoCV</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># using LassoCV khi dữ liệu nhiều chiều high - dimensional datasets</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LassoCV</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;alpha = &#39;</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha =  1.0
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8266707896044623
+</pre></div>
+</div>
+</div>
+</div>
+<p>LassoLarsCV</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># using LassoLarsCV khi dữ liệu nhiều chiều high n_features và ít quan sát low n_samples (nhỏ hơn số n_features)</span>
+<span class="c1"># LassoLarsCV is based on the Least Angle Regression algorithm.</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LassoLarsCV</span><span class="p">()</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:</span><span class="mi">30</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[:</span><span class="mi">30</span><span class="p">])</span>
+
+<span class="c1"># R-squared score</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;alpha = &#39;</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha =  4.327832825318372
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5948759288127505
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Model Selection</strong></p>
+<ol class="arabic simple">
+<li><p>For a linear Gaussian model, the maximum log-likelihood is defined as:
+$<span class="math notranslate nohighlight">\(\log(\hat{L})=-\frac{n}2\mathrm{log}(2\pi)-\frac{n}2\mathrm{ln}(\sigma^{2})-\frac{\sum_{i=1}^{n}(y_{i}-\hat{y}_{i})^{2}}{2\sigma^{2}}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>\sigma^{2}<span class="math notranslate nohighlight">\( is an estimate of the `noise variance` and \)</span>n$ is the number of samples.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">noise</span> <span class="pre">variance</span></code> = <span class="math notranslate nohighlight">\(\sigma^{2}={\frac{\sum_{i=1}^{n}(y_{i}-{\hat{y}}_{i})^{2}}{n-p}}\)</span></p>
+<ol class="arabic simple" start="2">
+<li><p>AIC and BIC
+$<span class="math notranslate nohighlight">\(AIC=-2\log(\hat{L})+2d\)</span>$</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[BIC=-2\log(\hat{L})+\log(N)d\]</div>
+<p>where <span class="math notranslate nohighlight">\(d\)</span> is the number of parameters (degree of freedom).</p>
+<p>LassoLarsIC</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># LassoLarsIC ước lượng minimize AIC và BIC để làm phương pháp model selection</span>
+<span class="c1"># BIC phạt nặng hơn sơ với AIC</span>
+<span class="c1"># LassoLarsIC tính toán nhẹ hơn so với LassoCV do chỉ tính toán 1 lần thay vì k+1 lần cho k-fold CV</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LassoLarsIC</span><span class="p">()</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;alpha = &#39;</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha =  2.4756569894173026
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8264705204381142
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ridge-regression">
+<h3><span class="section-number">1.1.1.3. </span>Ridge Regression<a class="headerlink" href="#ridge-regression" title="Permalink to this heading">#</a></h3>
+<p>Minimize <code class="docutils literal notranslate"><span class="pre">RSS_Ridge</span></code> :
+$<span class="math notranslate nohighlight">\( \operatorname*{min}_{w}||X w-y||_{2}^{2}+\alpha||w||_{2}^{2} \)</span><span class="math notranslate nohighlight">\(
+where \)</span>\alpha$ is the regularization parameter</p>
+<ul class="simple">
+<li><p>Ridge giống OLS nhưng thêm phần <code class="docutils literal notranslate"><span class="pre">L2</span> <span class="pre">Regularizations</span></code>, <code class="docutils literal notranslate"><span class="pre">L2</span> <span class="pre">Regularizations</span></code> giúp model giảm thiểu bị over-fitting và tính phức tạp của model, Sử dụng <code class="docutils literal notranslate"><span class="pre">square</span> <span class="pre">of</span> <span class="pre">weights</span></code> , hay còn gọi là <code class="docutils literal notranslate"><span class="pre">L2</span></code> regularization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code> càng cao thì more regularizations , tức là model càng giảm mạnh tính over-fitting</p></li>
+<li><p>So sánh với L1 thì L2 tìm được nhiều điểm tối ưu hơn khi làm <code class="docutils literal notranslate"><span class="pre">loss</span></code> tiến về 0</p></li>
+</ul>
+<p><img alt="image.png" src="../../_images/cmpare_l1_l2.png" /></p>
+<ul class="simple">
+<li><p><strong>Ridge Phù hợp hơn khi áp dụng cho dataset nhiều số lượng feature và mỗi feature có low effect tới target Y</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8256781508633866
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ridge with cross validation</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">RidgeCV</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># alpha</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;alpha = &#39;</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha =  10.0
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8245713267410536
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="elastic-net">
+<h3><span class="section-number">1.1.1.4. </span>Elastic-Net<a class="headerlink" href="#elastic-net" title="Permalink to this heading">#</a></h3>
+<p>Linear regression model trained with both L1 and L2 -norm regularization of the coef, học những features quan trọng (non-zero) như lasso và giữ được tính regularization của Ridge</p>
+<ul class="simple">
+<li><p>Elastic-net is useful cho dữ liệu có nhiều features tương quan với nhau</p></li>
+<li><p>Hai tham số cần tunning là <code class="docutils literal notranslate"><span class="pre">alpha</span></code> <span class="math notranslate nohighlight">\(\alpha\)</span> và <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> <span class="math notranslate nohighlight">\(p\)</span>, thuật toán minimize function:
+$<span class="math notranslate nohighlight">\(\operatorname*{min}_{w}\frac{1}{2n_{\mathrm{samples}}}||X w-y||_{2}^{2}+\alpha\rho||w||_{1}+\frac{\alpha(1-\rho)}{2}||w||_{2}\)</span>$</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> càng gần 1 thì càng ưu tiên tỷ trọng L1, gần 0 thì càng ưu tiên tỷ trọng L2</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">ElasticNetCV</span><span class="p">(</span>
+    <span class="n">alphas</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+    <span class="n">l1_ratio</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.7</span><span class="p">,</span> <span class="mf">.9</span><span class="p">,</span> <span class="mf">.95</span><span class="p">,</span> <span class="mf">.99</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># alpha, l1_ratio</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;alpha = &#39;</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l1_ratio = &#39;</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">l1_ratio_</span><span class="p">)</span>
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha =  1.0
+l1_ratio =  1.0
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8266707896044623
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="bayesian-regression">
+<h3><span class="section-number">1.1.1.5. </span>Bayesian Regression<a class="headerlink" href="#bayesian-regression" title="Permalink to this heading">#</a></h3>
+<p>Ước lượng mô hình được tunning qua data, thu được kết quả là xác suất của Y với giả sử Y tuân theo Normal distribution với mean là ước lượng của y (Xw)
+$<span class="math notranslate nohighlight">\(p(y|X,w,\alpha)=\mathcal{N}(y|X w,\alpha)\)</span><span class="math notranslate nohighlight">\(
+trong đó \)</span>\alpha$ là biến ngẫu nhiên</p>
+<ol class="arabic simple">
+<li><p>Pros</p></li>
+</ol>
+<ul class="simple">
+<li><p>Uớc lượng thích nghi, có thể tunning liên tục</p></li>
+<li><p>Sử dụng cả regularization trong quá trình ước lượng, tránh overfitting</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Cons</p></li>
+</ol>
+<ul class="simple">
+<li><p>Tốn thời gian tính toán</p></li>
+</ul>
+<p><strong>Bayesian Ridge Regression</strong>
+<code class="docutils literal notranslate"><span class="pre">BayesianRidge</span></code> ước lượng các hệ số mô hình xác suất, trong đó các coef <span class="math notranslate nohighlight">\(w\)</span> được ước lượng thông qua <span class="math notranslate nohighlight">\(w\)</span> ước lượng trước đó theo xác suất normal <span class="math notranslate nohighlight">\(p(w|\lambda)={\mathcal{N}}(w|0,\lambda^{-1}\mathbf{L}_{p})\)</span></p>
+<p>Các params cần tuning là <span class="math notranslate nohighlight">\(\alpha_1\)</span>, <span class="math notranslate nohighlight">\(\alpha_2\)</span>, <span class="math notranslate nohighlight">\(\lambda_1\)</span>, <span class="math notranslate nohighlight">\(\lambda_2\)</span> lần lượng là tham số của gamma distribution ước lượng <span class="math notranslate nohighlight">\(\alpha\)</span> và <span class="math notranslate nohighlight">\(\lambda\)</span></p>
+<ul class="simple">
+<li><p>Ước lượng của <code class="docutils literal notranslate"><span class="pre">BayesianRidge</span></code> sẽ khác OLS do có quá trình cập nhật liên tục</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">BayesianRidge</span><span class="p">()</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+
+<span class="c1"># R-squared score</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8250422695154389
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="logistic-regression">
+<h3><span class="section-number">1.1.1.6. </span>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Mô hình ước lượng các xác suất cho 1 outcome cụ thể trong list các outcomes theo single trial theo hàm logistic, sử dụng Maximum likelihood estimation (MLE) để model ước lượng xác suất cho label.</p></li>
+<li><p>Mô hình được sử dụng cho việc phân loại, áp dụng cho <code class="docutils literal notranslate"><span class="pre">Binary</span></code>, <code class="docutils literal notranslate"><span class="pre">One-vs-Rest</span></code>, hoặc <code class="docutils literal notranslate"><span class="pre">multinomial</span> <span class="pre">logistic</span> <span class="pre">regression</span></code> with optional L1, L2 or Elastic-Net regularization.</p></li>
+<li><p>Categorical variable phải được encode sang numeric</p></li>
+</ul>
+<p><strong>Logistic Function</strong></p>
+<ol class="arabic simple">
+<li><p>Logistic response function: transform function từ linear model sang xác suất p giúp đảm bảo p trong khoảng [0,1]
+$<span class="math notranslate nohighlight">\(P(Y=1) ={\frac{1}{1+e^{-\left[\beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2}+\cdots+\beta_{q}x_{q}\right]}}} = {\frac{1}{1+\frac{1}{Odds(Y=1)}}}\)</span>$</p></li>
+<li><p>Log odds - logit function: Map xác suất p từ [0,1] sang bất kỳ value nào sau khi transform, sử dụng linear model để dự đáon và invert logit function để lấy xác suất, kết hợp với cut-off rule để xác định nhãn cho Y
+$<span class="math notranslate nohighlight">\(\log\,{\mathrm{(Odds}}(Y=1))=\beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2}+\cdots+\beta_{q}x_{q}\)</span>$</p></li>
+<li><p>Minimize the Cost Function
+$<span class="math notranslate nohighlight">\(\operatorname*{min}_{w} C \sum_{i=1}^{n}(-y_{i}\log({\hat{p}}(X_{i}))-(1-y_{i})\log(1-{\hat{p}}(X_{i})))+r(w)\)</span>$</p></li>
+</ol>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code>: <code class="docutils literal notranslate"><span class="pre">C</span></code> càng cao, model càng phức tạp, tính Regularization càng nhỏ</p></li>
+<li><p><span class="math notranslate nohighlight">\(r(w)\)</span>: phạt bổ sung theo L1, L2 or Elastic-Net, mặc định <span class="math notranslate nohighlight">\(\alpha\)</span> = 1, cần tunning <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> <span class="math notranslate nohighlight">\(\rho\)</span> nếu dùng <code class="docutils literal notranslate"><span class="pre">ElasticNet</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: 0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">L1</span></code>: <span class="math notranslate nohighlight">\(||w||_{1}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">L2</span></code>: <span class="math notranslate nohighlight">\(\frac{1}{2}||w||_{2}^{2}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ElasticNet</span></code>: <span class="math notranslate nohighlight">\(\textstyle{\frac{1-\rho}{2}}||w||_{2}^{2}+\rho|\vert w\vert|_{1}\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Solvers</strong></p>
+<p>(<a class="reference external" href="https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression">Chi tiết tại 1.1.11.3. Solvers</a>)</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>‘lbfgs’</p></th>
+<th class="head"><p>‘liblinear’</p></th>
+<th class="head"><p>‘newton-cg’</p></th>
+<th class="head"><p>‘newton-cholesky’</p></th>
+<th class="head"><p>‘sag’</p></th>
+<th class="head"><p>‘saga’</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Penalties</strong></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Multinomial + L2 penalty</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>OVR + L2 penalty</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multinomial + L1 penalty</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>OVR + L1 penalty</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Elastic-Net</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>No penalty (‘none’)</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Behaviors</strong></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Penalize the intercept (bad)</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p>Faster for large datasets</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Robust to unscaled datasets</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>The “lbfgs” solver hiệu quả trong đa số TH.</p></li>
+<li><p>“saga” solver chạy nhanh hơn cho dữ liệu lớn, hoặc có thể cân nhắc sử dụng <code class="docutils literal notranslate"><span class="pre">SGDClassifier</span></code> with <code class="docutils literal notranslate"><span class="pre">loss</span></code>=”log_loss” để nhanh hơn nhưng yêu cầu tunning nhiều hơn để đạt hiệu quả.</p></li>
+</ul>
+<p><strong>Dữ liệu imbalance</strong></p>
+<ul class="simple">
+<li><p>Phân loại sai từ 1 thành 0 sẽ tốn kém hơn phân loại sai từ 0 thành 1, ngưỡng cutoff cho class 1 (hiếm hơn 0) thường dưới 50% để đảm bảo khả năng predict 1 dễ bắt hơn.</p></li>
+</ul>
+<p><strong>Logistic probability result</strong></p>
+<ul class="simple">
+<li><p>In practice, a upper cut-off probability (Y=1) often appropriate for the rare class.</p></li>
+<li><p>coeff 𝛽 in logistic is the log of odds ratio for X, so use the log scale to get the change for a unit change in X. Ví dụ, Hệ số biến X là -4.6 thể hiện khi biến X tăng lên 1 unit thì biến Y tăng exp(-4.6) = 0.01 lần, tức là giảm 100 lần.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Odds</span> <span class="pre">Ratio</span></code>: Thể hiện mối liên hệ giữa biến Y và X trong phân tích logistic regression, thể hiện Y=1 khi X=1 cao gấp OR lần Y=1 khi X=0, nếu OR =1 tức không có mỗi liên hệ nào giữa X và Y. Tuy nhiên, việc xác định khoảng tin cậy của OR sẽ ở range lớn, việc ta cần làm chỉ là cần biết khoảng tin cậy OR &gt;1 tức thể hiện rằng biến Y và X có mỗi tương quan với nhau.
+$<span class="math notranslate nohighlight">\({\mathrm{odds~ratio}}={\frac{\mathrm{Odds}(Y=1|X=1)}{\mathrm{Odds}(Y=1|X=0)}}\)</span>$</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P-value</span></code>, giống như linear regression thì p-value mức độ quan trọng của biến hơn thay vì mức độ ý nghĩa của biến trong mô hình</p></li>
+<li><p>Sử dụng logistic L1-base như một phương pháp trong feature selection <a class="reference external" href="https://scikit-learn.org/stable/modules/feature_selection.html#l1-feature-selection">1.13.4.1. L1-based feature selection</a></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make logistic with cross-validation in BINARY</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+
+<span class="n">X_cl</span><span class="p">,</span> <span class="n">y_cl</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_redundant</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,)</span>
+
+<span class="n">logis</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegressionCV</span><span class="p">(</span><span class="n">Cs</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">penalty</span> <span class="o">=</span> <span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">logis</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_cl</span><span class="p">,</span> <span class="n">y_cl</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">logis</span><span class="o">.</span><span class="n">C_</span><span class="p">)</span>
+
+<span class="n">logis</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_cl</span><span class="p">,</span> <span class="n">y_cl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.23357215]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.885
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="generalized-linear-models">
+<h3><span class="section-number">1.1.1.7. </span>Generalized Linear Models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this heading">#</a></h3>
+<p>GLM là một dạng mở rộng của linear regression thông qua:</p>
+<ol class="arabic simple">
+<li><p>Sử dụng hàm inverse link <code class="docutils literal notranslate"><span class="pre">h</span></code>:
+$<span class="math notranslate nohighlight">\(\hat{y}(w,X)\,=\,h(X w)\)</span>$</p></li>
+<li><p>Sử dụng hàm unit deviation d, kết hợp với L2-regularization như một hàm Cost, cần minimize:
+$<span class="math notranslate nohighlight">\(\operatorname*{min}_{w}\frac{1}{2n_{\mathrm{samples}}}\sum_{i}d(y_{i},\hat{y}_{i})+\frac{\alpha}{2}\vert\vert w\vert\vert_{2}^{2}\)</span>$</p></li>
+</ol>
+<p>Bảng các hàm unit deviation d cho từng dạng phân phối của Y
+<img alt="image.png" src="../../_images/unit_d.png" /></p>
+<p><strong>Note</strong>: Logistic regression là TH đặc biệt của Generalized Linear Models với a Binomial / Bernoulli conditional distribution Y and transform từ model prediction sang Y distribution bởi Logit link.</p>
+<p><strong>Lựa chọn Y distribution</strong></p>
+<ul class="simple">
+<li><p>Nếu Y là count-value (nguyên không âm) hoặc relative frequencies (không âm) thì có thể lựa chọn <code class="docutils literal notranslate"><span class="pre">d</span></code> theo <code class="docutils literal notranslate"><span class="pre">Poisson</span></code> và <code class="docutils literal notranslate"><span class="pre">h</span></code> là <code class="docutils literal notranslate"><span class="pre">log-link</span></code></p></li>
+<li><p>Nếu Y là số dương có skewed distribution thì thì có thể lựa chọn <code class="docutils literal notranslate"><span class="pre">Gamma</span></code> + <code class="docutils literal notranslate"><span class="pre">log-link</span></code>, nếu skewed nặng hơn so với <code class="docutils literal notranslate"><span class="pre">gamma</span></code> thì thì có thể lựa chọn  <code class="docutils literal notranslate"><span class="pre">Inverse</span> <span class="pre">Gaussian</span></code> + <code class="docutils literal notranslate"><span class="pre">log-link</span></code></p></li>
+<li><p>Nếu Y là xác suất thì chọn <code class="docutils literal notranslate"><span class="pre">Bernoulli</span></code> + <code class="docutils literal notranslate"><span class="pre">log-link</span></code> cho <strong>Binary</strong> và <code class="docutils literal notranslate"><span class="pre">Categorical</span> <span class="pre">Dis</span></code> + <code class="docutils literal notranslate"><span class="pre">softmax-link</span></code> cho <strong>multiclass classification</strong></p></li>
+</ul>
+<p>Ví dụ:</p>
+<ul class="simple">
+<li><p><strong>Thời tiết</strong>: Số lượng đợt mưa trong năm (Poission), tổng lượng mưa (Gamma/Tweedie/ Poisson + Gamma)</p></li>
+<li><p><strong>Risk modeling/định giá bảo hiểm</strong>: Số lượng người/Số lần claim bảo hiểm mỗi năm (Poisson), Chi phí mỗi lần claim (Gamma), Tổng chi phí claim mỗi năm (Tweedie / Compound Poisson Gamma).</p></li>
+<li><p><strong>Vỡ nợ</strong>: Xác suất khoản vay không trả được nợ (Bernouli).</p></li>
+<li><p><strong>Gian lận</strong>: Xác suất giao dịch là rửa tiền (Bernoulli).</p></li>
+<li><p><strong>Sản suất</strong>: Số lần bị gián đoạn trong sản xuất trong năm (Poisson), Quãng thời gian gián đoạn sản xuất (Gamma), Tổng thời gian gián đoạn sản xuất trong năm (Tweedie / Compound Poisson Gamma).</p></li>
+<li><p><strong>Y tế</strong>: Xác suất chữa khỏi/gặp tác dụng phụ của bệnh nhân (Bernoulli).</p></li>
+<li><p><strong>Phân loại báo chí</strong>: Phân loại các tờ báo vào 3 loại A, B, C (Categorical).</p></li>
+</ul>
+<p><strong>In sklearn</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">TweedieRegressor</span></code> thực hiện GLM cho phân phối Tweedie thông qua <code class="docutils literal notranslate"><span class="pre">power</span></code> parameter:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> = 0: <code class="docutils literal notranslate"><span class="pre">Normal</span></code> distribution. Specific estimators such as <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>, <code class="docutils literal notranslate"><span class="pre">ElasticNet</span></code> are generally more appropriate in this case.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> = 1: <code class="docutils literal notranslate"><span class="pre">Poisson</span></code> distribution. Có thể sử dụng  <code class="docutils literal notranslate"><span class="pre">PoissonRegressor</span></code> hoặc <code class="docutils literal notranslate"><span class="pre">TweedieRegressor</span></code>(power=1, link=’log’).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> = 2: <code class="docutils literal notranslate"><span class="pre">Gamma</span></code> distribution. Có thể sử dụng <code class="docutils literal notranslate"><span class="pre">GammaRegressor</span></code> hoặc <code class="docutils literal notranslate"><span class="pre">TweedieRegressor(power=2,</span> <span class="pre">link='log')</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span></code> = 3: <code class="docutils literal notranslate"><span class="pre">Inverse</span> <span class="pre">Gaussian</span></code> distribution.
+The link function is determined by the <code class="docutils literal notranslate"><span class="pre">link</span></code> parameter.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">TweedieRegressor</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">TweedieRegressor</span><span class="p">(</span><span class="n">power</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="non-linear-transform-model">
+<h2><span class="section-number">1.1.2. </span>Non-linear transform model<a class="headerlink" href="#non-linear-transform-model" title="Permalink to this heading">#</a></h2>
+<section id="polynomial-features">
+<h3><span class="section-number">1.1.2.1. </span>Polynomial features<a class="headerlink" href="#polynomial-features" title="Permalink to this heading">#</a></h3>
+<p>Tạo ra các biến phái sinh theo degree bởi các biến có sẵn, ví dụ với degree = 2 from [x1, x2] to [1, x1, x2, x1^2, x1x2, x2^2]</p>
+<p>Do Poly thường làm model thêm complex tức sẽ gây ra overfitting nên ta thường kết hợp với Regularization để giảm overfitting, like Ridge or Lasso</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)),</span>
+                  <span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sử dụng only interaction features, ko cần xử dụng higher powers of any single feature</span>
+<span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">interaction_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="splines-regression">
+<h3><span class="section-number">1.1.2.2. </span>Splines regression<a class="headerlink" href="#splines-regression" title="Permalink to this heading">#</a></h3>
+<p>Fit đường smooth curve thông qua các điểm knots trên polynomial features</p>
+<ul class="simple">
+<li><p>knots: các điểm phân tách spline thành các phần polynomial</p></li>
+<li><p>Basis splines: là đường splines có các điểm knots tại các vị trí 25%, 50%, 75% quartile</p></li>
+<li><p>GAM - generalized additive models: Mô hình splines auto select các điểm knots, pyGAM package in python</p></li>
+</ul>
+</section>
+<section id="isotonic-regression">
+<h3><span class="section-number">1.1.2.3. </span>Isotonic regression<a class="headerlink" href="#isotonic-regression" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="0_toc_ml_su.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Machine Learning Supervised Learning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="4_ML_Supervised_learning_Algorithms-1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">1.2. </span>Naive Bayes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-model">1.1.1. Linear model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ols">1.1.1.1. OLS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lasso-regression">1.1.1.2. Lasso Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-regression">1.1.1.3. Ridge Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-net">1.1.1.4. Elastic-Net</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-regression">1.1.1.5. Bayesian Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">1.1.1.6. Logistic regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-models">1.1.1.7. Generalized Linear Models</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-transform-model">1.1.2. Non-linear transform model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polynomial-features">1.1.2.1. Polynomial features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splines-regression">1.1.2.2. Splines regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isotonic-regression">1.1.2.3. Isotonic regression</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

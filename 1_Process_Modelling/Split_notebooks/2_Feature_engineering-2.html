@@ -1,0 +1,1491 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2.2. Feature extraction &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/2_Feature_engineering-2';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3. Variable Overview" href="2_Feature_engineering-3.html" />
+    <link rel="prev" title="2.1. Custom Transforms Function" href="2_Feature_engineering-1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-1.html">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/2_Feature_engineering-2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Feature extraction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-text">2.2.1. FE for text</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words">2.2.1.1. Bag-of-words</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-n-gram">2.2.1.2. bag-of-n-gram</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf">2.2.1.3. TF-IDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#word2vec">2.2.1.4. Word2vec</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#phuong-phap-cbow">2.2.1.4.1. Phương pháp CBOW</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#phuong-phap-skip-gram">2.2.1.4.2. Phương pháp skip-gram</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#su-dung-gensim-huan-luyen-mo-hinh-word2vec">2.2.1.4.3. Sử dụng gensim huấn luyện mô hình word2vec</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-image">2.2.2. FE for image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-area">2.2.3. FE for area</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-datetime">2.2.4. FE for datetime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-website-log">2.2.5. FE for website, log</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-mixed-variables">2.2.6. FE for mixed variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-is-contain-numbers-and-strings">2.2.6.1. Value is contain numbers and strings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-is-numbers-or-strings">2.2.6.2. Value is numbers or strings</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="feature-extraction">
+<h1><span class="section-number">2.2. </span>Feature extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://phamdinhkhanh.github.io/deepai-book/ch_ml/FeatureEngineering.html?fbclid=IwAR3jZLutFC58Bg_31esTUkwj_fG79S4uYIW5N2VXS4OkBeanzPuk47x_DK0#trich-loc-dac-trung-cho-van-ban">https://phamdinhkhanh.github.io/deepai-book/ch_ml/FeatureEngineering.html?fbclid=IwAR3jZLutFC58Bg_31esTUkwj_fG79S4uYIW5N2VXS4OkBeanzPuk47x_DK0#trich-loc-dac-trung-cho-van-ban</a></p>
+<section id="fe-for-text">
+<h2><span class="section-number">2.2.1. </span>FE for text<a class="headerlink" href="#fe-for-text" title="Permalink to this heading">#</a></h2>
+<p>Dữ liệu văn bản có thể tồn tại ở nhiều dạng khác nhau như chữ cái thường, chữ cái hoa, dấu câu, các kí tự đặc biệt,… Các ngôn ngữ khác nhau cũng có mẫu kí tự khác nhau và cấu trúc ngữ pháp khác nhau.</p>
+<p>Vấn đề chính của dữ liệu dạng văn bản đó là làm thể nào để mã hoá được kí tự về dạng số? Kĩ thuật <code class="docutils literal notranslate"><span class="pre">tokenization</span></code> sẽ giúp ta thực hiện điều này. tokenization là việc chúng ta chia văn bản theo đơn vị nhỏ nhất và xây dựng một từ điển đánh dấu index cho những đơn vị này. Có hai kiểu mã hoá chính là <code class="docutils literal notranslate"><span class="pre">mã</span> <span class="pre">hoá</span> <span class="pre">theo</span> <span class="pre">từ</span></code> và <code class="docutils literal notranslate"><span class="pre">mã</span> <span class="pre">hoá</span> <span class="pre">theo</span> <span class="pre">kí</span> <span class="pre">tự</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mã</span> <span class="pre">hoá</span> <span class="pre">theo</span> <span class="pre">từ</span></code> thì các từ trong câu sẽ là đơn vị nhỏ nhất. Trong Tiếng Anh thì từ chủ yếu tồn tại ở dạng từ đơn trong khi Tiếng Việt tồn tại các từ ghép. Khi mã hoá theo từ thì kích thước của từ điển sẽ rất lớn, tuỳ thuộc vào số lượng các từ khác nhau xuất hiện trong toàn bộ các văn bản.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mã</span> <span class="pre">hoá</span> <span class="pre">theo</span> <span class="pre">kí</span> <span class="pre">tự</span></code> thì chúng ta sẽ sử dụng các kí hiệu trong bảng chữ cái để làm từ điển mã hoá từ. Kích thước của bộ từ điển khi mã hoá theo kí tự sẽ nhỏ hơn so với mã hoá theo từ.</p></li>
+</ul>
+<section id="bag-of-words">
+<h3><span class="section-number">2.2.1.1. </span>Bag-of-words<a class="headerlink" href="#bag-of-words" title="Permalink to this heading">#</a></h3>
+<p>Theo phương pháp bag-of-word chúng ta sẽ mã hoá các từ trong câu thành một véc tơ có độ dài bằng số lượng các từ trong từ điển và đếm tần suất xuất hiện của các từ. Tần xuất của từ thứ trong từ điển sẽ chính bằng phần tử thứ trong véc tơ.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;i have a cat&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;he has a dog&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;he has a dog and he has a cat&#39;</span><span class="p">]</span>
+
+<span class="n">vect</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;words in dictionary: &#39;</span><span class="p">,</span> <span class="n">vect</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>words in dictionary:  [&#39;and&#39; &#39;cat&#39; &#39;dog&#39; &#39;has&#39; &#39;have&#39; &#39;he&#39;]
+[[0 1 0 0 1 0]
+ [0 0 1 1 0 1]
+ [1 1 1 2 0 2]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Các biểu diễn theo túi từ có hạn chế đó là chúng ta không phân biệt được 2 câu văn có cùng các từ bởi túi từ không phân biệt thứ tự trước sau của các từ trong một câu. Chặng như ‘you have no dog’ và ‘no, you have dog’ là 2 câu văn có biểu diễn giống nhau mặc dù có ý nghĩa trái ngược nhau.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vect</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">ngram_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">vect</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="s1">&#39;you have no dog&#39;</span><span class="p">,</span> <span class="s1">&#39;no, you have dog&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1, 1, 1, 1],
+       [1, 1, 1, 1]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Chính vì thế phương pháp bag-of-n-gram sẽ được sử dụng thay thế.</p>
+</section>
+<section id="bag-of-n-gram">
+<h3><span class="section-number">2.2.1.2. </span>bag-of-n-gram<a class="headerlink" href="#bag-of-n-gram" title="Permalink to this heading">#</a></h3>
+<p>Một <code class="docutils literal notranslate"><span class="pre">n-grams</span></code> là một chuỗi bao gồm <code class="docutils literal notranslate"><span class="pre">tokens</span></code>. Trong trường hợp từ ta gọi là <code class="docutils literal notranslate"><span class="pre">unigram</span></code>, đối với 2 từ là <code class="docutils literal notranslate"><span class="pre">bigram</span></code> và 3 từ là <code class="docutils literal notranslate"><span class="pre">trigram</span></code>. Khi thực hiện tokenization với <code class="docutils literal notranslate"><span class="pre">n-grams</span></code> thì trong từ điển sẽ xuất hiện những cụm từ nếu chúng xuất hiện trong các văn bản. Chẳng hạn như câu “I have a dog” sẽ được tokenize thành “I have”, “have a”, “a dog”. Như vậy số lượng các từ trong từ điển sẽ gia tăng một cách đáng kể. Nếu chúng ta có k từ đơn thì có thể lên tới <span class="math notranslate nohighlight">\(k^2\)</span> từ trong <code class="docutils literal notranslate"><span class="pre">bigram</span></code>. Nhưng thực tế không phải hầu hết các từ đều có thể ghép đôi với nhau nên véc tơ biểu diễn của câu trong <code class="docutils literal notranslate"><span class="pre">bigram</span></code> là một véc tơ rất thưa và có số chiều lớn. Điều này dẫn tới tốn kém về chi phí tính toán và lưu trữ.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># bigram</span>
+<span class="n">bigram</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">ngram_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span> <span class="o">=</span> <span class="n">bigram</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="s1">&#39;you have no dog&#39;</span><span class="p">,</span> <span class="s1">&#39;no, you have dog&#39;</span><span class="p">,</span> <span class="s1">&#39;you have a dog&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+<span class="c1"># trigram</span>
+<span class="n">trigram</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">ngram_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span> <span class="o">=</span> <span class="n">trigram</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="s1">&#39;you have no dog&#39;</span><span class="p">,</span> <span class="s1">&#39;no, you have dog&#39;</span><span class="p">,</span> <span class="s1">&#39;you have a dog&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># euclidean distance of vector</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">euclidean</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">euclidean</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="n">euclidean</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">),</span> <span class="n">euclidean</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0 1.0 1.7320508075688772
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tf-idf">
+<h3><span class="section-number">2.2.1.3. </span>TF-IDF<a class="headerlink" href="#tf-idf" title="Permalink to this heading">#</a></h3>
+<p>Giả sử chúng ta có một <em>bộ văn bản</em> (<em>corpus</em>) bao gồm rất nhiều các văn bản con. Những từ hiếm khi được tìm thấy trong bộ văn bản (<em>corpus</em>) nhưng có mặt trong một số chủ đề nhất định có thể chiếm vai trò quan trọng hơn. Ví dụ đối với chủ đề gia đình thì các từ như <code class="docutils literal notranslate"><span class="pre">cha</span> <span class="pre">mẹ,</span> <span class="pre">ông</span> <span class="pre">bà,</span> <span class="pre">con</span> <span class="pre">cái,</span> <span class="pre">anh</span> <span class="pre">em,</span> <span class="pre">chị</span> <span class="pre">em</span></code> xuất hiện nhiều hơn so với các chủ đề khác.</p>
+<p>Ngoài ra cũng có những từ xuất hiện rất nhiều trong văn bản nhưng chúng xuất hiện ở hầu như mọi chủ đề, mọi văn bản chẳng hạn như <code class="docutils literal notranslate"><span class="pre">the,</span> <span class="pre">a,</span> <span class="pre">an</span></code>. Những từ như vậy được gọi là  <em>stopwords</em> vì chúng không có nhiều ý nghĩa đối với việc phân loại văn bản. Khi mã hoá ngôn ngữ thì chúng ta sẽ tìm cách loại bỏ những từ <em>stopwords</em> bằng cách sử dụng từ điển có sẵn các từ <em>stopwords</em> quan trọng.</p>
+<p>Phương pháp TF-IDF là một phương pháp mà chúng ta sẽ đánh trọng số cho các từ mà xuất hiện ở một vài văn bản cụ thể lớn hơn thông qua công thức:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{eqnarray}\text{idf}(t,D) &amp; = &amp; \log\frac{\mid D \mid}{|\{d \in D; t \in d \}|+ 1} = \log \frac{\mid D\mid}{\text{df}(d, t)+ 1} \\
+\text{tfidf}(t,d,D) &amp; = &amp; \text{tf}(t,d) \times \text{idf}(t,D)
+\end{eqnarray}\end{split}\]</div>
+<p>trong đó:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mid D \mid\)</span> là số lượng các văn bản trong <em>bộ văn bản</em>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{df}(d, t) = |\{d \in D; t \in d \}|\)</span> là tần suất các văn bản <span class="math notranslate nohighlight">\(d \in D\)</span> mà từ <span class="math notranslate nohighlight">\(t\)</span> xuất hiện.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{tf}(t,d)\)</span> là tần suất xuất hiện của từ <span class="math notranslate nohighlight">\(t\)</span> trong văn bản <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
+</ul>
+<p>Như vậy <span class="math notranslate nohighlight">\(\text{idf}(t, D)\)</span> là chỉ số <em>nghịch đảo tần suất văn bản</em> (<em>inverse document frequency</em>) chỉ số này bằng logarith của nghịch đảo số lượng văn bản chia cho số lượng văn bản chứa một từ cụ thể <span class="math notranslate nohighlight">\(t\)</span>. Một từ cụ thể có <span class="math notranslate nohighlight">\(\text{idf}(t,D)\)</span> lớn chứng tỏ rằng từ đó chỉ xuất hiện trong một số ít các văn bản.</p>
+<p><span class="math notranslate nohighlight">\(\text{tfidf}(t, d, D)\)</span> tỷ lệ thuận với <em>tần suất của từ xuất hiện trong văn bản</em> và <em>nghịch đảo tần suất văn bản</em>. Ta có thể giải thích ý nghĩa của <span class="math notranslate nohighlight">\(\text{tfidf}\)</span> đối với đánh giá mức độ quan trọng của từ như sau: Khi một từ càng quan trọng thì nó sẽ có tần suất xuất hiện trong một văn bản cụ thể, chẳng hạn văn bản <span class="math notranslate nohighlight">\(d\)</span> lớn, tức là <span class="math notranslate nohighlight">\(\text{tf}(t,d)\)</span> lớn; Đồng thời từ đó phải không là <em>stopwords</em>, tức là số lượng văn bản mà nó xuất hiện trong toàn bộ bộ văn bản nhỏ, suy ra <span class="math notranslate nohighlight">\(\text{idf}(t, D)\)</span> phải lớn.</p>
+<p>Để mã hoá văn bản dựa trên phương pháp tfidf chúng ta sử dụng package <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> như sau:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
+ 	<span class="s1">&#39;tôi thích ăn bánh mì nhân thịt&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;cô ấy thích ăn bánh mì, còn tôi thích ăn xôi&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;thị trường chứng khoán giảm làm tôi lo lắng&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;chứng khoán sẽ phục hồi vào thời gian tới. danh mục của tôi sẽ tăng trở lại&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;dự báo thời tiết hà nội có mưa vào chiều và tối. tôi sẽ mang ô khi ra ngoài&#39;</span>
+<span class="p">]</span>
+
+<span class="c1"># Tính tfidf cho mỗi từ. max_df để loại bỏ stopwords xuất hiện ở hơn 90% các câu</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_df</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">)</span>
+<span class="c1"># Tokenize các câu theo tfidf</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;words in dictionary:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;X shape: &#39;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>words in dictionary:
+[&#39;bánh&#39;, &#39;báo&#39;, &#39;chiều&#39;, &#39;chứng&#39;, &#39;còn&#39;, &#39;có&#39;, &#39;cô&#39;, &#39;của&#39;, &#39;danh&#39;, &#39;dự&#39;, &#39;gian&#39;, &#39;giảm&#39;, &#39;hà&#39;, &#39;hồi&#39;, &#39;khi&#39;, &#39;khoán&#39;, &#39;lo&#39;, &#39;làm&#39;, &#39;lại&#39;, &#39;lắng&#39;, &#39;mang&#39;, &#39;mì&#39;, &#39;mưa&#39;, &#39;mục&#39;, &#39;ngoài&#39;, &#39;nhân&#39;, &#39;nội&#39;, &#39;phục&#39;, &#39;ra&#39;, &#39;sẽ&#39;, &#39;thích&#39;, &#39;thị&#39;, &#39;thịt&#39;, &#39;thời&#39;, &#39;tiết&#39;, &#39;trường&#39;, &#39;trở&#39;, &#39;tăng&#39;, &#39;tối&#39;, &#39;tới&#39;, &#39;và&#39;, &#39;vào&#39;, &#39;xôi&#39;, &#39;ăn&#39;, &#39;ấy&#39;]
+X shape:  (5, 45)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ta có thể thấy từ <code class="docutils literal notranslate"><span class="pre">tôi</span></code> xuất hiện ở toàn bộ các câu và không mang nhiều ý nghĩa của chủ đề của câu nên có thể coi là một <em>stopword</em>. Bằng phương pháp lọc cận trên của tần suất xuất hiện từ trong văn bản là 90% ta đã loại bỏ được từ này khỏi dictionary.</p>
+<p>Các phương pháp bỏ túi có thể tìm được một số cuộc thi trên kaggle như <a class="reference external" href="https://www.kaggle.com/c/catch-me-if-you-can-intruder-detection-through-webpage-session-tracking">Catch me if you can competition</a>, <a class="reference external" href="https://www.kaggle.com/xiaoml/bag-of-app-id-python-2-27392">bag of app</a>, <a class="reference external" href="http://www.interdigital.com/download/58540a46e3b9659c9f000372">bag of event</a>:</p>
+</section>
+<section id="word2vec">
+<h3><span class="section-number">2.2.1.4. </span>Word2vec<a class="headerlink" href="#word2vec" title="Permalink to this heading">#</a></h3>
+<p>Word2vec is a group of related models that are used to produce word embeddings. These models are shallow, two-layer neural networks that are trained to reconstruct linguistic contexts of words. Word2vec takes as its input a large corpus of text and produces a vector space, typically of several hundred dimensions, with each unique word in the corpus being assigned a corresponding vector in the space. Word vectors are positioned in the vector space such that words that share common contexts in the corpus are located close to one another in the space.[1]</p>
+<p>word2vec là một nhóm các mô hình sử dụng để tạo ra biểu diễn nhúng cho từ. Những mô hình này tương đối nông, chỉ bao gồm những mạng neural 2 layers được huấn luyện để tái tạo lại bối cảnh ngôn ngữ cho từ. Thông qua mô hình word2vec mỗi một từ trong một <em>bộ văn bản</em> được biểu diễn thông qua một véc tơ trong không gian cao chiều, có thể lên tới hàng trăm chiều, sao cho các từ có chung ngữ cảnh sẽ được đặt gần nhau hơn trong không gian.</p>
+<p>Chẳng hạn dưới đây là một ví dụ sau khi thực hiện mã hoá từ thông qua mô hình word2vec thì các từ <code class="docutils literal notranslate"><span class="pre">king,</span> <span class="pre">queen,</span> <span class="pre">man,</span> <span class="pre">woman</span></code> có mối liên hệ theo công thức: king - man + woman = queen</p>
+<p><img alt="" src="https://camo.githubusercontent.com/7acb5beb08711a6e75b6eadb90fdf48fb67c67d87f45812dc8cbd8426c1ee44f/68747470733a2f2f63646e2d696d616765732d312e6d656469756d2e636f6d2f6d61782f3830302f312a4b3558344e2d4d4a4b743846474674725448776964672e676966" /></p>
+<p><strong>Hình 2</strong>: Mô hình word2vec đã định vị véc tơ biểu diễn cho những từ có chung ngữ cảnh thì được đặt gần nhau hơn. Để thực hiện được những biểu diễn từ chính xác, các mô hình cần được đào tạo trên các tập dữ liệu rất lớn để bao quát được đa dạng các ngữ cảnh khác nhau của từ. Các mô hình pretrained cho xử lý ngôn ngữ tự nhiên có thể được tải về tại <a class="reference external" href="https://github.com/3Top/word2vec-api#where-to-get-a-pretrained-models">word2vec - api</a>.</p>
+<p>Các phương pháp tương tự được áp dụng trong các lĩnh vực khác như trong tin sinh. Một ứng dụng khác nữa là <a class="reference external" href="https://jaan.io/food2vec-augmented-cooking-machine-intelligence/">food2vec</a>.</p>
+<p>Tại một vị trí cụ thể trong câu văn chúng ta sẽ xác định được một từ mục tiêu và các từ bối cảnh. Từ mục tiêu là từ ở vị trí được lựa chọn còn từ bối cảnh là những từ ở vị trí xung quanh giúp tạo ra bối cảnh ngữ nghĩa cho từ mục tiêu.</p>
+<p>Giả sử chúng ta có một câu văn như sau: “Tôi muốn một chiếc cốc màu xanh”. Nếu lựa chọn một <em>context window</em> bao gồm 3 từ liền kề thì chúng ta sẽ lần lượt thu được các bộ 3 từ: <code class="docutils literal notranslate"><span class="pre">tôi</span> <span class="pre">muốn</span> <span class="pre">một,</span> <span class="pre">muốn</span> <span class="pre">một</span> <span class="pre">chiếc,</span> <span class="pre">một</span> <span class="pre">chiếc</span> <span class="pre">cốc,</span> <span class="pre">chiếc</span> <span class="pre">cốc</span> <span class="pre">màu,</span> <span class="pre">cốc</span> <span class="pre">màu</span> <span class="pre">xanh</span></code>. Đối với những bộ 3 từ này thì các từ ở giữa sẽ là từ mục tiêu và từ bối cảnh là những từ ở đầu và ở cuối. Như vậy chúng ta sẽ có các cặp từ mục tiêu và bối cảnh như sau:</p>
+<p><code class="docutils literal notranslate"><span class="pre">[(('tôi',</span> <span class="pre">'một'),</span> <span class="pre">'muốn'),</span> <span class="pre">(('muốn',</span> <span class="pre">'chiếc'),</span> <span class="pre">'một'),</span> <span class="pre">(('một',</span> <span class="pre">'cốc'),</span> <span class="pre">'chiếc'),</span> <span class="pre">(('chiếc',</span> <span class="pre">'màu'),</span> <span class="pre">'cốc'),</span> <span class="pre">(('cốc',</span> <span class="pre">'xanh'),</span> <span class="pre">'màu')]</span></code></p>
+<p>Mô hình word2vec có 2 phương pháp chính là skip-grams và CBOW như sau:</p>
+<p><img alt="" src="https://imgur.com/41qQJ2u.jpeg" /></p>
+<p><strong>Hình 3:</strong> Mô hình CBOW và Skip-gram trong word2vec.</p>
+<section id="phuong-phap-cbow">
+<h4><span class="section-number">2.2.1.4.1. </span>Phương pháp CBOW<a class="headerlink" href="#phuong-phap-cbow" title="Permalink to this heading">#</a></h4>
+<p>Đối với mô hình CBOW chúng ta sẽ xây dựng một mô hình học có giám sát sử dụng đầu vào là các từ bối cảnh, chẳng hạn như trong hình là các từ <span class="math notranslate nohighlight">\(\mathbf{w}_{t-2}, \mathbf{w}_{t-1}, \mathbf{w}_{t+1}, \mathbf{w}_{t+2}\)</span> để giải thích từ mục tiêu ở vị trí hiện tại là <span class="math notranslate nohighlight">\(\mathbf{w}_t\)</span>.</p>
+<p>Các từ <span class="math notranslate nohighlight">\(\mathbf{w}_t\)</span> đã được mã hoá dưới dạng véc tơ one-hot trong không gian <span class="math notranslate nohighlight">\(\mathbb{R}^{d}\)</span> chiều để có thể đưa vào huấn luyện. Ở đây <span class="math notranslate nohighlight">\(d\)</span> chính là kích thước của từ điển. Như vậy ở phương pháp CBOW chúng ta có 5 véc tơ one-hot đầu vào với số chiều bằng với số lượng từ trong từ điển. Sau đó những véc tơ này được giảm chiều dữ liệu thông qua một phép chiếu lên không gian thấp chiều, chẳng hạn 200 chiều, bước này chính là projection trên hình vẽ. Kết quả thu được là một véc tơ embedding <span class="math notranslate nohighlight">\(\mathbf{e}_c \in \mathbb{R}^{200}\)</span>. Sau cùng, phân phối xác suất của từ mục tiêu được dự báo thông qua một hàm softmax áp dụng lên véc tơ <span class="math notranslate nohighlight">\(\mathbf{e}_c\)</span>. Quá trình huấn luyện mô hình sẽ dựa trên hàm softmax dạng cross-entropy:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}(\mathbf{y}, \hat{\mathbf{y}}) = -\sum_{i=1}^{d} y_i\log(\hat{y}_i)\]</div>
+<p>Trong đó <span class="math notranslate nohighlight">\(\hat{y}_i\)</span> là xác suất dự báo từ mục tiêu tương ứng với từ ở vị trí index thứ <span class="math notranslate nohighlight">\(i\)</span> trong từ điển, được tính theo công thức softmax:</p>
+<div class="math notranslate nohighlight">
+\[\hat{y_i} = \frac{\exp(\mathbf{w}_{:i}^{\intercal}\mathbf{e}_c)}{\sum_{i=1}^{d}\exp(\mathbf{w}_{:i}^{\intercal}\mathbf{e}_c)}\]</div>
+<p><span class="math notranslate nohighlight">\(\mathbf{w}_{:i} \in \mathbb{R}^{200}\)</span> chính là véc tơ tham số kết nối toàn bộ các node thuộc <span class="math notranslate nohighlight">\(\mathbf{e}_c\)</span> tới vị trí node thứ <span class="math notranslate nohighlight">\(i\)</span> của layer cuối cùng.</p>
+<p>Sau quá trình lan truyền thuận và lan truyền ngược, các hệ số của mô hình sẽ được cập nhật và chúng ta sẽ thu được biểu diễn từ dần chuẩn xác hơn. Một từ đầu vào sẽ có biểu diễn thông qua phương pháp CBOW chính là véc tơ <span class="math notranslate nohighlight">\(\mathbf{e}_c\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing</span> <span class="kn">import</span> <span class="n">text</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.utils</span> <span class="kn">import</span> <span class="n">to_categorical</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing</span> <span class="kn">import</span> <span class="n">sequence</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">gutenberg</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">punctuation</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+
+<span class="c1"># download bộ văn bản gutenberg</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;gutenberg&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
+<span class="n">norm_bible</span> <span class="o">=</span> <span class="n">gutenberg</span><span class="o">.</span><span class="n">sents</span><span class="p">(</span><span class="s1">&#39;bible-kjv.txt&#39;</span><span class="p">)</span> 
+<span class="n">norm_bible</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">norm_bible</span><span class="p">]</span>
+
+<span class="c1"># tokenize văn bản</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">()</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">norm_bible</span><span class="p">)</span>
+<span class="n">word2id</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span>
+
+<span class="c1"># khởi tạo từ điển cho bộ văn bản</span>
+<span class="n">word2id</span><span class="p">[</span><span class="s1">&#39;PAD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">id2word</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">word2id</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word2id</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Vocabulary Size:&#39;</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Vocabulary Sample:&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">word2id</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mã hoá câu văn bằng index</span>
+<span class="n">wids</span> <span class="o">=</span> <span class="p">[[</span><span class="n">word2id</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">text_to_word_sequence</span><span class="p">(</span><span class="n">doc</span><span class="p">)]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">norm_bible</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Embedding sentence by index: &#39;</span><span class="p">,</span> <span class="n">wids</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+# Xác định context and target
+import numpy as np
+def generate_context_word_pairs(corpus, window_size, vocab_size):
+    context_length = window_size*2
+    for words in corpus:
+        sentence_length = len(words)
+        # print(&#39;words: &#39;, words)
+        for index, word in enumerate(words):
+            context_words = []
+            label_word   = [] 
+            # Start index of context
+            start = index - window_size
+            # End index of context
+            end = index + window_size + 1
+            # List of context_words
+            context_words.append([words[i] for i in range(start, end) if 0 &lt;= i &lt; sentence_length and i != index])
+            # List of label_word (also is target word).
+            # print(&#39;context words {}: {}&#39;.format(context_words, index))
+            label_word.append(word)
+            # Padding the input 0 in the left in case it does not satisfy number of context_words = 2*window_size.
+            x = sequence.pad_sequences(context_words, maxlen=context_length)
+            # print(&#39;context words padded: &#39;, x)
+            # Convert label_word into one-hot vector corresponding with its index
+            y = to_categorical(label_word, vocab_size)
+            yield (x, y)
+            
+            
+# Test this out for some samples
+i = 0
+window_size = 2 # context window size
+for x, y in generate_context_word_pairs(corpus=wids, window_size=window_size, vocab_size=vocab_size):
+    if 0 not in x[0]:
+        print(&#39;Context (X):&#39;, [id2word[w] for w in x[0]], &#39;-&gt; Target (Y):&#39;, id2word[np.argwhere(y[0])[0][0]])
+    
+        if i == 10:
+            break
+        i += 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Xây dựng mô hình CBOW là một mạng fully connected gồm 3 layers</span>
+<span class="kn">import</span> <span class="nn">tensorflow.keras.backend</span> <span class="k">as</span> <span class="nn">K</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Embedding</span><span class="p">,</span> <span class="n">Lambda</span>
+<span class="n">embed_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">window_size</span><span class="o">=</span><span class="mi">2</span>
+<span class="c1"># build CBOW architecture</span>
+<span class="n">cbow</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">cbow</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="n">embed_size</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">window_size</span><span class="o">*</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">cbow</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">output_shape</span><span class="o">=</span><span class="p">(</span><span class="n">embed_size</span><span class="p">,)))</span>
+<span class="n">cbow</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+<span class="n">cbow</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">)</span>
+
+<span class="c1"># view model summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cbow</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+# Huấn luyện model với 5 epochs với 100 quan sát đầu tiên
+
+for epoch in range(1, 6):
+    loss = 0.
+    i = 0
+    for x, y in generate_context_word_pairs(corpus=wids[:100], window_size=window_size, vocab_size=vocab_size):
+        i += 1
+        loss += cbow.train_on_batch(x, y)
+        if i % 500 == 0:
+            print(&#39;Processed {} (context, word) pairs&#39;.format(i))
+
+    print(&#39;Epoch:&#39;, epoch, &#39;\tLoss:&#39;, loss)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="phuong-phap-skip-gram">
+<h4><span class="section-number">2.2.1.4.2. </span>Phương pháp skip-gram<a class="headerlink" href="#phuong-phap-skip-gram" title="Permalink to this heading">#</a></h4>
+<p>Phương pháp skip-gram thực chất là một phiên bản đảo ngược của phương pháp CBOW. Chúng ta sẽ sử dụng đầu vào là các từ mục tiêu và dự báo các từ bối cảnh dự vào từ mục tiêu. Như thể hiện ở <em>hình 3</em> thì <span class="math notranslate nohighlight">\(\mathbf{w}_t\)</span> chính là từ mục tiêu được sử dụng làm đầu vào, các từ <span class="math notranslate nohighlight">\(\mathbf{w}_{t-2}, \mathbf{w}_{t-1}, \mathbf{w}_{t+1}, \mathbf{w}_{t+2}\)</span> là những từ bối cảnh cần được dự đoán. Những từ này đều được mã hoá thành véc tơ one-hot trong không gian <span class="math notranslate nohighlight">\(\mathbb{R}^{d}\)</span>. Sau đó véc tơ one-hot sẽ được chiếu lên không gian nhằm giảm chiều dữ liệu xuống còn chẳng hạn <span class="math notranslate nohighlight">\(200\)</span> chiều. Đầu ra thu được là véc tơ <span class="math notranslate nohighlight">\(\mathbf{e}_c\)</span> có kích thước 200, đây cũng chính là biểu diễn nhúng của từ trong skip-gram. Cuối cùng chúng ta sử dụng một sigmoid layer để dự đoán xem từ mục tiêu <span class="math notranslate nohighlight">\(\mathbf{w}_t\)</span> và từ bối cảnh <span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span> (<span class="math notranslate nohighlight">\(\mathbf{w}_j\)</span> được lựa chọn ngẫu nhiên từ từ điển) có cùng bối cảnh hay không?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">skipgrams</span>
+
+<span class="n">window_size</span><span class="o">=</span><span class="mi">2</span>
+<span class="c1"># generate skip-grams</span>
+<span class="n">skip_grams</span> <span class="o">=</span> <span class="p">[</span><span class="n">skipgrams</span><span class="p">(</span><span class="n">wid</span><span class="p">,</span> <span class="n">vocabulary_size</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">wid</span> <span class="ow">in</span> <span class="n">wids</span><span class="p">[:</span><span class="mi">100</span><span class="p">]]</span>
+
+<span class="c1"># view sample skip-grams</span>
+<span class="n">pairs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">skip_grams</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_grams</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">{:s}</span><span class="s2"> (</span><span class="si">{:d}</span><span class="s2">), </span><span class="si">{:s}</span><span class="s2"> (</span><span class="si">{:d}</span><span class="s2">)) -&gt; </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">id2word</span><span class="p">[</span><span class="n">pairs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="n">pairs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> 
+          <span class="n">id2word</span><span class="p">[</span><span class="n">pairs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span> <span class="n">pairs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> 
+          <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">dot</span><span class="p">,</span> <span class="n">concatenate</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Dot</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Reshape</span><span class="p">,</span> <span class="n">Embedding</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Model</span>
+
+<span class="c1"># build skip-gram architecture</span>
+<span class="n">word_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="n">word_embed</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embed_size</span><span class="p">,</span>
+                         <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;glorot_uniform&quot;</span><span class="p">,</span>
+                         <span class="n">input_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;word_embedding&#39;</span><span class="p">)(</span><span class="n">word_input</span><span class="p">)</span>
+<span class="n">word_output</span> <span class="o">=</span> <span class="n">Reshape</span><span class="p">((</span><span class="n">embed_size</span><span class="p">,</span> <span class="p">))(</span><span class="n">word_embed</span><span class="p">)</span>
+<span class="n">word_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">word_input</span><span class="p">,</span> <span class="n">word_output</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;word_model: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">word_model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="n">context_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="n">context_embed</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embed_size</span><span class="p">,</span>
+                  <span class="n">embeddings_initializer</span><span class="o">=</span><span class="s2">&quot;glorot_uniform&quot;</span><span class="p">,</span>
+                  <span class="n">input_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;context_embedding&#39;</span><span class="p">)(</span><span class="n">context_input</span><span class="p">)</span>
+<span class="n">context_output</span> <span class="o">=</span> <span class="n">Reshape</span><span class="p">((</span><span class="n">embed_size</span><span class="p">,))(</span><span class="n">context_embed</span><span class="p">)</span>
+<span class="n">context_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">context_input</span><span class="p">,</span> <span class="n">context_output</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;context_model: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">context_model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+
+<span class="n">concate</span> <span class="o">=</span> <span class="n">dot</span><span class="p">([</span><span class="n">word_output</span><span class="p">,</span> <span class="n">context_output</span><span class="p">],</span> <span class="n">axes</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="s2">&quot;glorot_uniform&quot;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;sigmoid&quot;</span><span class="p">)(</span><span class="n">concate</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">word_input</span><span class="p">,</span> <span class="n">context_input</span><span class="p">],</span> <span class="n">outputs</span> <span class="o">=</span> <span class="n">dense</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;mean_squared_error&quot;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;rmsprop&quot;</span><span class="p">)</span>
+
+<span class="c1"># view model summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;model merge word and context: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+# Để cho nhanh thì mình sẽ training trên 100 skip_grams đầu tiên.
+for epoch in range(1, 6):
+    loss = 0
+    for i, elem in enumerate(skip_grams[:100]):
+        pair_first_elem = np.array(list(zip(*elem[0]))[0], dtype=&#39;int32&#39;)
+        pair_second_elem = np.array(list(zip(*elem[0]))[1], dtype=&#39;int32&#39;)
+        labels = np.array(elem[1], dtype=&#39;int32&#39;)
+        X = [pair_first_elem, pair_second_elem]
+        Y = labels
+        if i % 500 == 0:
+            print(&#39;Processed {} (skip_first, skip_second, relevance) pairs&#39;.format(i))
+        loss += model.train_on_batch(X,Y)  
+
+    print(&#39;Epoch:&#39;, epoch, &#39;Loss:&#39;, loss)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="su-dung-gensim-huan-luyen-mo-hinh-word2vec">
+<h4><span class="section-number">2.2.1.4.3. </span>Sử dụng gensim huấn luyện mô hình word2vec<a class="headerlink" href="#su-dung-gensim-huan-luyen-mo-hinh-word2vec" title="Permalink to this heading">#</a></h4>
+<p>Huấn luyện mô hình word2vec sử dụng mạng nơ ron là để chúng ta hiểu rõ hơn về cấu trúc mạng nơ ron và cách thức hoạt động của mạng. Trên thực tế để huấn luyện mô hình word2vec chúng ta có thể thông qua package gensim như sau:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="c1"># Training model với 1000 câu đầu tiên trong kinh thánh</span>
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">norm_bible</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">min_count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vector_size</span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">sg</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">workers</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">total_examples</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">corpus_count</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Tìm biểu diễn véc tơ nhúng của một từ:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;embedding vector shape: &#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="s1">&#39;king&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="s1">&#39;king&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="fe-for-image">
+<h2><span class="section-number">2.2.2. </span>FE for image<a class="headerlink" href="#fe-for-image" title="Permalink to this heading">#</a></h2>
+<p>Trong quãng thời gian trước đây khi tài nguyên tính toán còn hạn chế và “thời kì phục hưng của mạng thần kinh” vẫn chưa thực sự quay trở lại, khai phá đặc trưng cho dữ liệu hình ảnh là một lĩnh vực phức tạp. Người ta phải thiết kế những bộ trích lọc thủ công để trích lọc các đặc trưng như góc, cạnh, đường nét ngang, dọc, chéo,…. Những thuật toán như <a class="reference external" href="https://phamdinhkhanh.github.io/2019/11/22/HOG.html">HOG</a>, <a class="reference external" href="http://luthuli.cs.uiuc.edu/~daf/courses/ComputerVisionTutorial2012/EdgesOrientationHOGSIFT-2012.pdf">SHIFT</a> là phương pháp thường được sử dụng để trích lọc đặc trưng. Nhược điểm của những phương pháp này đó là tách rời bộ trích lọc đặc trưng (<em>feature extractor</em>) và bộ phân loại (<em>classifier</em>) nên mô hình có tốc độ huấn luyện và dự báo chậm.</p>
+<p>Thời kì tan băng của deep learning đã khiến mạng CNN phát triển mạnh mẽ. Những kiến trúc mạng CNN hiện đại ngày càng trở nên sâu hơn và đạt độ chính xác cao. Đây là những kiến trúc end-to-end cho phép các bộ trích lọc đặc trưng gắn liền với bộ phân loại trong một pipeline duy nhất. Các bộ trích lọc cũng không cần khởi tạo một cách thủ công mà trái lại chúng được sinh ngẫu nhiên theo các phân phối giả định.</p>
+<p>Nhờ các nguồn tài nguyên gồm các mô hình pretrained sẵn có mà bạn không cần phải tìm ra kiến trúc và huấn luyện mạng từ đầu. Thay vào đó, có thể tải xuống một mạng hiện đại đã được huấn luyện với trọng số từ các nguồn đã được công bố. Các nhà khoa học dữ liệu thường thực hiện điều chỉnh để thích ứng với các mạng này theo nhu cầu của họ bằng cách “tách” các lớp kết nối đầy đủ (fully connected layers) cuối cùng của mạng, thêm các lớp mới được thiết kế cho một nhiệm vụ cụ thể, và sau đó đào tạo mạng trên dữ liệu mới. Nếu nhiệm vụ của bạn chỉ là vector hóa hình ảnh, bạn chỉ cần loại bỏ các lớp cuối cùng và sử dụng kết quả đầu ra từ các lớp trước đó:</p>
+<p><img alt="" src="https://camo.githubusercontent.com/ee00962051042ac56919da91c4b9d3209e6cb4f0c6fb30e80dda67e229495fca/68747470733a2f2f63646e2d696d616765732d312e6d656469756d2e636f6d2f6d61782f3830302f312a49775f634b46774c6b54564f325350724f5a553272512e706e67" /></p>
+<p><strong>Hình 4</strong>: Đây là một mô hình phân lớp được huấn luyện trên một bộ dữ liệu từ trước hay còn gọi là mô hình pretrained. Lớp cuối cùng của mạng được tách ra và sử dụng để huấn luyện lại trên tập dữ liệu mới nhằm điều chỉnh để dự báo cho bộ dữ liệu mới.</p>
+<p>Tuy nhiên, chúng ta sẽ không tập trung quá nhiều vào kỹ thuật mạng nơ ron. Thay vào đó các feature được tạo thủ công vẫn rất hữu ích: ví dụ đối với bài toán trong cuộc thi <a class="reference external" href="https://www.kaggle.com/c/two-sigma-connect-rental-listing-inquiries">Rental Listing Inquiries - Kaggle Competition</a>, để dự đoán mức độ phổ biến của danh sách cho thuê, ta có thể giả định rằng các căn hộ có ánh sáng sẽ thu hút nhiều sự chú ý hơn và tạo một feature mới như “giá trị trung bình của pixel”.</p>
+<p><strong>Trích lọc thông tin văn bản trên hình ảnh</strong></p>
+<p><em>OCR</em> (<em>Optical character recognition</em>) là dạng bài toán trích lọc thông tin văn bản trên hình ảnh. Chúng có tính ứng dụng cao và thường mang lại nhiều thông tin khi xử lý dữ liệu dạng hình ảnh.</p>
+<p>Chằng hạn nếu có văn bản trên hình ảnh, bạn có thể đọc nó để khai thác một số thông tin thông qua gói phát hiện văn bản trong hình ảnh <a class="reference external" href="https://github.com/madmaze/pytesseract">pytesseract</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+!sudo apt-get install tesseract-ocr
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1">##### Just a random picture from search</span>
+<span class="n">img</span> <span class="o">=</span> <span class="s1">&#39;http://ohscurrent.org/wp-content/uploads/2015/09/domus-01-google.jpg&#39;</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+
+<span class="c1"># show image</span>
+<span class="n">img_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_arr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Đọc một hình ảnh thiết kế căn hộ thông qua link.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+import cv2
+from PIL import Image
+import pytesseract
+
+img_rgb = cv2.cvtColor(img_arr, cv2.COLOR_BGR2RGB)
+print(image_to_string(img_rgb))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fe-for-area">
+<h2><span class="section-number">2.2.3. </span>FE for area<a class="headerlink" href="#fe-for-area" title="Permalink to this heading">#</a></h2>
+<p>Trong python chúng ta có một package khá phổ biến trong việc khai thác các thông tin địa lý đó là <code class="docutils literal notranslate"><span class="pre">reverse_geocoder</span></code>. Có 2 dạng bài toán chính với thông tin địa lý gồm</p>
+<ul class="simple">
+<li><p>geocoding: mã hóa một tọa độ địa lý từ một địa chỉ.</p></li>
+<li><p>revert geocoding: từ thông tin cung cấp về kinh độ và vĩ độ trả về địa chỉ của địa điểm và các thông tin có liên quan.</p></li>
+</ul>
+<p>Cả hai bài toán đều có thể giải quyết thông qua API của google map hoặc OpenStreetMap. Sau đây là ví dụ trích xuất thông tin địa lý từ một địa điểm thông qua kinh độ và vĩ độ.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+# install package reverse_geocoder
+!pip install reverse_geocoder
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">reverse_geocoder</span> <span class="k">as</span> <span class="nn">revgc</span>
+
+<span class="c1"># truyền vào latitude, longitude</span>
+<span class="n">revgc</span><span class="o">.</span><span class="n">search</span><span class="p">((</span><span class="mf">21.0364466</span><span class="p">,</span> <span class="mf">105.8450788</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Như chúng ta thấy, từ tọa độ có thể biết được căn hộ này nằm ở quận Hoàn Kiếm, Hà Nội, là một nơi phát triển và có mức sống cao. Như vậy mức giá của nó khả năng sẽ cao hơn. Từ quận và huyện ta xác định được căn hộ có nằm ở trung tâm hay không, các tiện nghi xung quan nó. Những thông tin trên rất quan trọng trong việc đánh giá khả năng bán được của căn hộ. Mặc dù trong bộ dữ liệu gốc không hề xuất hiện nhưng chúng có thể được trích xuất từ tọa độ địa lý.</p>
+</section>
+<section id="fe-for-datetime">
+<h2><span class="section-number">2.2.4. </span>FE for datetime<a class="headerlink" href="#fe-for-datetime" title="Permalink to this heading">#</a></h2>
+<p>Trong dự báo, các dữ liệu thường có trạng thái thay đổi. Trạng thái của ngày hôm qua có thể khác biệt so với ngày hôm nay. Chẳng hạn như chiều cao, cân nặng của một người hay giá thị trường của các cổ phiếu. Chính vì thế thời gian là một thông tin có ảnh hưởng lớn tới biến mục tiêu. Từ một mốc thời gian biết trước chúng ta có thể phân rã thông tin thành giờ trong ngày, ngày trong tháng, tháng, quí, năm,…. Sẽ có rất nhiều điều thú vị được khám phá từ các thông tin này. Chẳng hạn như các qui luật của một số chuỗi số thay đổi theo mùa vụ: Nhiệt độ các tháng thay đổi theo mùa, GDP thay đổi theo qui luật quí, doanh số tiêu thụ kem thay đổi theo mùa,…. Yếu tố thời gian còn giúp xác định xu hướng biến đổi của một biến theo thời gian và kết hợp với tính mùa vụ sẽ trở thành một chỉ số quan trọng để ước lượng chuỗi thời gian.</p>
+<p>Biến đổi one-hot coding là một phương pháp quan trọng được sử dụng để mã hóa các biến chu kì thời gian. One-hot coding sẽ biến đổi một biến thành các vector có phần tử là 0 hoặc 1, trong đó 1 đại diện cho sự xuất hiện của đặc trưng và 0 đại diện cho các đặc trưng mà biến không có.</p>
+<p>Ví dụ: Chúng ta có 1 ngày trong tuần có thể rơi vào các thứ từ 2 đến chủ nhật. Như vậy một biểu diễn one-hot encoding của ngày thứ 2 sẽ là một véc tơ có phần tử đầu tiên bằng 1 và các phần tử còn lại bằng 0. Biểu diễn này cũng tương tự như với mã hóa dữ liệu văn bản thành các <em>sparse vector</em>.</p>
+<p>Trong python chúng ta có thể sử dụng hàm weekday() để xác định thứ tự của một ngày trong tuần. Thuộc tính weekday() chỉ tồn tại đối với dữ liệu dạng datetime. Do đó ta cần chuyển đổi các biến ngày đang ở dạng string về dạng datetime thông qua strftime (string format time). Bảng string format time có thể xem <a class="reference external" href="https://strftime.org/">tại đây</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;created&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2021-08-13 00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-08-12 00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-08-11 00:00:00&#39;</span><span class="p">,</span> 
+                                    <span class="s1">&#39;2021-08-10 00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-08-09 00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-08-08 00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-08-07 00:00:00&#39;</span><span class="p">]})</span>
+
+<span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Để biết được định dạng strftime của một chuỗi kí tự ta phải tra trong bàng string format time</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+
+<span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parser</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Như vậy biến created đã được chuyển về dạng datetime. Chúng ta có thể tạo ra một one-hot encoding dựa vào hàm weekday().</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;weekday&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">weekday</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;weekday&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ta có thể tạo ra một biến trả về trạng thái ngày có phải là cuối tuần bằng kiểm tra weekday() có rơi vào [5, 6] là những ngày cuối tuần hay không.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;is_weekend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;is_weekend&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Trong một số bài toán dữ liệu có thể bị phụ thuộc vào thời gian. Chẳng hạn như lịch trả nợ của thẻ tín dụng sẽ rơi vào kì sao kê là một ngày cụ thể trong tháng. Khi làm việc với dữ liệu chuỗi thời gian chúng ta nên lưu ý tới danh sách các ngày đặc biệt trong năm như nghỉ tết âm lịch, quốc khánh, quốc tế lao động,…. Bởi những ngày này thường sẽ có biến động lớn về dữ liệu kinh doanh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># first, let&#39;s create a toy dataframe with some timestamps in different time zones</span>
+<span class="c1"># Work with different timezones¶</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2014-08-01 09:00&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Berlin&#39;</span><span class="p">)),</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2014-08-01 09:00&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;US/Central&#39;</span><span class="p">))</span>
+    <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2014-08-01 09:00:00+02:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2014-08-01 10:00:00+02:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2014-08-01 11:00:00+02:00</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>2014-08-01 09:00:00-05:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2014-08-01 10:00:00-05:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2014-08-01 11:00:00-05:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># to work with different time zones, first we unify the timezone to the central one</span>
+<span class="c1"># setting utc = True</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;time_utc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># next we change all timestamps to the desired timezone, eg Europe/London</span>
+<span class="c1"># in this example</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;time_london&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time_utc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="s1">&#39;Europe/London&#39;</span><span class="p">)</span>
+
+
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>time_utc</th>
+      <th>time_london</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2014-08-01 09:00:00+02:00</td>
+      <td>2014-08-01 07:00:00+00:00</td>
+      <td>2014-08-01 08:00:00+01:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2014-08-01 10:00:00+02:00</td>
+      <td>2014-08-01 08:00:00+00:00</td>
+      <td>2014-08-01 09:00:00+01:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2014-08-01 11:00:00+02:00</td>
+      <td>2014-08-01 09:00:00+00:00</td>
+      <td>2014-08-01 10:00:00+01:00</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>2014-08-01 09:00:00-05:00</td>
+      <td>2014-08-01 14:00:00+00:00</td>
+      <td>2014-08-01 15:00:00+01:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2014-08-01 10:00:00-05:00</td>
+      <td>2014-08-01 15:00:00+00:00</td>
+      <td>2014-08-01 16:00:00+01:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2014-08-01 11:00:00-05:00</td>
+      <td>2014-08-01 16:00:00+00:00</td>
+      <td>2014-08-01 17:00:00+01:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="fe-for-website-log">
+<h2><span class="section-number">2.2.5. </span>FE for website, log<a class="headerlink" href="#fe-for-website-log" title="Permalink to this heading">#</a></h2>
+<p>Các hệ thống website lớn sẽ tracking lại các session của người dùng. Những thông tin được tracking bao gồm thông tin thiết bị, loại event, customer ID, … Từ customer ID chúng có thể link tới database người dùng để biết được các thông tin về giới tính, độ tuổi, tài khoản, hành vi giao dịch,…. Trong một số trường hợp một khách hàng có thể thay đổi thiết bị truy cập, do đó không phải hầu hết các trường hợp chúng ta đều map được session với Customer ID trên dữ liệu local. Tuy nhiên từ các thông tin được lưu trong Cookie về người dùng (còn gọi là user agent) cũng cung cấp cho chúng ta khá nhiều điều. Chẳng hạn như: Thiết bị truy cập, trình duyệt, hệ điều hành,… Từ thiết bị di động chúng ta cũng ước đoán được người dùng có mức thu nhập như thế nào: Sử dụng Iphone X thì khả năng cao là người có thu nhập cao, sử dụng điện thoại xiaomi khả năng là người thu nhập trung bình và thấp,…. Để phân loại các thông tin về người dùng chúng ta có thể sử dụng package user_agents trong python.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">script</span> echo skipping
+!pip install user_agents
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">user_agents</span>
+<span class="c1"># Giả định có một user agent như bên dưới</span>
+<span class="n">ua</span> <span class="o">=</span> <span class="s1">&#39;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/56.0.2924.76 Chrome/56.0.2924.76 Safari/537.36&#39;</span>
+<span class="c1"># Parser thông tin user agent</span>
+<span class="n">ua</span> <span class="o">=</span> <span class="n">user_agents</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ua</span><span class="p">)</span>
+<span class="c1"># Khai thác các thuộc tính của user</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is a bot? &#39;</span><span class="p">,</span> <span class="n">ua</span><span class="o">.</span><span class="n">is_bot</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is mobile? &#39;</span><span class="p">,</span> <span class="n">ua</span><span class="o">.</span><span class="n">is_mobile</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Is PC? &#39;</span><span class="p">,</span><span class="n">ua</span><span class="o">.</span><span class="n">is_pc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;OS Family: &#39;</span><span class="p">,</span><span class="n">ua</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">family</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;OS Version: &#39;</span><span class="p">,</span><span class="n">ua</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Browser Family: &#39;</span><span class="p">,</span><span class="n">ua</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">family</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Browser Version: &#39;</span><span class="p">,</span><span class="n">ua</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fe-for-mixed-variables">
+<h2><span class="section-number">2.2.6. </span>FE for mixed variables<a class="headerlink" href="#fe-for-mixed-variables" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;a3&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;ce&#39;</span><span class="p">],</span> 
+                   <span class="s1">&#39;col2&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;12a&#39;</span><span class="p">,</span><span class="s1">&#39;b3&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;b3c&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">]})</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>12a</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>a3</td>
+      <td>b3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>b</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>c</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>c</td>
+      <td>b3c</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ce</td>
+      <td>a</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="value-is-contain-numbers-and-strings">
+<h3><span class="section-number">2.2.6.1. </span>Value is contain numbers and strings<a class="headerlink" href="#value-is-contain-numbers-and-strings" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="value-is-numbers-or-strings">
+<h3><span class="section-number">2.2.6.2. </span>Value is numbers or strings<a class="headerlink" href="#value-is-numbers-or-strings" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1_num1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="s1">&#39;integer&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1_num2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1_num3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;(\d+)&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col1_num1</th>
+      <th>col1_num2</th>
+      <th>col1_num3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>12a</td>
+      <td>2.0</td>
+      <td>2</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>a3</td>
+      <td>b3</td>
+      <td>NaN</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>b</td>
+      <td>3</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>c</td>
+      <td>3.0</td>
+      <td>3</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>c</td>
+      <td>b3c</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ce</td>
+      <td>a</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_Feature_engineering-1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>Custom Transforms Function</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_Feature_engineering-3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>Variable Overview</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-text">2.2.1. FE for text</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words">2.2.1.1. Bag-of-words</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-n-gram">2.2.1.2. bag-of-n-gram</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf">2.2.1.3. TF-IDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#word2vec">2.2.1.4. Word2vec</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#phuong-phap-cbow">2.2.1.4.1. Phương pháp CBOW</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#phuong-phap-skip-gram">2.2.1.4.2. Phương pháp skip-gram</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#su-dung-gensim-huan-luyen-mo-hinh-word2vec">2.2.1.4.3. Sử dụng gensim huấn luyện mô hình word2vec</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-image">2.2.2. FE for image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-area">2.2.3. FE for area</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-datetime">2.2.4. FE for datetime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-website-log">2.2.5. FE for website, log</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-for-mixed-variables">2.2.6. FE for mixed variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-is-contain-numbers-and-strings">2.2.6.1. Value is contain numbers and strings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-is-numbers-or-strings">2.2.6.2. Value is numbers or strings</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

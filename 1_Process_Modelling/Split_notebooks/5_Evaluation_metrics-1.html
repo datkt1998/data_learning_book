@@ -1,0 +1,2013 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>5.2. Classification metrics &#8212; Machine Learning book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-1';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3. Regression metrics" href="5_Evaluation_metrics-2.html" />
+    <link rel="prev" title="5.1. Define scorer" href="5_Evaluation_metrics-0.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../_jupyter_book_files/intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../_jupyter_book_files/intro.html">
+                    Welcome to Dat’s Notebook
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Process Modeling</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_eda.html">1. Statistic and EDA</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-0.html">1.1. Data Analyst Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-1.html">1.2. Read datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-2.html">1.3. Explore data analysis (EDA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-3.html">1.4. Description statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-4.html">1.5. Inferential statistic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-5.html">1.6. Kiểm định giả thuyết (Hypothesis testing)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_Statistics_and_EDA-6.html">1.7. ANOVA</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fe.html">2. Feature Engineering</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-1.html">2.1. Custom Transforms Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-2.html">2.2. Feature extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-3.html">2.3. Variable Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-4.html">2.4. Missing Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-5.html">2.5. Categorical Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-6.html">2.6. Feature transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-7.html">2.7. Discretisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-8.html">2.8. Outliers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-9.html">2.9. Feature scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_Feature_engineering-10.html">2.10. Feature selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_imb.html">3. Imbalance Dataset Handling</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-1.html">3.1. Data-level approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-2.html">3.2. Cost sensitive approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-3.html">3.3. Ensemble approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Imbalance_data_handling-4.html">3.4. Ensemble approaches</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_fs.html">4. Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-1.html">4.1. Filter methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-2.html">4.2. Wrapped methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-3.html">4.3. Embedded methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-4.html">4.4. Hybrid methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_Feature_selection_and_decomposition-5.html">4.5. Feature decomposition</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="0_toc_eva.html">5. Evaluation Metrics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-0.html">5.1. Define scorer</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.2. Classification metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-2.html">5.3. Regression metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-3.html">5.4. Clustering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_Evaluation_metrics-4.html">5.5. Pairwise metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6_Models_monitoring_production-0.html">6. Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-1.html">6.7. Functional level monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_Models_monitoring_production-2.html">6.8. Operational level monitoring</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ML/DL Algorithms</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_su.html">1. ML Supervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-0.html">1.1. Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-1.html">1.2. Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-2.html">1.3. Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-3.html">1.4. Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-4.html">1.5. Support Vector Machines (SVM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-5.html">1.6. Nearest neighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-6.html">1.7. Tree-base model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-7.html">1.8. Ensemble learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-8.html">1.9. Multi-class and multi-output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Supervised_learning_Algorithms-9.html">1.10. Neural network models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_ml_unsu.html">2. ML Unsupervised Learning</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-0.html">2.1. Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-1.html">2.2. Decomposing components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-2.html">2.3. Manifold learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-3.html">2.4. Novelty and Outlier Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_ML_Unsupervised_learning_Algorithms-4.html">2.5. Neural network</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_toc_dl.html">3. Deep Learning</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_DL_Algorithms-0.html">3.1. Neural Network</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">My Modules</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../3_Mathematics/0_toc.html">1. Mathematics</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/1_Linear_algebra.html">1.1. Linear algebra</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/2_Calculus_and_optimization.html">1.5. Calculus and optimization</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/3_Distribution_and_statistic.html">1.12. Distribution and statistics</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/4_Information_theory.html">1.14. Information theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../3_Mathematics/5_Graph_theory.html">1.15. Graph theory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../4_Programming/0_toc.html">2. Programming</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/1_SQL.html">2.1. SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/2_noSQL.html">2.2. noSQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/3_pySpark.html">2.3. pySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/4_Python.html">2.4. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/6_Git.html">2.5. Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4_Programming/7_Docker.html">2.6. Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/1_Data_Cleaning.html">3. Data cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_My_Modules/2_Connection.html">4. Data connection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/datkt1998/DS_learning_book" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/1_Process_Modelling/Split_notebooks/5_Evaluation_metrics-1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Classification metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">5.2.1. Confusion matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multilabel-cm">5.2.1.1. multilabel CM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy">5.2.2. Accuracy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-accuracy-score">5.2.2.1. Top k accuracy score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-recall-fscore">5.2.3. Precision, Recall, Fscore</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recall">5.2.3.1. Recall</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#balance-accuracy-mean-recall">5.2.3.1.1. Balance accuracy (mean recall)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-mean-recall">5.2.3.1.2. Geometric mean recall</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision">5.2.3.2. Precision</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#average-precision-score">5.2.3.2.1. Average precision score</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support">5.2.3.3. Support</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-beta-score">5.2.3.4. F beta score</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-precision-recall-curve">5.2.3.5. Probability &amp; Precision_recall_curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specificity">5.2.3.6. Specificity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#npv">5.2.3.7. NPV</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-report">5.2.3.8. Classification Report</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#report-for-imbalance-data">5.2.3.8.1. report for imbalance data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#auc-roc-gini">5.2.4. AUC, ROC, GINI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc">5.2.4.1. ROC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auc">5.2.4.2. AUC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gini">5.2.4.3. GINI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ks">5.2.5. KS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohen-s-kappa-score">5.2.6. Cohen’s kappa score</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-likelihood-ratios">5.2.7. Class likelihood ratios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibration-curve">5.2.8. Calibration curve</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#on-imbalance-dataset">5.2.8.1. On imbalance dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#brier-score">5.2.8.2. Brier score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lift-and-gain">5.2.9. Lift and Gain</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lift-curve">5.2.9.1. Lift curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gain-curve">5.2.9.2. Gain curve</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function-others">5.2.10. Loss function &amp; others</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-of-imbalanced-accuracy">5.2.10.1. Index of Imbalanced Accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-loss">5.2.10.2. Log loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-one-loss">5.2.10.3. Zero-one loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hamming-loss">5.2.10.4. Hamming loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jaccard">5.2.10.5. Jaccard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matthews-correlation">5.2.10.6. Matthews correlation</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="classification-metrics">
+<h1><span class="section-number">5.2. </span>Classification metrics<a class="headerlink" href="#classification-metrics" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Average for <strong>multi-class</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Micro</span></code>: Collective average of TP, FP anf FN.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Weighed</span></code>: Takes the average of each metric weighted by the support.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Macro</span></code>: Take the average of the individual metrics</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># data</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span><span class="p">,</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1"># X, y = load_breast_cancer(return_X_y = True)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((750, 8), (250, 8))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># random forest</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_train_pred_p</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y_test_pred_p</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Baseline prediction: predict the majority class</span>
+<span class="n">y_train_base</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)))</span>
+<span class="n">y_test_base</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="confusion-matrix">
+<h2><span class="section-number">5.2.1. </span>Confusion matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this heading">#</a></h2>
+<p>Lấy ví dụ một bài toán phân loại nhị phân có bảng chéo thống kê kết quả giữa thực tế và dự báo như sau:
+<img alt="image.png" src="../../_images/cfm.png" /></p>
+<ul class="simple">
+<li><p><strong>TP (True Positive)</strong>: Tổng số trường hợp dự báo khớp Positive.</p></li>
+<li><p><strong>TN (True Negative)</strong>: Tổng số trường hợp dự báo khớp Negative.</p></li>
+<li><p><strong>FP (False Positive)</strong>: Tổng số trường hợp dự báo các quan sát thuộc nhãn Negative thành Positive. Những sai lầm của False Positive tương ứng với sai lầm loại I (<strong>type I error</strong>), chấp nhận một điều sai. Thực tế cho thấy sai lầm loại I thường gây hậu quả nghiêm trọng hơn so với sai lầm loại II được tìm hiểu bên dưới.</p></li>
+<li><p><strong>FN (False Negative)</strong>: Tổng số trường hợp dự báo các quan sát thuộc nhãn Positive thành Negative. Trong trường hợp này chúng ta mắc sai lầm loại II (<strong>type II error</strong>), bác bỏ một điều đúng.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
+<span class="k">def</span> <span class="nf">plot_cm</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+    <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">TN | FP</span>
+
+<span class="sd">FN | TP</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+<span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/78a680b25c417ba87a44c94fd880106781d72d3b71a1084da52799dd1a9aea99.png" src="../../_images/78a680b25c417ba87a44c94fd880106781d72d3b71a1084da52799dd1a9aea99.png" />
+</div>
+</div>
+<section id="multilabel-cm">
+<h3><span class="section-number">5.2.1.1. </span>multilabel CM<a class="headerlink" href="#multilabel-cm" title="Permalink to this heading">#</a></h3>
+<p>ConfusionMatrix list in which  each element is the CM of each class prediction with all the other label</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">samplewise</span></code> for regression, analysis would involve looking at the performance of the model for each sample</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">classwise</span></code> for classification, analysis would involve looking at the performance of the model for each class separately</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">multilabel_confusion_matrix</span>
+
+<span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">]</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">]</span>
+
+<span class="n">cm</span> <span class="o">=</span> <span class="n">multilabel_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">])</span>
+<span class="n">cm</span>
+<span class="c1"># ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[&quot;ant&quot;, &quot;bird&quot;, &quot;cat&quot;]).plot()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[[ 3,  6],
+        [ 3,  3]],
+
+       [[11,  2],
+        [ 2,  0]],
+
+       [[ 6,  2],
+        [ 5,  2]]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">dis</span> <span class="o">=</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="o">=</span><span class="n">cm</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;Blues&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7290425c74ffab624e1541b990e2aa3b005f9d42d6dce57172cec7d75e37b4a9.png" src="../../_images/7290425c74ffab624e1541b990e2aa3b005f9d42d6dce57172cec7d75e37b4a9.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scikitplot</span> <span class="k">as</span> <span class="nn">skplt</span>
+<span class="n">skplt</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Confusion Matrix&#39;}, xlabel=&#39;Predicted label&#39;, ylabel=&#39;True label&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/fa8610e335d3257666b4c41e962e9ad32ee2b8a33a6a1a07e71f472267f1997a.png" src="../../_images/fa8610e335d3257666b4c41e962e9ad32ee2b8a33a6a1a07e71f472267f1997a.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="accuracy">
+<h2><span class="section-number">5.2.2. </span>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this heading">#</a></h2>
+<p>Đối với bài toán phân loại thì ta quan tâm tới độ chính xác dự báo trên toàn bộ bộ dữ liệu là bao nhiêu? do đó thước đo phổ biến nhất là <strong><code class="docutils literal notranslate"><span class="pre">accuracy</span></code> đo tỷ lệ dự báo chính xác all class trên tổng sample</strong>.</p>
+<div class="math notranslate nohighlight">
+\[\text{Accuracy} = \frac{TP+TN}{\text{total sample}} \]</div>
+<p>Trong tính huống mô hình bị mất cân bằng thì <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> không còn là thước đo tốt nên được thay thế bằng <code class="docutils literal notranslate"><span class="pre">precision,</span> <span class="pre">recall</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;accuarcy without model&#39;</span><span class="p">,</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_base</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;accuarcy logistic model&#39;</span><span class="p">,</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>accuarcy without model 0.484
+accuarcy logistic model 0.628
+</pre></div>
+</div>
+</div>
+</div>
+<section id="top-k-accuracy-score">
+<h3><span class="section-number">5.2.2.1. </span>Top k accuracy score<a class="headerlink" href="#top-k-accuracy-score" title="Permalink to this heading">#</a></h3>
+<p>Xác định giá trị/tỷ lệ dự đoán đúng của k top labels được predict (rank bằng predicted score)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">top_k_accuracy_score</span>
+
+<span class="n">top_k_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.628
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="precision-recall-fscore">
+<h2><span class="section-number">5.2.3. </span>Precision, Recall, Fscore<a class="headerlink" href="#precision-recall-fscore" title="Permalink to this heading">#</a></h2>
+<section id="recall">
+<h3><span class="section-number">5.2.3.1. </span>Recall<a class="headerlink" href="#recall" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\operatorname{Sensitive}=\operatorname{Recal}=\text{HitRate}=\frac{TP}{TP+FN}=\frac{\text{Dự đoán đúng Positive}}{\text{Thực tế Positive}}\]</div>
+<ul class="simple">
+<li><p>Quan tâm tới tỷ lệ dự báo chính xác positive trên tổng positive thực tế hay khả năng bắt P của model <strong>ngoài thực tế</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Recall</span></code> quan trọng khi muốn hạn chế FN (mô hình dự đoán là 0 (sai), thực tế là  1)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">recall_score</span>
+
+<span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6434108527131783
+</pre></div>
+</div>
+</div>
+</div>
+<section id="balance-accuracy-mean-recall">
+<h4><span class="section-number">5.2.3.1.1. </span>Balance accuracy (mean recall)<a class="headerlink" href="#balance-accuracy-mean-recall" title="Permalink to this heading">#</a></h4>
+<p>The balanced accuracy in binary and multiclass classification problems to <strong>deal with imbalanced datasets</strong>. It is defined as the average of recall obtained on each class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">balanced_accuracy_score</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Balance accuarcy without model&#39;</span><span class="p">,</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_base</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Balance accuarcy logistic model&#39;</span><span class="p">,</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Balance accuarcy without model 0.5
+Balance accuarcy logistic model 0.6274905503235313
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># adjust = True, random performance would score 0, while keeping perfect performance at a score of 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Balance accuarcy without model&#39;</span><span class="p">,</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_base</span><span class="p">,</span> <span class="n">adjusted</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Balance accuarcy logistic model&#39;</span><span class="p">,</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">adjusted</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Balance accuarcy without model 0.0
+Balance accuarcy logistic model 0.2549811006470626
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="geometric-mean-recall">
+<h4><span class="section-number">5.2.3.1.2. </span>Geometric mean recall<a class="headerlink" href="#geometric-mean-recall" title="Permalink to this heading">#</a></h4>
+<p>Giá trị Sensitive trung bình nhân của các class:
+$<span class="math notranslate nohighlight">\(Gmean = \sqrt[n]{\prod_{i = 1}^{n}Recall_i}\)</span>$</p>
+<ul class="simple">
+<li><p>Nếu classifier ko có khả năng dự đoán 1 class nào đó ngoài thực tế thì Gmean = 0</p></li>
+<li><p>Nếu classifier có khả năng dự đoán tất cả các class ngoài thực tế thì Gmean = 1</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.metrics</span> <span class="kn">import</span> <span class="n">geometric_mean_score</span>
+<span class="n">geometric_mean_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6272885577763637
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="precision">
+<h3><span class="section-number">5.2.3.2. </span>Precision<a class="headerlink" href="#precision" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\text{Precision} = \frac{TP}{\text{total predicted positive}} = \frac{TP}{TP+FP}\]</div>
+<ul class="simple">
+<li><p>Quan tâm tới tỷ lệ dự báo chính xác positive trên tổng số trường hợp được <strong>model dự báo là positive</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Precision</span></code> quan trọng khi muốn hạn chế FP (mô hình dự đoán là 1 (sai), thực tế là  0)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_score</span>
+
+<span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6384615384615384
+</pre></div>
+</div>
+</div>
+</div>
+<section id="average-precision-score">
+<h4><span class="section-number">5.2.3.2.1. </span>Average precision score<a class="headerlink" href="#average-precision-score" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Average precision</strong> summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold, with the increase in recall from the previous threshold used as the weight:
+$<span class="math notranslate nohighlight">\(\mathbf{AP}=\sum_{n}(R_{n}-R_{n-1})P_{n}\)</span>$</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">average_precision_score</span>
+
+<span class="c1"># vs probability y test score</span>
+<span class="n">average_precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7137483481553051
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="support">
+<h3><span class="section-number">5.2.3.3. </span>Support<a class="headerlink" href="#support" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Support</strong> = Number of cases on each class</p></li>
+</ul>
+</section>
+<section id="f-beta-score">
+<h3><span class="section-number">5.2.3.4. </span>F beta score<a class="headerlink" href="#f-beta-score" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>F1-score</strong> là trung bình điều hoà đại diện cho cả precision và recall, <strong>F1 score càng cao thì model càng tốt</strong>. Sử dụng <code class="docutils literal notranslate"><span class="pre">F1</span> <span class="pre">score</span></code> khi:
+$<span class="math notranslate nohighlight">\(f_1 = \frac{2}{\frac{1}{\text{precision}} + \frac{1}{\text{recall}}}\)</span>$</p>
+<ul>
+<li><p>Cần sự cân bằng giữa precision và recall</p></li>
+<li><p>Data bị imbalance giữa 0 và 1</p></li>
+<li><p>Nếu precision tăng nhẹ làm recall giảm mạnh hoặc ngược lại thì dẫn tới F1-score sẽ rất thấp</p></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>Fbeta-score</strong> <span class="math notranslate nohighlight">\(f_{\beta}\)</span> là trường hợp tổng quát hơn của <span class="math notranslate nohighlight">\(f_1\)</span> khi ta coi mức độ quan trọng của <code class="docutils literal notranslate"><span class="pre">recall</span></code> bằng <span class="math notranslate nohighlight">\(\beta^2\)</span> lần <code class="docutils literal notranslate"><span class="pre">precision</span></code>.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{eqnarray}
+f_{\beta} &amp; = &amp; \frac{1+\beta^2}{\frac{1}{\text{precision}} + \frac{\beta^2}{\text{recall}}} &amp; = &amp; \frac{(1+\beta^2) \times \text{precision} \times \text{recall}}{\beta^2 \text{precision}+\text{recall}} &amp; = &amp; \frac{(1+\beta^2)\times\text{TP}}{(1+\beta^2)\times\text{TP}+\beta^2 \times \text{FN} + \text{FP}}
+\end{eqnarray}\]</div>
+<ul class="simple">
+<li><p>lựa chọn <code class="docutils literal notranslate"><span class="pre">f-score</span></code> metric để đánh giá model với imbalance data và kết hợp được đánh giá <code class="docutils literal notranslate"><span class="pre">precision</span></code> and <code class="docutils literal notranslate"><span class="pre">recall</span></code></p></li>
+<li><p>Với bài toán phân loại khách hành <code class="docutils literal notranslate"><span class="pre">good</span></code>/<code class="docutils literal notranslate"><span class="pre">bad</span></code>, tránh phân loại khách hàng <code class="docutils literal notranslate"><span class="pre">BAD</span></code> thành <code class="docutils literal notranslate"><span class="pre">Good</span></code> hơn là <code class="docutils literal notranslate"><span class="pre">Good</span></code> thành <code class="docutils literal notranslate"><span class="pre">Bad</span></code>, do đó ưu tiên <code class="docutils literal notranslate"><span class="pre">Recall</span></code>, giả sử <code class="docutils literal notranslate"><span class="pre">Recall</span></code> ưu tiên gấp 5 lần <code class="docutils literal notranslate"><span class="pre">Precision</span></code>, tức <code class="docutils literal notranslate"><span class="pre">B^2</span> <span class="pre">=</span> <span class="pre">5</span></code></p>
+<ul>
+<li><p>Nếu 𝛽 &gt;1 (default = 2), ưu tiên recall</p></li>
+<li><p>Nếu 𝛽 &lt;1 (default = 0.5), ưu tiên precision</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># f1 score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span>
+
+<span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6409266409266409
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># f beta score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">fbeta_score</span>
+
+<span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6425806451612903
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="probability-precision-recall-curve">
+<h3><span class="section-number">5.2.3.5. </span>Probability &amp; Precision_recall_curve<a class="headerlink" href="#probability-precision-recall-curve" title="Permalink to this heading">#</a></h3>
+<p><img alt="image.png" src="../../_images/pre_rec_curve.png" /></p>
+<ul class="simple">
+<li><p>Đường cong <strong>precision</strong>, <strong>recall</strong> giúp lựa chọn ngưỡng xác suất phù hợp để mang lại độ chính xác cao hơn cho <strong>precision</strong> hoặc <strong>recall</strong>.</p>
+<ul>
+<li><p><strong>precision</strong> cho ta biết tỷ lệ dự báo chính xác trong số các hồ sơ được dự báo là <code class="docutils literal notranslate"><span class="pre">BAD</span></code> (tức nhãn là 1 Positive).</p></li>
+<li><p><strong>recall</strong> đo lường tỷ lệ dự báo chính xác các hồ sơ thực tế là <code class="docutils literal notranslate"><span class="pre">BAD</span></code> .</p></li>
+</ul>
+</li>
+<li><p>Luôn có sự đánh đổi giữa 2 tỷ lệ này, muốn model predict <code class="docutils literal notranslate"><span class="pre">BAD</span></code> tỷ lệ chính xác càng cao thì khả năng <code class="docutils literal notranslate"><span class="pre">BAD</span></code> không được predict càng nhiều và ngược lại.</p></li>
+<li><p>Thông thường sẽ dựa trên kì vọng về <strong>precision</strong> hoặc <strong>recall</strong> (mục tiêu model) từ trước để lựa chọn ngưỡng <code class="docutils literal notranslate"><span class="pre">threshold</span></code>.</p>
+<ul>
+<li><p>Với kì vọng tỷ lệ dự báo đúng hồ sơ <code class="docutils literal notranslate"><span class="pre">BAD</span></code> là <code class="docutils literal notranslate"><span class="pre">70%</span></code>, chọn <code class="docutils literal notranslate"><span class="pre">threshold</span></code> để <strong>recall</strong> &gt;= 70%.</p></li>
+<li><p>Hoặc kì vọng tỷ lệ dự báo đúng trong số các hồ sơ được dự báo là <code class="docutils literal notranslate"><span class="pre">BAD</span></code> là 70%, chọn <code class="docutils literal notranslate"><span class="pre">threshold</span></code> để <strong>precision</strong> &gt;= 70%.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Có sự đánh đổi giữa Recal và Precision:</strong></p>
+<ol class="arabic simple">
+<li><p>Precision cao - recall thấp</p>
+<ul class="simple">
+<li><p>Mô hình dự đoán có độ chính xác  cao tuy nhiên khả năng bắt ngoài thực tế thấp, ưu tiên độ chính xác (hệ thống gợi ý sản phẩm tốt, tránh sản phẩm kém)</p></li>
+<li><p>Không nên tin về dự đoán N, chỉ nên tin vào dự đoán P</p></li>
+</ul>
+</li>
+<li><p>Precision thấp - recall cao</p>
+<ul class="simple">
+<li><p>Mô hình bắt được nhiều ngoài thực tế nhưng cũng bắt sai nhiều, ưu tiên bắt được càng nhiều P càng tốt, ví dụ như dự đoán ung thư (P), ko nên tin vào dự đoán P</p></li>
+</ul>
+</li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_recall_curve</span><span class="p">,</span> <span class="n">PrecisionRecallDisplay</span>
+
+<span class="c1"># first find preciion and recall various at various thresholds</span>
+<span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+<span class="n">avg_precision</span> <span class="o">=</span> <span class="n">average_precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span> 
+
+<span class="c1"># plot Precision by Recall</span>
+<span class="n">PrecisionRecallDisplay</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">average_precision</span><span class="o">=</span> <span class="n">avg_precision</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.precision_recall_curve.PrecisionRecallDisplay at 0x2873c1ff0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/a7003ac5635001c97db8530bd5b878304339e7b46ed3e358c7fb76dfd2592cb8.png" src="../../_images/a7003ac5635001c97db8530bd5b878304339e7b46ed3e358c7fb76dfd2592cb8.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_plot_prec_rec_curve</span><span class="p">(</span><span class="n">prec</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">thres</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thres</span><span class="p">,</span> <span class="n">prec</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Precision&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thres</span><span class="p">,</span> <span class="n">rec</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Recall&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Threshold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Precsion vs Recall Curve&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">_plot_prec_rec_curve</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/57e61d92cf56f70a52b98adcb8fdc3098d59af6f239c3d6dfe1c3272eca207d2.png" src="../../_images/57e61d92cf56f70a52b98adcb8fdc3098d59af6f239c3d6dfe1c3272eca207d2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yellowbrick.classifier</span> <span class="kn">import</span> <span class="n">DiscriminationThreshold</span>
+
+<span class="n">visualizer</span> <span class="o">=</span> <span class="n">DiscriminationThreshold</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span>
+                                     <span class="n">n_trials</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">cv</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                                     <span class="n">fbeta</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+                                     <span class="n">argmax</span><span class="o">=</span><span class="s1">&#39;fscore&#39;</span><span class="p">,</span> <span class="c1"># vi tri probability cut-point cho metrix dat max</span>
+                                     <span class="n">is_fitted</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+                                     <span class="n">exclude</span> <span class="o">=</span> <span class="s2">&quot;queue_rate&quot;</span><span class="p">,</span>
+                                    <span class="n">quantiles</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]),</span> <span class="c1"># range median of curve in multi n trials</span>
+                                    <span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> 
+<span class="n">visualizer</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>        <span class="c1"># Evaluate the model on the test data</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khongdat/miniforge3/lib/python3.10/site-packages/IPython/core/pylabtools.py:152: UserWarning: Glyph 8 ) missing from current font.
+  fig.canvas.print_figure(bytes_io, **kw)
+</pre></div>
+</div>
+<img alt="../../_images/9225167b1b8643995838fc5dbc33beb237783ec936da75a6cba84a475ddc513b.png" src="../../_images/9225167b1b8643995838fc5dbc33beb237783ec936da75a6cba84a475ddc513b.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Threshold Plot for LogisticRegression&#39;}, xlabel=&#39;discrimination threshold&#39;, ylabel=&#39;score&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Thay đổi cutpoint probability (threshold)</strong>
+<img alt="image.png" src="../../_images/cutoff_proba.png" /></p>
+<p>Ứng với mỗi giá trị <strong>Recall</strong> cao hơn là tỷ lệ <strong>False positive rate</strong> cao hơn. Khi các điểm <strong>cutpoint</strong> tăng dần thì tỷ lệ <strong>Recall</strong> giảm dần do ở mức điểm cao hơn thì số lượng được dự báo là <strong>positive</strong> có thể giảm trong khi số lượng <strong>positive thực tế</strong> không đổi -&gt; <strong>Recall</strong> có thể giảm. Đồng thời tỷ lệ <strong>False positive rate</strong> tăng do mức điểm cao hơn thì số lượng dự báo là <strong>positive</strong> tăng -&gt; số lượng được dự báo sai <strong>FP (Failse Positive)</strong> có thể tăng -&gt; Tỷ lệ <strong>False positive rate</strong> tăng</p>
+</section>
+<section id="specificity">
+<h3><span class="section-number">5.2.3.6. </span>Specificity<a class="headerlink" href="#specificity" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\operatorname{Specificity}=\frac{TN}{TN+FP}=\frac{\text{Dự đoán đúng Negative}}{\text{Thực tế Negative}}\]</div>
+<ul class="simple">
+<li><p>Quan tâm tới khả năng bắt đúng N ngoài thực tế, ưu tiên bắt được càng nhiều N ngoài thực tế càng tốt</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6115702479338843
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="npv">
+<h3><span class="section-number">5.2.3.7. </span>NPV<a class="headerlink" href="#npv" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\operatorname{NPV}=\frac{TN}{TN+FN}=\frac{\text{Dự đoán đúng Negative}}{\text{Dự đoán Negative}}\]</div>
+<ul class="simple">
+<li><p>Quan tâm tới khả năng bắt đúng N dự đoán của mô hình.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6166666666666667
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="classification-report">
+<h3><span class="section-number">5.2.3.8. </span>Classification Report<a class="headerlink" href="#classification-report" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># full report</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">precision_recall_fscore_support</span>
+
+<span class="c1"># show cả label negative (trước) và positive (sau)</span>
+<span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">fscore</span><span class="p">,</span> <span class="n">support</span> <span class="o">=</span><span class="n">precision_recall_fscore_support</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+
+<span class="n">recall</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.61157025, 0.64341085])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recall</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">recall</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6272885577763637
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recall</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6274905503235313
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
+
+           0       0.62      0.61      0.61       121
+           1       0.64      0.64      0.64       129
+
+    accuracy                           0.63       250
+   macro avg       0.63      0.63      0.63       250
+weighted avg       0.63      0.63      0.63       250
+</pre></div>
+</div>
+</div>
+</div>
+<section id="report-for-imbalance-data">
+<h4><span class="section-number">5.2.3.8.1. </span>report for imbalance data<a class="headerlink" href="#report-for-imbalance-data" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report_imbalanced</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report_imbalanced</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                   pre       rec       spe        f1       geo       iba       sup
+
+          0       0.62      0.61      0.64      0.61      0.63      0.39       121
+          1       0.64      0.64      0.61      0.64      0.63      0.39       129
+
+avg / total       0.63      0.63      0.63      0.63      0.63      0.39       250
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="auc-roc-gini">
+<h2><span class="section-number">5.2.4. </span>AUC, ROC, GINI<a class="headerlink" href="#auc-roc-gini" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://rstudio-pubs-static.s3.amazonaws.com/267441_5459af9d83ae44f18a13aea4a479f31f.html">Chi tiết đường cong ROC</a></p></li>
+<li><p><a class="reference external" href="http://pages.cs.wisc.edu/~jdavis/davisgoadrichcamera2.pdf">Relationship between ROC and Precision_Recall_Curve</a></p></li>
+<li><p>Chỉ số AUC (area under curve) đo lường phần diện tích nằm dưới đường cong ROC cho biết khả năng phân loại của các hợp đồng GOOD/BAD của mô hình hồi qui logistic là mạnh hay yếu. AUC , giá trị của nó càng lớn thì mô hình càng tốt.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GINI</span></code> = 2<code class="docutils literal notranslate"><span class="pre">AUC</span></code> - 1</p></li>
+</ul>
+<section id="roc">
+<h3><span class="section-number">5.2.4.1. </span>ROC<a class="headerlink" href="#roc" title="Permalink to this heading">#</a></h3>
+<p>Thể hiện với từng điểm <code class="docutils literal notranslate"><span class="pre">cut-point</span></code> (điểm phân tách 0/1), thể hiện mối quan hệ giữa <code class="docutils literal notranslate"><span class="pre">False</span> <span class="pre">Positive</span> <span class="pre">Rate</span></code> (FRP = 1 - specificity) với <code class="docutils literal notranslate"><span class="pre">Recall</span></code></p>
+<ul class="simple">
+<li><p>X-axis: FPR = 1 - specificity</p></li>
+<li><p>Y-axis: Recall</p></li>
+</ul>
+<p><img alt="image.png" src="../../_images/roc_space.png" /></p>
+<p>Một model có sức mạnh dự báo lớn hơn so với việc dự báo random khi nó có ROC nằm phía trên bên trái đường random line. Giá trị cutpoint tốt nhất để phân loại Positive và Negative cho model là điểm tiệm cận của đường thẳng song song với đường random line với ROC curve.</p>
+<p><strong>Note</strong>: ROC đặc trưng bằng việc thay đổi cutpoint phân lớp, khác với Lift curve đặc trưng bằng việc thay đổi tỷ lệ subsample của total data có mức độ highest probability positive</p>
+</section>
+<section id="auc">
+<h3><span class="section-number">5.2.4.2. </span>AUC<a class="headerlink" href="#auc" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Là phần diện tích phía dưới đường ROC, thể hiện độ hiệu quả của mô hình:</p>
+<ul>
+<li><p>AUC = 1 thể hiện perfect model (Recall = 1, Specificity = 1): model dự đoán đúng tất cả Positive và không dự đoán sai Negative nào thành Positive.</p></li>
+</ul>
+</li>
+<li><p>AUC không phụ thuộc vào điểm cutpoint probability</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span><span class="p">,</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">RocCurveDisplay</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tính FPR và recall cho từng cutpoint threshold</span>
+<span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thres</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tính AUC from FPR và recall</span>
+<span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7011980267794222
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tính AUC from y true và y prediction probability</span>
+<span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7011980267794222
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RocCurveDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.roc_curve.RocCurveDisplay at 0x2938a3130&gt;
+</pre></div>
+</div>
+<img alt="../../_images/26d1e31e3c15bbe970b004156b68c913c0b85a3da4c8d8286e84f4a9556f897e.png" src="../../_images/26d1e31e3c15bbe970b004156b68c913c0b85a3da4c8d8286e84f4a9556f897e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multi-class</span>
+<span class="n">skplt</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">plot_roc</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;ROC Curves&#39;}, xlabel=&#39;False Positive Rate&#39;, ylabel=&#39;True Positive Rate&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/fe7af5d00908e6fd0937be737969ba25f0b2531bdb335a11209a2730b92e8fd1.png" src="../../_images/fe7af5d00908e6fd0937be737969ba25f0b2531bdb335a11209a2730b92e8fd1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="k">def</span> <span class="nf">AUC_plot</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">):</span>
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thres</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">area</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">fpr</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">tpr</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;ROC Curve (AUC=</span><span class="si">{</span><span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span><span class="w"> </span><span class="n">tpr</span><span class="p">)</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;True Positive Rate&#39;</span><span class="p">),</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">500</span>
+    <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_shape</span><span class="p">(</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dash</span><span class="o">=</span><span class="s1">&#39;dash&#39;</span><span class="p">),</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">scaleanchor</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">scaleratio</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">constrain</span><span class="o">=</span><span class="s1">&#39;domain&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">renderer</span> <span class="o">=</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">)</span>
+
+<span class="n">AUC_plot</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e1aa32814b96f939e7f00cfa46885d0ff392df610564a97e030c77fa1325aa42.jpg" src="../../_images/e1aa32814b96f939e7f00cfa46885d0ff392df610564a97e030c77fa1325aa42.jpg" />
+</div>
+</div>
+</section>
+<section id="gini">
+<h3><span class="section-number">5.2.4.3. </span>GINI<a class="headerlink" href="#gini" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[GINI = 2AUC -1\]</div>
+<ul class="simple">
+<li><p>Tỷ lệ Gini trên 60% tương ứng với một mô hình tốt</p></li>
+</ul>
+</section>
+</section>
+<section id="ks">
+<h2><span class="section-number">5.2.5. </span>KS<a class="headerlink" href="#ks" title="Permalink to this heading">#</a></h2>
+<p>Là kiểm định thống kê non-parametric dùng để so sánh 2 phân phối, đánh giá mức độ tương đồng giữa chúng. Cụ thể với bài toán phân tách 0 và 1, đây là kiểm định đo lường sự khác biệt trong phân phối giữa <code class="docutils literal notranslate"><span class="pre">0</span></code> và <code class="docutils literal notranslate"><span class="pre">1</span></code> actual theo các tỷ lệ ngưỡng probability outcome. Nếu mô hình có khả năng phân loại <code class="docutils literal notranslate"><span class="pre">0</span></code> và <code class="docutils literal notranslate"><span class="pre">1</span></code> tốt thì đường cong phân phối xác suất tích lũy (<code class="docutils literal notranslate"><span class="pre">cumulative</span> <span class="pre">distribution</span> <span class="pre">function</span> <span class="pre">-</span> <span class="pre">cdf</span></code>) giữa <code class="docutils literal notranslate"><span class="pre">0</span></code> và <code class="docutils literal notranslate"><span class="pre">1</span></code> phải có sự tách biệt lớn. Trái lại, nếu mô hình rất yếu và kết quả dự báo của nó chỉ ngang bằng một phép lựa chọn ngẫu nhiên. Khi đó đường phân phối xác suất tích lũy của <code class="docutils literal notranslate"><span class="pre">0</span></code> và <code class="docutils literal notranslate"><span class="pre">1</span></code> sẽ nằm sát nhau.</p>
+<ul class="simple">
+<li><p>Kiểm định <code class="docutils literal notranslate"><span class="pre">Kolmogorov-Smirnov</span></code> sẽ kiểm tra giả thuyết <code class="docutils literal notranslate"><span class="pre">Ho</span></code> là hai phân phối xác suất 0 và 1 không có sự khác biệt. Khi <code class="docutils literal notranslate"><span class="pre">P-value</span></code> &lt; 0.05 bác bỏ giả thuyết <code class="docutils literal notranslate"><span class="pre">Ho</span></code>.</p>
+<ul>
+<li><p>X-axis: ngưỡng probability outcome, hoặc binning theo hạng</p></li>
+<li><p>Y-axis: cdf của phân phối 1 và 0</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>–&gt; Khoảng cách xa nhất của 2 đường phân phối càng lớn thể hiện phân phối của 0 và 1 dựa theo score càng khác nhau, tức score có tính phân loại 0/1</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kiểm định Kolmogorov-Smirnov test:</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="k">def</span> <span class="nf">_KS</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred_p</span><span class="p">,</span>  <span class="n">n_bins</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tính toán phân phối xác suất tích lũy của GOOD và BAD</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bucket</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">y_pred_p</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cmd_BAD</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cmd_GOOD</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">BAD_id</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">GOOD_id</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">total_BAD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">BAD_id</span><span class="p">)</span>
+    <span class="n">total_GOOD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">GOOD_id</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">thres</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+        <span class="n">pred_id</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_pred_p</span> <span class="o">&lt;=</span> <span class="n">thres</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Đếm % số lượng hồ sơ BAD có xác suất dự báo nhỏ hơn hoặc bằng thres</span>
+        <span class="n">per_BAD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred_id</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">BAD_id</span><span class="p">))</span><span class="o">/</span><span class="n">total_BAD</span> <span class="c1"># thực tế là bad và dự báo là bad</span>
+        <span class="n">cmd_BAD</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">per_BAD</span><span class="p">)</span>
+        <span class="c1"># Đếm % số lượng hồ sơ GOOD có xác suất dự báo nhỏ hơn hoặc bằng thres</span>
+        <span class="n">per_GOOD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred_id</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">GOOD_id</span><span class="p">))</span><span class="o">/</span><span class="n">total_GOOD</span> <span class="c1"># thực tế là good và dự báo là </span>
+        <span class="n">cmd_GOOD</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">per_GOOD</span><span class="p">)</span>
+    <span class="n">cmd_BAD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cmd_BAD</span><span class="p">)</span>
+    <span class="n">cmd_GOOD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cmd_GOOD</span><span class="p">)</span>
+    <span class="c1"># print(bucket)</span>
+    <span class="k">return</span> <span class="n">cmd_BAD</span><span class="p">,</span> <span class="n">cmd_GOOD</span><span class="p">,</span> <span class="n">thresholds</span>
+
+<span class="c1"># Biểu đồ phân phối xác suất tích lũy của GOOD và BAD</span>
+<span class="k">def</span> <span class="nf">_plot_KS</span><span class="p">(</span><span class="n">cmd_BAD</span><span class="p">,</span> <span class="n">cmd_GOOD</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Biểu đồ phân phối xác suất tích lũy của GOOD và BAD</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pvalue</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ks_2samp</span><span class="p">(</span><span class="n">cmd_BAD</span><span class="p">,</span> <span class="n">cmd_GOOD</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;KS-score = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">cmd_BAD</span><span class="o">-</span><span class="n">cmd_GOOD</span><span class="p">))),</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;| &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;p-value = </span><span class="si">{:.3f}</span><span class="s1"> (Below 0.05, significant)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pvalue</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="n">cmd_BAD</span><span class="p">,</span> <span class="s1">&#39;y-&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;BAD&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="n">cmd_GOOD</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;GOOD&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cmd_BAD</span><span class="o">-</span><span class="n">cmd_GOOD</span><span class="p">),</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;DIFF&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">% o</span><span class="s1">bservation&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">% G</span><span class="s1">OOD/totalGOOD or BAD/totalBAD&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Kolmogorov-Smirnov Curve&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    
+<span class="n">cmd_BAD</span><span class="p">,</span> <span class="n">cmd_GOOD</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">_KS</span><span class="p">(</span> <span class="n">y_test</span><span class="p">,</span><span class="n">y_test_pred_p</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">_plot_KS</span><span class="p">(</span><span class="n">cmd_BAD</span><span class="p">,</span> <span class="n">cmd_GOOD</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KS-score = 0.2948299058235633| p-value = 0.365 (Below 0.05, significant)
+</pre></div>
+</div>
+<img alt="../../_images/ef77bbfbd8a9eea3ff3de51679a00c5ab34b2088d4e60f57f21eba772b63aee0.png" src="../../_images/ef77bbfbd8a9eea3ff3de51679a00c5ab34b2088d4e60f57f21eba772b63aee0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">skplt</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">plot_ks_statistic</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;KS Statistic Plot&#39;}, xlabel=&#39;Threshold&#39;, ylabel=&#39;Percentage below threshold&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/127e72e1c67e4ec88d5a147d11b8c87059dcd68290b74fe42604ab70deae70b0.png" src="../../_images/127e72e1c67e4ec88d5a147d11b8c87059dcd68290b74fe42604ab70deae70b0.png" />
+</div>
+</div>
+</section>
+<section id="cohen-s-kappa-score">
+<h2><span class="section-number">5.2.6. </span>Cohen’s kappa score<a class="headerlink" href="#cohen-s-kappa-score" title="Permalink to this heading">#</a></h2>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\kappa\)</span> thường được sử dụng để đo mức độ tương đồng ý kiến của 2 người cho N obs vào C nhóm labels không giao nhau đôi một.</p></li>
+<li><p>Trong <strong>Classification</strong>, <span class="math notranslate nohighlight">\(\kappa\)</span> sử đụng để đánh giá accuracy của model prediction và thực tế của <strong>N</strong> obs cho <strong>C</strong> class cho <strong>Imbalance class</strong> (chỉ số <code class="docutils literal notranslate"><span class="pre">Accuracy</span></code> thông thường không hiệu quả trong dữ liệu bị <strong>imbalance</strong>)
+$<span class="math notranslate nohighlight">\(\kappa = \frac{p_o-p_e}{1-p_e}\)</span>$</p>
+<p>Trong đó:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p_o = \frac{\text{Số quan sát model predict đúng label}}{\text{Tổng sample}}\)</span> là độ <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> tiêu chuẩn của mô hình classìication</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_e\)</span> là xác suất cùng xảy ra 1 outcome (label) đồng thời của 2 event nếu coi việc phân loại theo model là 1 event. độc lập với event phân loại theo xác suất phân phối actual. <span class="math notranslate nohighlight">\(p_e = \frac{\sum_{i=1}^{C}(n_{i1} \times n_{i2})}{N^{2}}\)</span>, trong đó <span class="math notranslate nohighlight">\(n_{i1}\)</span> là số lượng quan sát của người thứ nhất vote cho label thứ i, trong tổng số <strong>N</strong> quan sát và <strong>C</strong> labels</p></li>
+</ul>
+</li>
+<li><p>Trong bài toán <strong>Binary Classification</strong>:
+$<span class="math notranslate nohighlight">\(\kappa={\frac{2\times(T P\times T N-F N\times F P)}{(T P+F P)\times(F P+T N)+(T P+F N)\times(F N+T N)}}\)</span>$</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Range của <span class="math notranslate nohighlight">\(\kappa\)</span> từ -1 đến 1:</strong></p>
+<ul class="simple">
+<li><p>Nếu <span class="math notranslate nohighlight">\(\kappa &lt; 0\)</span>: model có khả năng phân loại ngược lại với thực tế.</p></li>
+<li><p>Nếu <span class="math notranslate nohighlight">\(\kappa = 0\)</span>, tức model có <span class="math notranslate nohighlight">\(\frac{TP}{FP} = \frac{FN}{TN} = \frac{TP + FN}{FP + TN} = \frac{ActualPositive}{ActualNegative}\)</span> =&gt; Model chỉ có khả năng phân loại bằng với <strong>random guess</strong></p></li>
+<li><p>Nếu <span class="math notranslate nohighlight">\(\kappa\)</span> gần 1, model càng có khả năng phân loại tốt và khác với <strong>random guess</strong></p></li>
+<li><p>Nếu <span class="math notranslate nohighlight">\(\kappa = 1\)</span>, tức chỉ số <span class="math notranslate nohighlight">\(p_o\)</span> = <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> = 1, tức model có độ chính xác tuyệt đối, phân loại hoàn toàn chính xác các obs vào các label</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong><span class="math notranslate nohighlight">\(\kappa\)</span> dealing with imbalance data</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\kappa\)</span> thể hiện hiệu quả về độ chính xác của mô hình hơn chỉ số <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> khi làm việc với <strong>imbalanced data</strong> trong bài toán <strong>classification</strong>, bằng việc lấy <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> loại bỏ thêm xác suất trùng label khi lấy random trong 2 event độc lập <span class="math notranslate nohighlight">\(p_e\)</span></p></li>
+<li><p>Khi mức độ <strong>imbalance data</strong> càng lớn, thì <span class="math notranslate nohighlight">\(p_e\)</span> càng lớn (nếu cùng một độ <code class="docutils literal notranslate"><span class="pre">accuray</span></code> <span class="math notranslate nohighlight">\(p_o\)</span>), khi đó làm <span class="math notranslate nohighlight">\(\kappa\)</span> càng nhỏ, thể hiện chính xác hơn về hiệu suất model (do <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> không thay đổi)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">cohen_kappa_score</span>
+
+<span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2550464594681192
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="class-likelihood-ratios">
+<h2><span class="section-number">5.2.7. </span>Class likelihood ratios<a class="headerlink" href="#class-likelihood-ratios" title="Permalink to this heading">#</a></h2>
+<p>Thể hiện mức độ dự đoán của model trên tập test positive và test negative.</p>
+<ul class="simple">
+<li><p><strong>The positive likelihood ratio</strong>  ranges from 1 to infinity, giá trị càng cao tức là khả năng dự đoán P càng tốt trên tập <code class="docutils literal notranslate"><span class="pre">true</span> <span class="pre">positive</span></code> so với <code class="docutils literal notranslate"><span class="pre">true</span> <span class="pre">negative</span></code>
+$<span class="math notranslate nohighlight">\(L R_{+}=\frac{\mathrm{PR}(P+|T+)}{\mathrm{PR}(P+|T-)}\)</span>$</p></li>
+<li><p><strong>The negative likelihood ratio</strong>  ranges from 0 to 1, giá trị càng thấp càng tốt.
+$<span class="math notranslate nohighlight">\(L R_{-}=\frac{\mathrm{PR}(P-|T+)}{\mathrm{PR}(P-|T-)}\)</span>$</p></li>
+</ul>
+<p>The notation here refers to predicted <span class="math notranslate nohighlight">\(P\)</span> or true <span class="math notranslate nohighlight">\(T\)</span> label and the sign <span class="math notranslate nohighlight">\(+\)</span> and <span class="math notranslate nohighlight">\(-\)</span> refer to the positive and negative class, respectively, e.g. <span class="math notranslate nohighlight">\(P+\)</span> stands for “predicted positive”. <span class="math notranslate nohighlight">\(PR\)</span> is probability</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">class_likelihood_ratios</span>
+
+<span class="n">class_likelihood_ratios</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(8.625, 0.046875)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calibration-curve">
+<h2><span class="section-number">5.2.8. </span>Calibration curve<a class="headerlink" href="#calibration-curve" title="Permalink to this heading">#</a></h2>
+<p><strong>1. Probability Calibration</strong></p>
+<ul class="simple">
+<li><p>Ứng với các mô hình ngoài việc dự đoán label thì còn predict xác suất của từng class (<code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>), thì model có well-calibrated khi predicted probability mathches với xác suất thực tế của event đó (Probabilities match the true likelihood of events)</p>
+<ul>
+<li><p>Ví dụ: trong model binary classifier, nếu prob threshold để xác định class 1 là 0.4 và tương ứng với threshold 0.4 đó có 60% quan sát dự đoán là 1 và 40% quan sát dự đoán là 0, thì xác suất dự đoán của model là well-calibrated.</p></li>
+</ul>
+</li>
+<li><p><strong>Uncalibrated Probabilities</strong> thường xuất hiện trong các model ko train bằng probabilitistic framework hoặc dữ liệu bị imbalance, skewed distribution, hoặc biases in training data. Trong imbalance/ skewed distribution/ bias dataset, model thường dự đoán trung bình với xác suất cao hơn cho majority class.</p></li>
+<li><p><strong>ML algorithms có calibrated probabilities</strong>, bởi vì dự đoán dự trên probabilities framework (ví dụ maximun likelihood estimation):</p>
+<ul>
+<li><p>Logistic Regression</p></li>
+<li><p>Linear discriminant analysis</p></li>
+</ul>
+</li>
+</ul>
+<p>(and some others not well) Artificial Neural Networks, SVM, Decision Tree, Ensembles of Decision Trees (bagging, random forest, gradient boosting), Knn, Naive Bayes.</p>
+<p><strong>Why should care about uncalibrated probability ?</strong></p>
+<ul class="simple">
+<li><p>If just classify the label (not nescessarily to care about uncalibrated)</p></li>
+<li><p>If looking up for probability of prediction (need to care), importance with the confident of this prediction of label –&gt; should calibrated probability (if any) in ML algorithms (except: logistic, LDA)</p></li>
+</ul>
+<p><strong>2. Calibration curve</strong></p>
+<ul class="simple">
+<li><p>Chart thể hiện tỷ lệ số lượng Positive có match với xác suất X = Positve của model dự đoán hay ko ?:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">x-axis</span></code> (mean_predicted_value): Xác suất trung bình của các positive obs trong từng bin xác suất (xác suất P(1|X) <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y-axis</span></code> (fraction_of_positives): tỷ trọng % số lượng Positive obs in this bin sample in x-axis</p></li>
+</ul>
+</li>
+<li><p>Nếu model dự báo xác suất tốt, the curve sẽ gần với diagonal line là perfect calibration, the predicted probabilities đáng tin cậy so với phân phối tỷ lệ positive class</p></li>
+<li><p><a class="reference external" href="https://scikit-learn.org/stable/auto_examples/calibration/plot_compare_calibration.html">Compare_calibration of Classifiers</a></p></li>
+</ul>
+<p>-<strong>Number of observation in each bin probability</strong></p>
+<p>Nếu trong một bin có ít obs, thì giá trị fraction_of_positives/mean_predicted_value tại bin đó có thể bị bias, dẫn tới việc đánh giá sai mức độ calibrated probability của mô hình. Cụ thể, nếu số lượng obs quá thấp, không thể đánh giá được là probability có well-calibrated hay không, ngay cả trên curve thể hiện là under/over calibrated. Do đó cần phải lựa chọn số lượng bin phù hợp:</p>
+<ul class="simple">
+<li><p>Nếu có quá nhiều bin , dẫn tới số lượng obs tại một số bin bị ít, đường Calibration curve noise</p></li>
+<li><p>Nếu có quá ít bin , đường Calibration curve bị quá fit với diagonal line</p></li>
+</ul>
+<p><img alt="image.png" src="../../_images/cali1.png" /></p>
+<p><strong>Trong dữ liệu Imbalance</strong>, do dữ liệu bị mất cân bằng (Class 1 ít quan sát) nên thường các bin tại vùng xác suất cao có sô lượng obs thấp. It is very hard to say if the probability is calibrated, because there are few obs of positive class.</p>
+<p><img alt="image.png" src="../../_images/cali2.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.calibration</span> <span class="kn">import</span> <span class="n">CalibrationDisplay</span>
+
+<span class="n">CalibrationDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.calibration.CalibrationDisplay at 0x297ecbd60&gt;
+</pre></div>
+</div>
+<img alt="../../_images/74a30a2ba51a84e0395f4c08afcaf1a66c69c613a2e1f7c27322afef3b51bccd.png" src="../../_images/74a30a2ba51a84e0395f4c08afcaf1a66c69c613a2e1f7c27322afef3b51bccd.png" />
+</div>
+</div>
+<section id="on-imbalance-dataset">
+<h3><span class="section-number">5.2.8.1. </span>On imbalance dataset<a class="headerlink" href="#on-imbalance-dataset" title="Permalink to this heading">#</a></h3>
+<p>Các kỹ thuật sử lý dữ liệu imbalance như Under/Over sampling hoặc Cost Sensitive learning sẽ distort the relationship giữa <code class="docutils literal notranslate"><span class="pre">predicted</span> <span class="pre">probability</span></code> và <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">fraction</span> <span class="pre">of</span> <span class="pre">positive</span> <span class="pre">obs</span></code> ==&gt; <strong>Need to re-calibrate the probability</strong></p>
+<ul class="simple">
+<li><p><strong>Calibrating a Classifier</strong> : mapping model predictions to <strong>posterior probabilities</strong>
+<img alt="image.png" src="../../_images/cali3.png" />
+<em>By the way, note that probability calibration works on any ranked scores, not just on probabilities. So for example, in the support vector classifier case, seeing how expensive probabilities are to generate, we may choose instead to use “distance from the nearest support vector” as our score.</em></p>
+<ul>
+<li><p>Should perform the calibration on the <em>testset</em> or use <code class="docutils literal notranslate"><span class="pre">cross-validation</span></code> if little dataset. Not calibrate on trainset, lead to overfitting
+<strong>Technical re-calibrated methos :</strong></p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple">
+<li><p><strong>Platt Scaling</strong> (parametric approach)
+New probability after scaling by logistic transformation:
+$<span class="math notranslate nohighlight">\(P(y=1 \: | \: x_i) = \frac{1}{1 + \exp{(Af(x_i) + B)}}\)</span>$
+In which:</p></li>
+</ol>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f(x_i)\)</span> be the probability assigned to the record <span class="math notranslate nohighlight">\(x_i\)</span> by the classifier</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are scaling parameters, to be determined at fitting time (using some kind of maximum likelihood estimation algorithm), which control how the scaling is applied, solves for the smallest difference between the mean probability and the true probability within each bin.</p></li>
+</ul>
+<p><strong>Platt scaling</strong> áp dụng logistic transformation cho prediction probability trong đó có error theo dạng sigmoid shape (ví dụ như <code class="docutils literal notranslate"><span class="pre">SVM</span></code> hay <code class="docutils literal notranslate"><span class="pre">random</span> <span class="pre">forest</span></code>,…) lam smooth các xác suất thành 1 linear distribution, tạo thành xác suất gần hơn với perfect calibration.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Isotonic Regression</strong>(non-parametric approach)</p></li>
+</ol>
+<p><strong>Isotonic regression</strong> is a regression algorithm which fits a piecewise constant, non-decreasing function to a distribution of data. Thuật toán Isotonic dự đoán constant theo từng phần/step, nhóm data thành từng phần constant với mục tiêu là tối thiểu sai lệch giữa Y dự đoán và thực tế. Here is an example of a fitted isotonic regression result:
+<img alt="" src="https://i.imgur.com/94fDuwQ.png" /></p>
+<p>The goal of <strong>Isotonic Regression</strong> in re-calibration procedure (minimize cumulative neighborhood probability error) is the same with <strong>Platt Scaling</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># load cancer dataset</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1"># load data</span>
+<span class="c1"># only a few observations to speed the computaton</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Datasets/kdd2004.csv&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">data</span><span class="p">[(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">&lt;</span><span class="mi">135000</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># separate dataset into train and test</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>  <span class="c1"># drop the target</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span>  <span class="c1"># just the target</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">y_train</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span> <span class="s1">&#39;pie&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(8371, 74) (3588, 74)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: ylabel=&#39;target&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/ca59f11a21ca6933909d18acd573ed6193cb69b99bbb5ec821a66abe363be186.png" src="../../_images/ca59f11a21ca6933909d18acd573ed6193cb69b99bbb5ec821a66abe363be186.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_calibrated_curve</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Uncalibrated</span>
+    <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">y_test_predict_proba</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">fraction_of_positives</span><span class="p">,</span> <span class="n">mean_predicted_value</span> <span class="o">=</span> <span class="n">calibration_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_predict_proba</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_predicted_value</span><span class="p">,</span> <span class="n">fraction_of_positives</span><span class="p">,</span> <span class="s1">&#39;s-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Uncalibrated&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Isotonic calibration</span>
+    <span class="n">estimator_isotonic</span> <span class="o">=</span> <span class="n">CalibratedClassifierCV</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;isotonic&#39;</span><span class="p">)</span>
+    <span class="n">estimator_isotonic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">prob_isotonic</span> <span class="o">=</span> <span class="n">estimator_isotonic</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">fraction_of_positives</span><span class="p">,</span> <span class="n">mean_predicted_value</span> <span class="o">=</span> <span class="n">calibration_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">prob_isotonic</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_predicted_value</span><span class="p">,</span> <span class="n">fraction_of_positives</span><span class="p">,</span> <span class="s1">&#39;s-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Calibrated (Isotonic)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Sigmoid calibration / Platt Scaling</span>
+    <span class="n">estimator_sigmoid</span> <span class="o">=</span> <span class="n">CalibratedClassifierCV</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)</span>
+    <span class="n">estimator_sigmoid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">prob_sigmoid</span> <span class="o">=</span> <span class="n">estimator_sigmoid</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">fraction_of_positives</span><span class="p">,</span> <span class="n">mean_predicted_value</span> <span class="o">=</span> <span class="n">calibration_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">prob_sigmoid</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_predicted_value</span><span class="p">,</span> <span class="n">fraction_of_positives</span><span class="p">,</span> <span class="s1">&#39;s-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Calibrated (Platt)&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># raw imbalance dataa</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.calibration</span> <span class="kn">import</span> <span class="n">CalibratedClassifierCV</span><span class="p">,</span><span class="n">calibration_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">compare_calibrated_curve</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/07be0297771d58804f1f6e1f2f1fa993323e0f78c5c1872a0a42173d9472aec2.png" src="../../_images/07be0297771d58804f1f6e1f2f1fa993323e0f78c5c1872a0a42173d9472aec2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply cost sensitive to handle imbalance data</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">class_weight</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">})</span>
+<span class="n">compare_calibrated_curve</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x2922cacb0&gt;
+</pre></div>
+</div>
+<img alt="../../_images/de4c1f3a6365f33588134bdd10741a6fe85fb7a35c5532781fc7cec7a714aaac.png" src="../../_images/de4c1f3a6365f33588134bdd10741a6fe85fb7a35c5532781fc7cec7a714aaac.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Undersampling</span>
+<span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">RandomUnderSampler</span>
+
+<span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only from majority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">replacement</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># if it should resample with replacement</span>
+<span class="p">)</span>  
+
+<span class="n">X_rus</span><span class="p">,</span> <span class="n">y_rus</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_rus</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">compare_calibrated_curve</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_rus</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_rus</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    907
+1    907
+Name: target, dtype: int64
+</pre></div>
+</div>
+<img alt="../../_images/c39bed982585c674d720195b167edc4ba7dcfd231e0e954902b1db7dc66dc01f.png" src="../../_images/c39bed982585c674d720195b167edc4ba7dcfd231e0e954902b1db7dc66dc01f.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># oversampling - Borderline SMOTE</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">BorderlineSMOTE</span>
+
+<span class="n">sm_b1</span> <span class="o">=</span> <span class="n">BorderlineSMOTE</span><span class="p">(</span>
+    <span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>  <span class="c1"># samples only the minority class</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">m_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;borderline-1&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">X_sm</span><span class="p">,</span> <span class="n">y_sm</span> <span class="o">=</span> <span class="n">sm_b1</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_sm</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">compare_calibrated_curve</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_sm</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_sm</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khongdat/miniforge3/lib/python3.10/site-packages/imblearn/over_sampling/_smote/filter.py:192: FutureWarning: The parameter `n_jobs` has been deprecated in 0.10 and will be removed in 0.12. You can pass an nearest neighbors estimator where `n_jobs` is already set instead.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    7464
+1    7464
+Name: target, dtype: int64
+</pre></div>
+</div>
+<img alt="../../_images/eaacc5dc8045ae925e8008e5b33d79d840f7ffe2f013c19362727d1bbfa55ef7.png" src="../../_images/eaacc5dc8045ae925e8008e5b33d79d840f7ffe2f013c19362727d1bbfa55ef7.png" />
+</div>
+</div>
+</section>
+<section id="brier-score">
+<h3><span class="section-number">5.2.8.2. </span>Brier score<a class="headerlink" href="#brier-score" title="Permalink to this heading">#</a></h3>
+<p>The Brier Score measures the fit of the probability estimates of the observed data or the accuracy of probabilistic estimates. It is given by the average squared difference of the true label and the predicted probability.</p>
+<p><strong>Brier Score</strong> = mean( <span class="math notranslate nohighlight">\((y - y_pred_prob)^2\)</span> )</p>
+<ul class="simple">
+<li><p><strong>Brier Score</strong> is small when the proba estimates are close to th real class (phân phối xác suất của predict_proba tập trung tại 0 và 1, binary classification), and it increase as they diverge.</p></li>
+<li><p><strong>Brier Score</strong> tend to work well with balanced data, not accurate when imbalanced dataset (because the effect of minority class obs does not affter the overall score</p></li>
+<li><p>For balance dataset, <strong>Brier Score</strong> is bigger, suggesting that its probabilities are not as well calibrated</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">brier_score_loss</span>
+
+<span class="n">brier_score_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="lift-and-gain">
+<h2><span class="section-number">5.2.9. </span>Lift and Gain<a class="headerlink" href="#lift-and-gain" title="Permalink to this heading">#</a></h2>
+<section id="lift-curve">
+<h3><span class="section-number">5.2.9.1. </span>Lift curve<a class="headerlink" href="#lift-curve" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\mathrm{Lift_m:}\;\;\left\{X-axis =\frac{TotalPositivePredicted}{m}=\frac{TP+FP}{m}, Y-axis =Lift =\frac{Recall}{\frac{TP+FP}{m}}\right\}\]</div>
+<p>Với m là số outcome có highest probability (gần label 1 nhất), ví dụ m chạy từ subsample 1% –&gt; 100% (step = 1%)</p>
+<ul class="simple">
+<li><p>Với mỗi subsample có highest Probability Positive, <strong>Lift thể hiện subsample dự đoán đúng P gấp bao nhiêu lần so với totalsample</strong></p></li>
+<li><p>Lift curve đặc trưng bằng việc thay đổi tỷ lệ subsample của total data có mức độ highest probability positive để ứng với tỷ lệ đúng positive mong muốn gấp bao nhiêu lần so với total data, khác với ROC là thay đổi cutpoint cho xác suất để xác định P or N.</p></li>
+</ul>
+<p><img alt="image.png" src="../../_images/lift.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multi-class</span>
+<span class="n">skplt</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">plot_lift_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Lift Curve&#39;}, xlabel=&#39;Percentage of sample&#39;, ylabel=&#39;Lift&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/446b5dd691aec6ff9add3cb7358c59a16355ae4824607ca519f05f24331d8502.png" src="../../_images/446b5dd691aec6ff9add3cb7358c59a16355ae4824607ca519f05f24331d8502.png" />
+</div>
+</div>
+</section>
+<section id="gain-curve">
+<h3><span class="section-number">5.2.9.2. </span>Gain curve<a class="headerlink" href="#gain-curve" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\mathrm{Gain_m:}\;\;\left\{X-axis =\frac{TotalPositivePredicted}{m}=\frac{TP+FP}{m}, Y-axis =Recall\right\}\]</div>
+<p>Với m là số outcome có highest probability (gần label 1 nhất), ví dụ m chạy từ subsample 1% –&gt; 100% (step = 1%)</p>
+<ul class="simple">
+<li><p>với mỗi subsample có highest Probability Positive, <strong>Gain curve thể hiện subsample gain được bao nhiều % TP của total sample (khi proportion sample = 1 thì tương đương với việc sử dụng total sample)</strong></p></li>
+<li><p>Gain curve đặc trưng bằng việc thay đổi tỷ lệ subsample của total data có mức độ gain bao nhiêu %TP so với TP của total sample, khác với ROC là thay đổi cutpoint cho xác suất để xác định P or N.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">skplt</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">plot_cumulative_gain</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: title={&#39;center&#39;: &#39;Cumulative Gains Curve&#39;}, xlabel=&#39;Percentage of sample&#39;, ylabel=&#39;Gain&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/b42a1660cbd6fca356fc40e082647d49ca9483af31afe48aeb83fefeee6ac75e.png" src="../../_images/b42a1660cbd6fca356fc40e082647d49ca9483af31afe48aeb83fefeee6ac75e.png" />
+</div>
+</div>
+<p>Đường <strong>bold-line</strong> tương ứng với random select subsample, còn đường gain-line tương ứng với việc có order và select theo highest probability outcome. Y-axis thể hiện gain được bao nhiêu % TP của total sample</p>
+</section>
+</section>
+<section id="loss-function-others">
+<h2><span class="section-number">5.2.10. </span>Loss function &amp; others<a class="headerlink" href="#loss-function-others" title="Permalink to this heading">#</a></h2>
+<section id="index-of-imbalanced-accuracy">
+<h3><span class="section-number">5.2.10.1. </span>Index of Imbalanced Accuracy<a class="headerlink" href="#index-of-imbalanced-accuracy" title="Permalink to this heading">#</a></h3>
+<p>Balance any scoring function using the IBA to wraps this function to dealing with imbalance data.</p>
+<ul class="simple">
+<li><p>if <code class="docutils literal notranslate"><span class="pre">Square</span></code> = <code class="docutils literal notranslate"><span class="pre">False</span></code>:
+<strong>IBA Function = Function * (1 + alpha * (Recall - Specificity) )</strong></p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">Square</span></code> = <code class="docutils literal notranslate"><span class="pre">True</span></code>:
+<strong>IBA Function = Function^2 * (1 + alpha * (Recall - Specificity) )</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.metrics</span> <span class="kn">import</span> <span class="n">make_index_balanced_accuracy</span> <span class="k">as</span> <span class="n">iba</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="n">accuracy_score_iba</span> <span class="o">=</span> <span class="n">iba</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">accuracy_score</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">accuracy_score_iba</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.628
+0.3956397425075277
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">((</span><span class="n">recall</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">recall</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mi">10</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3956397425075277
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="log-loss">
+<h3><span class="section-number">5.2.10.2. </span>Log loss<a class="headerlink" href="#log-loss" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">log_loss</span>
+
+<span class="n">log_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.617197431425657
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="zero-one-loss">
+<h3><span class="section-number">5.2.10.3. </span>Zero-one loss<a class="headerlink" href="#zero-one-loss" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># updating</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="hamming-loss">
+<h3><span class="section-number">5.2.10.4. </span>Hamming loss<a class="headerlink" href="#hamming-loss" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># updating</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="jaccard">
+<h3><span class="section-number">5.2.10.5. </span>Jaccard<a class="headerlink" href="#jaccard" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># updating</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="matthews-correlation">
+<h3><span class="section-number">5.2.10.6. </span>Matthews correlation<a class="headerlink" href="#matthews-correlation" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># updating</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./1_Process_Modelling/Split_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="5_Evaluation_metrics-0.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">5.1. </span>Define scorer</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="5_Evaluation_metrics-2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>Regression metrics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">5.2.1. Confusion matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multilabel-cm">5.2.1.1. multilabel CM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accuracy">5.2.2. Accuracy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-k-accuracy-score">5.2.2.1. Top k accuracy score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-recall-fscore">5.2.3. Precision, Recall, Fscore</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recall">5.2.3.1. Recall</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#balance-accuracy-mean-recall">5.2.3.1.1. Balance accuracy (mean recall)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-mean-recall">5.2.3.1.2. Geometric mean recall</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision">5.2.3.2. Precision</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#average-precision-score">5.2.3.2.1. Average precision score</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support">5.2.3.3. Support</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-beta-score">5.2.3.4. F beta score</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-precision-recall-curve">5.2.3.5. Probability &amp; Precision_recall_curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specificity">5.2.3.6. Specificity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#npv">5.2.3.7. NPV</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-report">5.2.3.8. Classification Report</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#report-for-imbalance-data">5.2.3.8.1. report for imbalance data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#auc-roc-gini">5.2.4. AUC, ROC, GINI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc">5.2.4.1. ROC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auc">5.2.4.2. AUC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gini">5.2.4.3. GINI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ks">5.2.5. KS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohen-s-kappa-score">5.2.6. Cohen’s kappa score</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-likelihood-ratios">5.2.7. Class likelihood ratios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibration-curve">5.2.8. Calibration curve</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#on-imbalance-dataset">5.2.8.1. On imbalance dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#brier-score">5.2.8.2. Brier score</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lift-and-gain">5.2.9. Lift and Gain</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lift-curve">5.2.9.1. Lift curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gain-curve">5.2.9.2. Gain curve</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loss-function-others">5.2.10. Loss function &amp; others</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-of-imbalanced-accuracy">5.2.10.1. Index of Imbalanced Accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-loss">5.2.10.2. Log loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-one-loss">5.2.10.3. Zero-one loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hamming-loss">5.2.10.4. Hamming loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jaccard">5.2.10.5. Jaccard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matthews-correlation">5.2.10.6. Matthews correlation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khổng Tiến Đạt
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
